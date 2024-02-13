@@ -1,6 +1,24 @@
 package form;
 
 public class Group extends Element{
+		
+	private  Element[] member;
+	
+	public Group(Element subgroup) {
+		this.member[0]=subgroup;
+	}
+
+	public Element[] getMember() {
+		return member;
+	}
+
+	public void setMember(Element[] member) {
+		this.member = member;
+	}
+	
+	public void addMember(Element subgroup) {
+		this.member[this.member.length]=subgroup;
+	}
 
 	@Override
 	public void saveBinary(String filename) throws Exception {
@@ -29,6 +47,10 @@ public class Group extends Element{
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
+		for(Element m:member) {
+			m.delete();
+			m=null;
+		}
 		
 	}
 
