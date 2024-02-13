@@ -1,6 +1,6 @@
 package form;
 
-public class Form extends Element{
+public class Group extends Element{
 
 	@Override
 	public void saveBinary(String filename) throws Exception {
