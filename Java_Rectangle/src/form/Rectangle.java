@@ -63,14 +63,13 @@ public class Rectangle extends Element{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
 	}
 
 	@Override
-	public void move() {
-		// TODO Auto-generated method stub
-		
+	public void move(int dx, int dy) {
+		this.x=this.x+dx;
+		this.y=this.y+dy;
 	}
 
 	@Override

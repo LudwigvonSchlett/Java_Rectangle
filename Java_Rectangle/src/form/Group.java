@@ -1,23 +1,26 @@
 package form;
 
+import java.util.ArrayList;
+
 public class Group extends Element{
 		
-	private  Element[] member;
+	private  ArrayList<Element> member;
 	
 	public Group(Element subgroup) {
-		this.member[0]=subgroup;
+		this.member = new ArrayList<Element>();
+		this.member.add(subgroup);
 	}
 
-	public Element[] getMember() {
+	public ArrayList<Element> getMember() {
 		return member;
 	}
 
-	public void setMember(Element[] member) {
+	public void setMember(ArrayList<Element> member) {
 		this.member = member;
 	}
 	
 	public void addMember(Element subgroup) {
-		this.member[this.member.length]=subgroup;
+		this.member.add(subgroup);
 	}
 
 	@Override
@@ -39,9 +42,10 @@ public class Group extends Element{
 	}
 
 	@Override
-	public void move() {
-		// TODO Auto-generated method stub
-		
+	public void move(int dx, int dy) {
+		for(Element m:member) {
+			m.move(dx, dy);
+		}
 	}
 
 	@Override
@@ -49,9 +53,8 @@ public class Group extends Element{
 		// TODO Auto-generated method stub
 		for(Element m:member) {
 			m.delete();
-			m=null;
 		}
-		
+		this.member = new ArrayList<Element>();
 	}
 
 	@Override

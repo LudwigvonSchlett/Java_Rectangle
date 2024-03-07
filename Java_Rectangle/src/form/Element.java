@@ -10,7 +10,7 @@ public abstract class Element implements Serializable{
 	
 	public abstract String toString();
 	
-	public abstract void move();
+	public abstract void move(int dx, int dy);
 	
 	public abstract void delete();
 	
