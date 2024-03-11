@@ -1,13 +1,14 @@
 package form;
 
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class Group extends Shape{
 		
-	private  List<Shape> member;
+	private  List<Shape> member = new ArrayList<Shape>();
 	
 	public Group(Shape subgroup) {
-		this.member = new List<Shape>();
 		this.member.add(subgroup);
 	}
 
