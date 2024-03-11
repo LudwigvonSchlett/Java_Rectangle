@@ -1,25 +1,25 @@
 package form;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class Group extends Element{
+public class Group extends Shape{
 		
-	private  ArrayList<Element> member;
+	private  List<Shape> member;
 	
-	public Group(Element subgroup) {
-		this.member = new ArrayList<Element>();
+	public Group(Shape subgroup) {
+		this.member = new List<Shape>();
 		this.member.add(subgroup);
 	}
 
-	public ArrayList<Element> getMember() {
+	public List<Shape> getMember() {
 		return member;
 	}
 
-	public void setMember(ArrayList<Element> member) {
+	public void setMember(List<Shape> member) {
 		this.member = member;
 	}
 	
-	public void addMember(Element subgroup) {
+	public void addMember(Shape subgroup) {
 		this.member.add(subgroup);
 	}
 
@@ -43,36 +43,9 @@ public class Group extends Element{
 
 	@Override
 	public void move(int dx, int dy) {
-		for(Element m:member) {
+		for(Shape m:member) {
 			m.move(dx, dy);
 		}
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		for(Element m:member) {
-			m.delete();
-		}
-		this.member = new ArrayList<Element>();
-	}
-
-	@Override
-	public void union() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void intersect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void difference() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

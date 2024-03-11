@@ -1,10 +1,6 @@
 package form;
 
-public class Rectangle extends Element{
-	
-	private int x;
-	
-	private int y;
+public class Rectangle extends Shape{
 	
 	private int dx;
 	
@@ -15,22 +11,6 @@ public class Rectangle extends Element{
 		this.y=y;
 		this.dx=dx;
 		this.dy=dy;
-	}
-	
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	public int getDx() {
@@ -69,30 +49,7 @@ public class Rectangle extends Element{
 	@Override
 	public void move(int dx, int dy) {
 		this.x=this.x+dx;
-		this.y=this.y+dy;
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void union() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void intersect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void difference() {
-		// TODO Auto-generated method stub
-		
+		this.y=this.y+dy;	
 	}
 
 }
