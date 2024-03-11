@@ -53,9 +53,11 @@ public class Fenetre {
 		JPanel panel = new JPanel() {
 			protected void paintComponent(Graphics g) {
 		         super.paintComponent(g);
-		         g.fillRect(0,10, 10, 10);
 		         
-		         g.fillRect(20,10,10,10);
+		         
+		         new Thread(new Demo(g)).start();
+		         
+		         
 		    }
 		};
 		frame.getContentPane().add(panel, BorderLayout.CENTER);

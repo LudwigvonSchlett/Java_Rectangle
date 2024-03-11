@@ -1,32 +1,14 @@
 package form;
 
+import java.awt.Graphics;
+
 public class Rectangle extends Shape{
-	
-	private int dx;
-	
-	private int dy;
-	
+		
 	public Rectangle(int x, int y, int dx, int dy) {
 		this.x=x;
 		this.y=y;
 		this.dx=dx;
 		this.dy=dy;
-	}
-
-	public int getDx() {
-		return dx;
-	}
-
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
-
-	public int getDy() {
-		return dy;
-	}
-
-	public void setDy(int dy) {
-		this.dy = dy;
 	}
 
 	@Override
@@ -50,6 +32,11 @@ public class Rectangle extends Shape{
 	public void move(int dx, int dy) {
 		this.x=this.x+dx;
 		this.y=this.y+dy;	
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		g.fillRect(this.x,this.y,this.dx,this.dy);
 	}
 
 }

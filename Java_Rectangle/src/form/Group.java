@@ -1,6 +1,7 @@
 package form;
 
 import java.util.List;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 
@@ -10,6 +11,8 @@ public class Group extends Shape{
 	
 	public Group(Shape subgroup) {
 		this.member.add(subgroup);
+		this.x = subgroup.getX();
+		this.y = subgroup.getY();
 	}
 
 	public List<Shape> getMember() {
@@ -38,15 +41,23 @@ public class Group extends Shape{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		String result = "Group :\n";
+		for(Shape m:member)
+			result += m.toString();
+		return result;
 	}
 
 	@Override
 	public void move(int dx, int dy) {
-		for(Shape m:member) {
+		for(Shape m:member)
 			m.move(dx, dy);
-		}
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		for(Shape m:member)
+			m.draw(g);
+		
 	}
 
 }
