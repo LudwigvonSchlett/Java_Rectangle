@@ -9,10 +9,9 @@ public class Group extends Shape{
 		
 	private  List<Shape> member = new ArrayList<Shape>();
 	
-	public Group(Shape subgroup) {
-		this.member.add(subgroup);
-		this.x = subgroup.getX();
-		this.y = subgroup.getY();
+	public Group() {
+		this.x = -1;
+		this.y = -1;
 	}
 
 	public List<Shape> getMember() {
@@ -25,6 +24,10 @@ public class Group extends Shape{
 	
 	public void addMember(Shape subgroup) {
 		this.member.add(subgroup);
+		if(this.x == -1) {
+			this.x = subgroup.getX();
+			this.y = subgroup.getY();
+		}
 	}
 
 	@Override
