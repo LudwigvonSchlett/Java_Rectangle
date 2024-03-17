@@ -44,7 +44,7 @@ public class Fenetre {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 800, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JToolBar toolBar = new JToolBar();
@@ -55,7 +55,18 @@ public class Fenetre {
 		         super.paintComponent(g);
 		         
 		         
-		         new Thread(new Demo(g)).start();
+		         //new Thread(new Demo(g)).start();
+		         
+		         
+		         Group maingroup = new Group();
+		 		 Group group1 = new Group();
+		 		 //Rectangle rectangle1 = new Rectangle(100,100,200,200);
+		 		 //Rectangle rectangle2 = new Rectangle(400,200,200,200);
+		 		 maingroup.addMember(group1);
+		 		 //group1.addMember(rectangle1);
+		 		 //group1.addMember(rectangle2);
+		 		 //maingroup.draw(g);
+		 		 System.out.println(maingroup);
 		         
 		         
 		    }

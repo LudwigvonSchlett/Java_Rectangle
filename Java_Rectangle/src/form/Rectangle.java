@@ -25,7 +25,7 @@ public class Rectangle extends Shape{
 
 	@Override
 	public String toString() {
-		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
+		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n");
 	}
 
 	@Override

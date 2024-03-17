@@ -12,6 +12,8 @@ public class Group extends Shape{
 	public Group() {
 		this.x = -1;
 		this.y = -1;
+		this.dx = -1;
+		this.dx = -1;
 	}
 
 	public List<Shape> getMember() {
@@ -24,10 +26,27 @@ public class Group extends Shape{
 	
 	public void addMember(Shape subgroup) {
 		this.member.add(subgroup);
+		
+		if(this.x > subgroup.getX()) {
+			this.x = subgroup.getX();
+		}
+		if(this.y > subgroup.getY()) {
+			this.y = subgroup.getY();
+		}
+		if(this.dx > subgroup.getDX()) {
+			this.dx = subgroup.getDX();
+		}
+		if(this.dy > subgroup.getDY()) {
+			this.dy = subgroup.getDY();
+		}
+				
 		if(this.x == -1) {
 			this.x = subgroup.getX();
 			this.y = subgroup.getY();
+			this.dx = subgroup.getDX();
+			this.dy = subgroup.getDY();
 		}
+		
 	}
 
 	@Override
@@ -45,8 +64,10 @@ public class Group extends Shape{
 	@Override
 	public String toString() {
 		String result = "Group :\n";
-		for(Shape m:member)
+		for(Shape m:member) {
+			result += "Subgroup : ";
 			result += m.toString();
+		}
 		return result;
 	}
 

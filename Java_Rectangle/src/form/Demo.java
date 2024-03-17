@@ -12,8 +12,14 @@ public class Demo implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		Group maingroup = new Group();
+		Group group1 = new Group();
+		Rectangle rectangle1 = new Rectangle(100,100,200,200);
+		Rectangle rectangle2 = new Rectangle(400,200,200,200);
+		maingroup.addMember(group1);
+		group1.addMember(rectangle1);
+		group1.addMember(rectangle2);
+		maingroup.draw(g);
 		
 	}
-
 }

@@ -19,7 +19,15 @@ public abstract class Shape implements Serializable{
 	
 	protected int dx;
 	
+	public int getDX() {
+		return this.dx;
+	}
+	
 	protected int dy;
+	
+	public int getDY() {
+		return this.dy;
+	}
 	
 	public abstract void saveBinary(String filename) throws Exception;
 	
