@@ -63,18 +63,41 @@ public class Group extends Shape{
 
 	@Override
 	public String toString() {
-		String result = "Group :\n";
-		for(Shape m:member) {
-			result += "Subgroup : ";
-			result += m.toString();
-		}
-		return result;
+	    String result = "";
+	    for (Shape m : member) {
+	        if (!(m instanceof Group)) {
+	            
+	            result += "|-----";
+	            result += " " + m.toString() + "\n";
+	        } else {
+	            
+	        	result += "|----- Group :\n";
+
+	            String[] lines = m.toString().split("\\r?\\n");
+	            
+	            for (int i = 0; i < lines.length; i++) {
+	            	lines[i] = "|      " + lines[i];
+	            }
+				
+	            
+	            result += String.join(System.lineSeparator(), lines);
+	            result += "\n|\n";
+	            
+	            
+	        }
+	    }
+	    return result;
 	}
 
 	@Override
 	public void move(int dx, int dy) {
-		for(Shape m:member)
-			m.move(dx, dy);
+		if ((this.x+dx>=0) && (this.y+dy>=0)) {
+			this.x=this.x+dx;
+			this.y=this.y+dy;
+			for(Shape m:member)
+				m.move(dx, dy);
+		}
+		
 	}
 
 	@Override

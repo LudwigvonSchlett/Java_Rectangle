@@ -25,13 +25,16 @@ public class Rectangle extends Shape{
 
 	@Override
 	public String toString() {
-		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n");
+		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
 	}
 
 	@Override
 	public void move(int dx, int dy) {
-		this.x=this.x+dx;
-		this.y=this.y+dy;	
+		if ((this.x+dx>=0) && (this.y+dy>=0)) {
+			this.x=this.x+dx;
+			this.y=this.y+dy;
+		}
+					
 	}
 
 	@Override
