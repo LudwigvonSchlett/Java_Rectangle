@@ -50,18 +50,6 @@ public class Group extends Shape{
 	}
 
 	@Override
-	public void saveBinary(String filename) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void loadBinary(String filename) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public String toString() {
 	    String result = "";
 	    for (Shape m : member) {
@@ -103,7 +91,21 @@ public class Group extends Shape{
 	@Override
 	public void draw(Graphics g) {
 		for(Shape m:member)
-			m.draw(g);
+			m.draw(g);	
+	}
+
+	@Override
+	public int Isin(int x, int y) {
+		int result = 1; 
+		for(Shape m:member) {
+			if (m.Isin(x, y)==0) {
+				result = 0;
+			}
+			
+		}
+			
+		return result;
+		
 		
 	}
 

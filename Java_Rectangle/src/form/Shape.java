@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public abstract class Shape implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
 	protected int x;
 	
 	public int getX() {
@@ -29,14 +31,12 @@ public abstract class Shape implements Serializable{
 		return this.dy;
 	}
 	
-	public abstract void saveBinary(String filename) throws Exception;
+	public abstract int Isin(int x, int y);
 	
-	public abstract void loadBinary(String filename) throws Exception;
-	
+	public abstract void move(int dx, int dy);
+		
 	public abstract String toString();
 	
 	public abstract void draw(Graphics g);
-	
-	public abstract void move(int dx, int dy);
 
 }

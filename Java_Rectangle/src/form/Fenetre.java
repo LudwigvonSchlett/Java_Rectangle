@@ -69,7 +69,7 @@ public class Fenetre {
 		Group group4 = new Group();
 		Group group5 = new Group();
 		Rectangle rectangle1 = new Rectangle(100, 100, 200, 200);
-		Rectangle rectangle2 = new Rectangle(400, 200, 200, 200);
+		Rectangle rectangle2 = new Rectangle(300, 300, 200, 200);
 		Rectangle rectangle3 = new Rectangle(200, 400, 100, 300);
 		Rectangle rectangle4 = new Rectangle(400, 200, 200, 200);
 		Rectangle rectangle5 = new Rectangle(200, 400, 100, 300);

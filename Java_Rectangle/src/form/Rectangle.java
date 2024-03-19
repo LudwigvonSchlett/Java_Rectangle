@@ -4,25 +4,15 @@ import java.awt.Graphics;
 
 public class Rectangle extends Shape{
 		
+	private static final long serialVersionUID = 1L;
+
 	public Rectangle(int x, int y, int dx, int dy) {
 		this.x=x;
 		this.y=y;
 		this.dx=dx;
 		this.dy=dy;
 	}
-
-	@Override
-	public void saveBinary(String filename) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void loadBinary(String filename) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public String toString() {
 		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
@@ -40,6 +30,15 @@ public class Rectangle extends Shape{
 	@Override
 	public void draw(Graphics g) {
 		g.fillRect(this.x,this.y,this.dx,this.dy);
+	}
+
+	@Override
+	public int Isin(int x, int y) {
+		int result = 1;
+			if ((this.x<=x)&&((this.dx+this.x)>x)&&(this.y<=y)&&((this.dy+this.y)>y)) {
+				result = 0;
+			}
+		return result;
 	}
 
 }
