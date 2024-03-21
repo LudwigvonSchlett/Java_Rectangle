@@ -73,9 +73,7 @@ public class Termscreen {
 		group1.move(50, 0);
 		
 		term.paint(maingroup);
-		
-		maingroup.updateCord();
-		
+				
 		System.out.println(maingroup);
 		
 	}

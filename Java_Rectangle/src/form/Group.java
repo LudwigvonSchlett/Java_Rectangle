@@ -77,7 +77,8 @@ public class Group extends Shape{
 
  @Override
 	public String toString() {
-	    String result = "Group : "+ GroupDesc() + "\n";
+	 	updateCoord();
+	    String result = "Group : "+ "x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
 	    for (Shape c : Gcontent) {
 	        if (!(c instanceof Group)) {
 	            
@@ -97,11 +98,6 @@ public class Group extends Shape{
 	    return result;
 	}
  
-	
-	public String GroupDesc() {
-		return ("x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
-	}
-
 	@Override
 	public void move(int dx, int dy) {
 		if ((this.x+dx>=0) && (this.y+dy>=0)) {
@@ -112,7 +108,7 @@ public class Group extends Shape{
 		}
 	}
 	
-	public void updateCord() {
+	public void updateCoord() {
 		for(Shape c:Gcontent) {
 			if(this.x > c.getX()) {
 				this.x = c.getX();
@@ -153,14 +149,14 @@ public class Group extends Shape{
 		for(Shape c:subgroup) {
 			add(c);
 		}
-		updateCord();
+		updateCoord();
 	}
 	
 	public Group Union(Shape s1) {
 		Group g2 = new Group();
 		g2.add(this);
 		g2.add(s1);
-		g2.updateCord();
+		g2.updateCoord();
 		return g2;
 	}
 
