@@ -58,13 +58,13 @@ public class Termscreen {
 		
 		Rectangle rectangle2 = new Rectangle(7,7,5,5);
 				
-		maingroup.add(group1);
-		
-		maingroup.add(group2);
-		
 		group1.add(rectangle1);
 		
 		group2.add(rectangle2);
+		
+		maingroup.add(group1);
+		
+		maingroup.add(group2);
 			
 		term.paint(maingroup);
 		
@@ -73,6 +73,10 @@ public class Termscreen {
 		group1.move(50, 0);
 		
 		term.paint(maingroup);
+		
+		maingroup.updateCord();
+		
+		System.out.println(maingroup);
 		
 	}
 	

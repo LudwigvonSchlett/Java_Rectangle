@@ -25,7 +25,6 @@ public class Group extends Shape{
 	}
 	
 	public void add(Shape subgroup) {
-		this.Gcontent.add(subgroup);
 		
 		if(this.x > subgroup.getX()) {
 			this.x = subgroup.getX();
@@ -34,12 +33,12 @@ public class Group extends Shape{
 			this.y = subgroup.getY();
 		}
 		
-		if((this.x-subgroup.getX()+subgroup.getDX())>(this.dx)) {
-			this.dx = (this.x-subgroup.getX()+subgroup.getDX());
+		if((-this.x+subgroup.getX()+subgroup.getDX())>(this.dx)) {
+			this.dx = (-this.x+subgroup.getX()+subgroup.getDX());
 		}
 		
-		if((this.y-subgroup.getY()+subgroup.getDY())>(this.dy)) {
-			this.dy = (this.y-subgroup.getY()+subgroup.getDY());
+		if((-this.y+subgroup.getY()+subgroup.getDY())>(this.dy)) {
+			this.dy = (-this.y+subgroup.getY()+subgroup.getDY());
 		}
 				
 		if(this.x == -1) {
@@ -49,8 +48,10 @@ public class Group extends Shape{
 			this.dy = subgroup.getDY();
 		}
 		
+		this.Gcontent.add(subgroup);
+		
 	}
-
+/*
 	@Override
 	public String toString() {
 	    String result = "";
@@ -72,6 +73,34 @@ public class Group extends Shape{
 	    }
 	    return result;
 	}
+*/
+
+ @Override
+	public String toString() {
+	    String result = "Group : "+ GroupDesc() + "\n";
+	    for (Shape c : Gcontent) {
+	        if (!(c instanceof Group)) {
+	            
+	            result += "|-----";
+	            result += " " + c.toString() + "\n";
+	        } else {
+	        	result += "|----- ";
+	            String[] lines = c.toString().split("\\r?\\n");
+	            
+	            for (int i = 1; i < lines.length; i++) {
+	            	lines[i] = "|      " + lines[i];
+	            }
+	            result += String.join(System.lineSeparator(), lines);
+	            result += "\n|\n";	            
+	        }
+	    }
+	    return result;
+	}
+ 
+	
+	public String GroupDesc() {
+		return ("x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
+	}
 
 	@Override
 	public void move(int dx, int dy) {
@@ -91,12 +120,12 @@ public class Group extends Shape{
 			if(this.y > c.getY()) {
 				this.y = c.getY();
 			}
-			if((this.x-c.getX()+c.getDX())>(this.dx)) {
-				this.dx = (this.x-c.getX()+c.getDX());
+			if((c.getX()+c.getDX()-this.x)>(this.dx)) {
+				this.dx = (c.getX()+c.getDX()-this.x);
 			}
 			
-			if((this.y-c.getY()+c.getDY())>(this.dy)) {
-				this.dy = (this.y-c.getY()+c.getDY());
+			if((c.getY()+c.getDY()-this.y)>(this.dy)) {
+				this.dy = (c.getX()+c.getDX()-this.x);
 			}
 		}
 		
