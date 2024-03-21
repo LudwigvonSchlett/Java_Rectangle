@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 
 public class Group extends Shape{
-		
-	private  List<Shape> member = new ArrayList<Shape>();
+	
+	protected  List<Shape> Gcontent = new ArrayList<Shape>();
 	
 	public Group() {
 		this.x = -1;
@@ -16,16 +16,16 @@ public class Group extends Shape{
 		this.dx = -1;
 	}
 
-	public List<Shape> getMember() {
-		return member;
+	public List<Shape> getGcontent() {
+		return Gcontent;
 	}
 
-	public void setMember(List<Shape> member) {
-		this.member = member;
+	public void setMember(List<Shape> Lshape) {
+		this.Gcontent = Lshape;
 	}
 	
-	public void addMember(Shape subgroup) {
-		this.member.add(subgroup);
+	public void add(Shape subgroup) {
+		this.Gcontent.add(subgroup);
 		
 		if(this.x > subgroup.getX()) {
 			this.x = subgroup.getX();
@@ -33,11 +33,13 @@ public class Group extends Shape{
 		if(this.y > subgroup.getY()) {
 			this.y = subgroup.getY();
 		}
-		if(this.dx > subgroup.getDX()) {
-			this.dx = subgroup.getDX();
+		
+		if((this.x-subgroup.getX()+subgroup.getDX())>(this.dx)) {
+			this.dx = (this.x-subgroup.getX()+subgroup.getDX());
 		}
-		if(this.dy > subgroup.getDY()) {
-			this.dy = subgroup.getDY();
+		
+		if((this.y-subgroup.getY()+subgroup.getDY())>(this.dy)) {
+			this.dy = (this.y-subgroup.getY()+subgroup.getDY());
 		}
 				
 		if(this.x == -1) {
@@ -52,26 +54,20 @@ public class Group extends Shape{
 	@Override
 	public String toString() {
 	    String result = "";
-	    for (Shape m : member) {
-	        if (!(m instanceof Group)) {
+	    for (Shape c : Gcontent) {
+	        if (!(c instanceof Group)) {
 	            
 	            result += "|-----";
-	            result += " " + m.toString() + "\n";
+	            result += " " + c.toString() + "\n";
 	        } else {
-	            
 	        	result += "|----- Group :\n";
-
-	            String[] lines = m.toString().split("\\r?\\n");
+	            String[] lines = c.toString().split("\\r?\\n");
 	            
 	            for (int i = 0; i < lines.length; i++) {
 	            	lines[i] = "|      " + lines[i];
 	            }
-				
-	            
 	            result += String.join(System.lineSeparator(), lines);
-	            result += "\n|\n";
-	            
-	            
+	            result += "\n|\n";	            
 	        }
 	    }
 	    return result;
@@ -82,31 +78,61 @@ public class Group extends Shape{
 		if ((this.x+dx>=0) && (this.y+dy>=0)) {
 			this.x=this.x+dx;
 			this.y=this.y+dy;
-			for(Shape m:member)
-				m.move(dx, dy);
+			for(Shape c:Gcontent)
+				c.move(dx, dy);
+		}
+	}
+	
+	public void updateCord() {
+		for(Shape c:Gcontent) {
+			if(this.x > c.getX()) {
+				this.x = c.getX();
+			}
+			if(this.y > c.getY()) {
+				this.y = c.getY();
+			}
+			if((this.x-c.getX()+c.getDX())>(this.dx)) {
+				this.dx = (this.x-c.getX()+c.getDX());
+			}
+			
+			if((this.y-c.getY()+c.getDY())>(this.dy)) {
+				this.dy = (this.y-c.getY()+c.getDY());
+			}
 		}
 		
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		for(Shape m:member)
-			m.draw(g);	
+		for(Shape c:Gcontent)
+			c.draw(g);	
 	}
 
 	@Override
 	public int Isin(int x, int y) {
 		int result = 1; 
-		for(Shape m:member) {
-			if (m.Isin(x, y)==0) {
+		for(Shape c:Gcontent) {
+			if (c.Isin(x, y)==0) {
 				result = 0;
-			}
-			
+			}	
 		}
-			
 		return result;
-		
-		
+	}
+	
+	public void Unite2G(Group g2) {
+		List<Shape> subgroup = g2.getGcontent();
+		for(Shape c:subgroup) {
+			add(c);
+		}
+		updateCord();
+	}
+	
+	public Group Union(Shape s1) {
+		Group g2 = new Group();
+		g2.add(this);
+		g2.add(s1);
+		g2.updateCord();
+		return g2;
 	}
 
 }

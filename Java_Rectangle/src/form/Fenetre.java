@@ -73,16 +73,16 @@ public class Fenetre {
 		Rectangle rectangle3 = new Rectangle(200, 400, 100, 300);
 		Rectangle rectangle4 = new Rectangle(400, 200, 200, 200);
 		Rectangle rectangle5 = new Rectangle(200, 400, 100, 300);
-		maingroup.addMember(group1);
-		maingroup.addMember(group3);
-		group1.addMember(rectangle1);
-		group1.addMember(group2);
-		group2.addMember(rectangle2);
-		group2.addMember(group4);
-		group2.addMember(rectangle4);
-		group3.addMember(rectangle3);
-		group4.addMember(group5);
-		group5.addMember(rectangle5);
+		maingroup.add(group1);
+		maingroup.add(group3);
+		group1.add(rectangle1);
+		group1.add(group2);
+		group2.add(rectangle2);
+		group2.add(group4);
+		group2.add(rectangle4);
+		group3.add(rectangle3);
+		group4.add(group5);
+		group5.add(rectangle5);
 
 		// Move group1
 		group1.move(100, -100);

@@ -52,17 +52,19 @@ public class Termscreen {
 		
 		Group group1 = new Group();
 		
+		Group group2 = new Group();
+		
 		Rectangle rectangle1 = new Rectangle(2,2,5,5);
 		
 		Rectangle rectangle2 = new Rectangle(7,7,5,5);
+				
+		maingroup.add(group1);
 		
-		//Rectangle rectangle2 = new Rectangle(80,10,50,30);
+		maingroup.add(group2);
 		
-		maingroup.addMember(group1);
+		group1.add(rectangle1);
 		
-		group1.addMember(rectangle1);
-		
-		group1.addMember(rectangle2);
+		group2.add(rectangle2);
 			
 		term.paint(maingroup);
 		
