@@ -121,16 +121,20 @@ public class Group extends Shape{
 			if(this.x > c.getX()) {
 				this.x = c.getX();
 			}
+			/*
 			else if (this.x < c.getX()) {
 				this.x = c.getX();
 			}
+			*/
 				
 			if(this.y > c.getY()) {
 				this.y = c.getY();
 			}
+			/*
 			else if (this.y < c.getY()) {
 				this.y = c.getY();
 			}
+			*/
 			
 			if((c.getX()+c.getDX()-this.x)>(this.dx)) {
 				this.dx = (c.getX()+c.getDX()-this.x);
