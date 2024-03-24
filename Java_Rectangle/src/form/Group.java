@@ -48,7 +48,7 @@ public class Group extends Shape{
 			this.dy = subgroup.getDY();
 		}
 		
-		this.Gcontent.add(subgroup);
+		Gcontent.add(subgroup);
 		
 	}
 /*
@@ -109,13 +109,29 @@ public class Group extends Shape{
 	}
 	
 	public void updateCoord() {
+		
+		// à améliorer // récrir complétement
+		
 		for(Shape c:Gcontent) {
+			
+			if (c instanceof Group){
+				((Group) c).updateCoord();
+			}
+			
 			if(this.x > c.getX()) {
 				this.x = c.getX();
 			}
+			else if (this.x < c.getX()) {
+				this.x = c.getX();
+			}
+				
 			if(this.y > c.getY()) {
 				this.y = c.getY();
 			}
+			else if (this.y < c.getY()) {
+				this.y = c.getY();
+			}
+			
 			if((c.getX()+c.getDX()-this.x)>(this.dx)) {
 				this.dx = (c.getX()+c.getDX()-this.x);
 			}
@@ -151,13 +167,15 @@ public class Group extends Shape{
 		}
 		updateCoord();
 	}
-	
-	public Group Union(Shape s1) {
-		Group g2 = new Group();
-		g2.add(this);
-		g2.add(s1);
-		g2.updateCoord();
-		return g2;
+
+	@Override
+	public Group Intersect(Shape s1) {
+		Group result = new Group();
+		for(Shape c:Gcontent) {
+			result.Unite2G(c.Intersect(s1));
+		}
+		result.updateCoord();
+		return result;
 	}
 
 }

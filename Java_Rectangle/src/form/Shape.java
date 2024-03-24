@@ -38,5 +38,15 @@ public abstract class Shape implements Serializable{
 	public abstract String toString();
 	
 	public abstract void draw(Graphics g);
+	
+	public Group Union(Shape s1) {
+		Group g2 = new Group();
+		g2.add(this);
+		g2.add(s1);
+		g2.updateCoord();
+		return g2;
+	}
+	
+	public abstract Group Intersect(Shape s1);
 
 }

@@ -62,10 +62,14 @@ public class Termscreen {
 		
 		group2.add(rectangle2);
 		
-		maingroup.add(group1);
+		Group group3 = group1.Union(group2);
 		
-		maingroup.add(group2);
-			
+		//maingroup.add(group1);
+		
+		//maingroup.add(group2);
+		
+		maingroup.add(group3);
+		
 		term.paint(maingroup);
 		
 		term.jump();
