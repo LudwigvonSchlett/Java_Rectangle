@@ -12,7 +12,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Dimension;
 
-public class Fenetre {
+public class LegacyWindow {
 
 	private JFrame frame;
 
@@ -23,7 +23,7 @@ public class Fenetre {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Fenetre window = new Fenetre();
+					LegacyWindow window = new LegacyWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,7 +35,7 @@ public class Fenetre {
 	/**
 	 * Create the application.
 	 */
-	public Fenetre() {
+	public LegacyWindow() {
 		initialize();
 	}
 
