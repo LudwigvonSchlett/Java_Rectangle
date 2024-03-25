@@ -54,21 +54,21 @@ public class Termscreen {
 		
 		Group group2 = new Group();
 		
-		Rectangle rectangle1 = new Rectangle(2,2,5,5);
+		Rectangle rectangle1 = Rectangle.createRectangle(2,2,5,5);
 		
-		Rectangle rectangle2 = new Rectangle(7,7,5,5);
+		Rectangle rectangle2 = Rectangle.createRectangle(7,7,5,5);
 				
 		group1.add(rectangle1);
 		
 		group2.add(rectangle2);
 		
-		Group group3 = group1.Union(group2);
+		//Group group3 = group1.Union(group2);
 		
-		//maingroup.add(group1);
+		maingroup.add(group1);
 		
-		//maingroup.add(group2);
+		maingroup.add(group2);
 		
-		maingroup.add(group3);
+		//maingroup.add(group3);
 		
 		term.paint(maingroup);
 		

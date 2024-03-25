@@ -7,11 +7,15 @@ public class Rectangle extends Shape{
 		
 	private static final long serialVersionUID = 1L;
 
-	public Rectangle(int x, int y, int dx, int dy) {
-		this.x=x;
-		this.y=y;
-		this.dx=dx;
-		this.dy=dy;
+	public Rectangle() {}
+	
+	public static Rectangle createRectangle(int x, int y, int dx, int dy) {
+		Rectangle result = new Rectangle();
+		result.setX(x);
+		result.setY(y);
+		result.setDX(dx);
+		result.setDY(dy);
+		return result;
 	}
 	
 	@Override
@@ -78,7 +82,7 @@ public class Rectangle extends Shape{
 			*/
 			
 			if((resultx!=-1)&&(resulty!=-1)&&(resultdx!=-1)&&(resultdy!=-1)) {
-				result.add(new Rectangle(resultx,resulty,resultdx,resultdy));
+				result.add(createRectangle(resultx,resulty,resultdx,resultdy));
 			}
 		}
 		

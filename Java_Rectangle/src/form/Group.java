@@ -9,20 +9,22 @@ public class Group extends Shape{
 	
 	protected  List<Shape> Gcontent = new ArrayList<Shape>();
 	
-	public Group() {
-		this.x = -1;
-		this.y = -1;
-		this.dx = -1;
-		this.dx = -1;
+	public Group() {}
+	
+	public static Group createGroup(Shape s1) {
+		Group result = new Group();
+		result.add(s1);
+		return result;
 	}
-
+	
 	public List<Shape> getGcontent() {
 		return Gcontent;
 	}
-
-	public void setMember(List<Shape> Lshape) {
+	
+	public void setGcontent(List<Shape> Lshape) {
 		this.Gcontent = Lshape;
 	}
+	
 	
 	public void add(Shape subgroup) {
 		
@@ -78,7 +80,7 @@ public class Group extends Shape{
  @Override
 	public String toString() {
 	 	updateCoord();
-	    String result = "Group : "+ "x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
+	    String result = "Group : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
 	    for (Shape c : Gcontent) {
 	        if (!(c instanceof Group)) {
 	            
@@ -110,7 +112,11 @@ public class Group extends Shape{
 	
 	public void updateCoord() {
 		
-		// à améliorer // récrir complétement
+		// à améliorer // réécrire complétement
+		int minx = this.x;
+		int miny = this.y;
+		int maxx = this.x;
+		int maxy = this.y;
 		
 		for(Shape c:Gcontent) {
 			
@@ -118,23 +124,43 @@ public class Group extends Shape{
 				((Group) c).updateCoord();
 			}
 			
-			if(this.x > c.getX()) {
-				this.x = c.getX();
+			if(c.getX()<minx) {
+				minx = c.getX();
 			}
-			/*
-			else if (this.x < c.getX()) {
-				this.x = c.getX();
+			if(c.getX()>maxx) {
+				maxx = c.getX();
+			} 
+			
+			if(c.getY()<miny) {
+				miny = c.getY();
 			}
-			*/
-				
-			if(this.y > c.getY()) {
-				this.y = c.getY();
+			if(c.getY()>maxy) {
+				maxy = c.getY();
 			}
-			/*
-			else if (this.y < c.getY()) {
-				this.y = c.getY();
+			
+			
+		}
+		
+		if (minx!=this.x) {
+			this.x = minx;
+		} 
+		else if (maxx!=this.x) {
+			this.x = maxx;
+		}
+		
+		if (miny!=this.y) {
+			this.y = miny;
+		} 
+		else if (maxy!=this.y) {
+			this.y = maxy;
+		}
+			
+		
+		for(Shape c:Gcontent) {
+			
+			if (c instanceof Group){
+				((Group) c).updateCoord();
 			}
-			*/
 			
 			if((c.getX()+c.getDX()-this.x)>(this.dx)) {
 				this.dx = (c.getX()+c.getDX()-this.x);
@@ -144,6 +170,7 @@ public class Group extends Shape{
 				this.dy = (c.getX()+c.getDX()-this.x);
 			}
 		}
+		
 		
 	}
 
