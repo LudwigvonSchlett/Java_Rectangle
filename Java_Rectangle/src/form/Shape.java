@@ -20,7 +20,7 @@ public abstract class Shape implements Serializable{
 	protected int y=-1;
 	
 	public int getY() {
-		return this.x;
+		return this.y;
 	}
 	
 	public void setY(int y) {
@@ -32,7 +32,6 @@ public abstract class Shape implements Serializable{
 	public int getDX() {
 		return this.dx;
 	}
-	
 	
 	public void setDX(int dx) {
 		this.dx = dx;

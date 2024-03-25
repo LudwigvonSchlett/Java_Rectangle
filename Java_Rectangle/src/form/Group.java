@@ -27,55 +27,19 @@ public class Group extends Shape{
 	
 	
 	public void add(Shape subgroup) {
-		
-		if(this.x > subgroup.getX()) {
-			this.x = subgroup.getX();
-		}
-		if(this.y > subgroup.getY()) {
-			this.y = subgroup.getY();
-		}
-		
-		if((-this.x+subgroup.getX()+subgroup.getDX())>(this.dx)) {
-			this.dx = (-this.x+subgroup.getX()+subgroup.getDX());
-		}
-		
-		if((-this.y+subgroup.getY()+subgroup.getDY())>(this.dy)) {
-			this.dy = (-this.y+subgroup.getY()+subgroup.getDY());
-		}
 				
 		if(this.x == -1) {
 			this.x = subgroup.getX();
 			this.y = subgroup.getY();
 			this.dx = subgroup.getDX();
 			this.dy = subgroup.getDY();
+		} else {
+			updateCoord();
 		}
 		
 		Gcontent.add(subgroup);
 		
 	}
-/*
-	@Override
-	public String toString() {
-	    String result = "";
-	    for (Shape c : Gcontent) {
-	        if (!(c instanceof Group)) {
-	            
-	            result += "|-----";
-	            result += " " + c.toString() + "\n";
-	        } else {
-	        	result += "|----- Group :\n";
-	            String[] lines = c.toString().split("\\r?\\n");
-	            
-	            for (int i = 0; i < lines.length; i++) {
-	            	lines[i] = "|      " + lines[i];
-	            }
-	            result += String.join(System.lineSeparator(), lines);
-	            result += "\n|\n";	            
-	        }
-	    }
-	    return result;
-	}
-*/
 
  @Override
 	public String toString() {
@@ -112,7 +76,6 @@ public class Group extends Shape{
 	
 	public void updateCoord() {
 		
-		// à améliorer // réécrire complétement
 		int minx = this.x;
 		int miny = this.y;
 		int maxx = this.x;
@@ -154,6 +117,11 @@ public class Group extends Shape{
 		else if (maxy!=this.y) {
 			this.y = maxy;
 		}
+		
+		int mindx = this.dx;
+		int mindy = this.dy;
+		int maxdx = this.dx;
+		int maxdy = this.dy;
 			
 		
 		for(Shape c:Gcontent) {
@@ -162,15 +130,34 @@ public class Group extends Shape{
 				((Group) c).updateCoord();
 			}
 			
-			if((c.getX()+c.getDX()-this.x)>(this.dx)) {
-				this.dx = (c.getX()+c.getDX()-this.x);
+			if((c.getX()+c.getDX()-this.x)>(maxdx)) {
+				maxdx = (c.getX()+c.getDX()-this.x);
+			}
+			if((c.getX()+c.getDX()-this.x)<(mindx)) {
+				mindx = (c.getX()+c.getDX()-this.x);
 			}
 			
-			if((c.getY()+c.getDY()-this.y)>(this.dy)) {
-				this.dy = (c.getX()+c.getDX()-this.x);
+			if((c.getY()+c.getDY()-this.y)>(mindy)) {
+				maxdy = (c.getY()+c.getDY()-this.y);
+			}
+			if((c.getY()+c.getDY()-this.y)>(mindy)) {
+				mindy = (c.getY()+c.getDY()-this.y);
 			}
 		}
 		
+		if (maxdx!=this.dx) {
+			this.dx = maxdx;
+		} 
+		else if (mindx!=this.dx) {
+			this.dx = mindx;
+		}
+		
+		if (maxdy!=this.dy) {
+			this.dy = maxdy;
+		} 
+		else if (mindy!=this.dy) {
+			this.dy = mindy;
+		}
 		
 	}
 
