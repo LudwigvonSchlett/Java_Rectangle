@@ -63,21 +63,21 @@ public class Rectangle extends Shape{
 			int resultdx = -1;
 			int resultdy = -1;
 			
-			if (((this.x+this.dx)>s1.getX())&&(s1.getX()>this.x)) {
+			if (((this.x+this.dx)>s1.getX())&&(s1.getX()>=this.x)) {
 				resultx = s1.getX(); 
 				resultdx = this.dx-(s1.getX()-this.x);
 				
-			} else if (((s1.getX()+s1.getDX())>this.x)&&(s1.getX()<this.x)) {
+			} else if (((s1.getX()+s1.getDX())>this.x)&&(s1.getX()<=this.x)) {
 				resultx = this.x;
 				resultdx = s1.getDX()-(this.x-s1.getX());
 			}
 			
-			if (((this.y+this.dy)>s1.getY())&&(s1.getY()>this.y)) {
+			if (((this.y+this.dy)>s1.getY())&&(s1.getY()>=this.y)) {
 				resulty = s1.getY(); 
 				resultdy = this.dy-(s1.getY()-this.y);
 				
-			} else if (((s1.getY()+s1.getDY())>this.y)&&(s1.getY()<this.y)) {
-				resultx = this.y;
+			} else if (((s1.getY()+s1.getDY())>this.y)&&(s1.getY()<=this.y)) {
+				resulty = this.y;
 				resultdy = s1.getDY()-(this.y-s1.getY());
 			}
 			

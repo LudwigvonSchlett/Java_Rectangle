@@ -104,7 +104,7 @@ public class Termscreen {
 		
 		jump();
 		
-		maingroup = Group.createGroup(group1.Intersect(group2));
+		maingroup = Group.createGroup(group2.Intersect(group1));
 		
 		paint(maingroup);
 		
