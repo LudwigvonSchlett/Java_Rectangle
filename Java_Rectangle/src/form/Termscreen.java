@@ -82,9 +82,9 @@ public class Termscreen {
 		
 		Group group2 = new Group();
 		
-		Rectangle rectangle1 = Rectangle.createRectangle(52,2,5,5);
+		Rectangle rectangle1 = Rectangle.createRectangle(8,2,8,8);
 		
-		Rectangle rectangle2 = Rectangle.createRectangle(7,7,5,5);
+		Rectangle rectangle2 = Rectangle.createRectangle(6,6,6,6);
 				
 		group1.add(rectangle1);
 		
@@ -104,11 +104,13 @@ public class Termscreen {
 		
 		jump();
 		
-		group1.move(-50, 0);
+		maingroup = Group.createGroup(group1.Intersect(group2));
 		
 		paint(maingroup);
-				
+		
 		System.out.println(maingroup);
+		
+		jump();
 		
 		save(maingroup);
 		
@@ -125,7 +127,5 @@ public class Termscreen {
 		*/
 		
 	}
-	
-	
-	
+		
 }

@@ -48,6 +48,7 @@ public class Rectangle extends Shape{
 
 	@Override
 	public Group Intersect(Shape s1) {
+		
 		Group result = new Group();
 		if (s1 instanceof Group) {
 			List<Shape> s1Gcontent = ((Group) s1).getGcontent();
@@ -55,37 +56,36 @@ public class Rectangle extends Shape{
 				result.Unite2G(Intersect(s1c));
 			}
 		}
+		
 		else if (s1 instanceof Rectangle) {
 			int resultx = -1;
 			int resulty = -1;
 			int resultdx = -1;
 			int resultdy = -1;
 			
+			if (((this.x+this.dx)>s1.getX())&&(s1.getX()>this.x)) {
+				resultx = s1.getX(); 
+				resultdx = this.dx-(s1.getX()-this.x);
+				
+			} else if (((s1.getX()+s1.getDX())>this.x)&&(s1.getX()<this.x)) {
+				resultx = this.x;
+				resultdx = s1.getDX()-(this.x-s1.getX());
+			}
 			
-			/*
-			 * finir les conditions de construction
-			 */
-			
-			/* à enlever
-			if(s1.getX()>(this.x+this.dx)) {
-				// L'intersection est un ensemble vide
+			if (((this.y+this.dy)>s1.getY())&&(s1.getY()>this.y)) {
+				resulty = s1.getY(); 
+				resultdy = this.dy-(s1.getY()-this.y);
+				
+			} else if (((s1.getY()+s1.getDY())>this.y)&&(s1.getY()<this.y)) {
+				resultx = this.y;
+				resultdy = s1.getDY()-(this.y-s1.getY());
 			}
-			else if(s1.getY()>(this.y+this.dy)) {
-				// L'intersection est un ensemble vide
-			}
-			else if(this.x>(s1.getX()+s1.getDX())) {
-				// L'intersection est un ensemble vide
-			}
-			else if(this.y>(s1.getY()+s1.getDY())) {
-				// L'intersection est un ensemble vide
-			}
-			*/
 			
 			if((resultx!=-1)&&(resulty!=-1)&&(resultdx!=-1)&&(resultdy!=-1)) {
 				result.add(createRectangle(resultx,resulty,resultdx,resultdy));
 			}
+						
 		}
-		
 		
 		return result;
 	}
