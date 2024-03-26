@@ -1,1 +1,6 @@
 Java_Rectangle/bin/
+Java_Rectangle/.classpath
+Java_Rectangle/.project
+.vscode/settings.json
+.vscode/*
+Java_Rectangle/Shape.xml

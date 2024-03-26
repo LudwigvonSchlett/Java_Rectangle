@@ -1,54 +1,93 @@
 package form;
 
-public class Rectangle extends Element{
+import java.awt.Graphics;
+import java.util.List;
 
-	@Override
-	public void saveBinary(String filename) throws Exception {
-		// TODO Auto-generated method stub
+public class Rectangle extends Shape{
 		
-	}
+	private static final long serialVersionUID = 1L;
 
-	@Override
-	public void loadBinary(String filename) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public Rectangle() {}
+	
+	public static Rectangle createRectangle(int x, int y, int dx, int dy) {
+		Rectangle result = new Rectangle();
+		result.setX(x);
+		result.setY(y);
+		result.setDX(dx);
+		result.setDY(dy);
+		return result;
 	}
-
+	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
 	}
 
 	@Override
-	public void move() {
-		// TODO Auto-generated method stub
-		
+	public void move(int dx, int dy) {
+		if ((this.x+dx>=0) && (this.y+dy>=0)) {
+			this.x=this.x+dx;
+			this.y=this.y+dy;
+		}
+					
 	}
 
 	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		
+	public void draw(Graphics g) {
+		g.fillRect(this.x,this.y,this.dx,this.dy);
 	}
 
 	@Override
-	public void union() {
-		// TODO Auto-generated method stub
-		
+	public int Isin(int x, int y) {
+		int result = 1;
+			if ((this.x<=x)&&((this.dx+this.x)>x)&&(this.y<=y)&&((this.dy+this.y)>y)) {
+				result = 0;
+			}
+		return result;
 	}
 
 	@Override
-	public void intersect() {
-		// TODO Auto-generated method stub
+	public Group Intersect(Shape s1) {
 		
-	}
-
-	@Override
-	public void difference() {
-		// TODO Auto-generated method stub
+		Group result = new Group();
+		if (s1 instanceof Group) {
+			List<Shape> s1Gcontent = ((Group) s1).getGcontent();
+			for (Shape s1c:s1Gcontent) {
+				result.Unite2G(Intersect(s1c));
+			}
+		}
 		
+		else if (s1 instanceof Rectangle) {
+			int resultx = -1;
+			int resulty = -1;
+			int resultdx = -1;
+			int resultdy = -1;
+			
+			if (((this.x+this.dx)>s1.getX())&&(s1.getX()>this.x)) {
+				resultx = s1.getX(); 
+				resultdx = this.dx-(s1.getX()-this.x);
+				
+			} else if (((s1.getX()+s1.getDX())>this.x)&&(s1.getX()<this.x)) {
+				resultx = this.x;
+				resultdx = s1.getDX()-(this.x-s1.getX());
+			}
+			
+			if (((this.y+this.dy)>s1.getY())&&(s1.getY()>this.y)) {
+				resulty = s1.getY(); 
+				resultdy = this.dy-(s1.getY()-this.y);
+				
+			} else if (((s1.getY()+s1.getDY())>this.y)&&(s1.getY()<this.y)) {
+				resultx = this.y;
+				resultdy = s1.getDY()-(this.y-s1.getY());
+			}
+			
+			if((resultx!=-1)&&(resulty!=-1)&&(resultdx!=-1)&&(resultdy!=-1)) {
+				result.add(createRectangle(resultx,resulty,resultdx,resultdy));
+			}
+						
+		}
+		
+		return result;
 	}
 
 }
-
