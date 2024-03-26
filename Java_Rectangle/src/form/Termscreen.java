@@ -82,9 +82,9 @@ public class Termscreen {
 		
 		Group group2 = new Group();
 		
-		Rectangle rectangle1 = Rectangle.createRectangle(8,2,8,8);
+		Rectangle rectangle1 = Rectangle.createRectangle(4,4,6,6);
 		
-		Rectangle rectangle2 = Rectangle.createRectangle(6,6,6,6);
+		Rectangle rectangle2 = Rectangle.createRectangle(2,2,12,12);
 				
 		group1.add(rectangle1);
 		
