@@ -64,26 +64,47 @@ public class Rectangle extends Shape{
 			int resultdy = -1;
 			
 			if (((this.x+this.dx)>s1.getX())&&(s1.getX()>=this.x)) {
-				resultx = s1.getX(); 
-				resultdx = this.dx-(s1.getX()-this.x);
-				
+				resultx = s1.getX();
+				if((this.dx-(s1.getX()-this.x))<=s1.getDX()) {
+					resultdx = this.dx-(s1.getX()-this.x);
+				}
+				else {
+					resultdx = s1.getDX();
+				}
 			} else if (((s1.getX()+s1.getDX())>this.x)&&(s1.getX()<=this.x)) {
 				resultx = this.x;
-				resultdx = s1.getDX()-(this.x-s1.getX());
+				if((s1.getDX()-(this.x-s1.getX()))<=this.x) {
+					resultdx = s1.getDX()-(this.x-s1.getX());
+				}
+				else {
+					resultdx = this.dx;
+				}
 			}
+			
 			
 			if (((this.y+this.dy)>s1.getY())&&(s1.getY()>=this.y)) {
 				resulty = s1.getY(); 
-				resultdy = this.dy-(s1.getY()-this.y);
-				
+				if((this.dy-(s1.getY()-this.y))<=s1.getDY()) {
+					resultdy = this.dy-(s1.getY()-this.y);
+				}
+				else {
+					resultdy = s1.getDY();
+				}	
 			} else if (((s1.getY()+s1.getDY())>this.y)&&(s1.getY()<=this.y)) {
 				resulty = this.y;
-				resultdy = s1.getDY()-(this.y-s1.getY());
+				
+				if((s1.getDY()-(this.y-s1.getY()))<=this.y) {
+					resultdy = s1.getDY()-(this.y-s1.getY());
+				}
+				else {
+					resultdy = this.dy;
+				}
 			}
 			
 			if((resultx!=-1)&&(resulty!=-1)&&(resultdx!=-1)&&(resultdy!=-1)) {
 				result.add(createRectangle(resultx,resulty,resultdx,resultdy));
 			}
+			
 						
 		}
 		
