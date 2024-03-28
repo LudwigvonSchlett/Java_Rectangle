@@ -16,7 +16,7 @@ public class Rectangle extends Shape {
 	@Override
 	public int Isin(int x, int y) {
 		int result = 1;
-			if ((this.x<=x)&&((this.dx+this.x)>x)&&(this.y<=y)&&((this.dy+this.y)>y)) {
+			if ((this.visibility!=0)&&(this.x<=x)&&((this.dx+this.x)>x)&&(this.y<=y)&&((this.dy+this.y)>y)) {
 				result = 0;
 			}
 		return result;

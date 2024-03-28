@@ -47,6 +47,16 @@ public abstract class Shape implements Serializable{
 		this.dy = dy;
 	}
 	
+	protected int visibility = 1;
+	
+	public int getVisibility() {
+		return visibility;
+	}
+	
+	public void setVisibility(int vis) {
+		this.visibility = vis;
+	}
+	
 	public abstract int Isin(int x, int y);
 	
 	public abstract void move(int dx, int dy);

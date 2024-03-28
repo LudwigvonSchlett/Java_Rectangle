@@ -75,7 +75,7 @@ public class TerminalDemo {
 	
 	public static void main(String[] args) {
 		
-		Scene scene1 = new Scene();
+		/*Scene scene1 = new Scene();
 		
 		Rectangle r1 = new Rectangle(5,5,10,10);
 		
@@ -88,6 +88,14 @@ public class TerminalDemo {
 		Union u2 = new Union(u1,r3);
 		
 		scene1.add(u2);
+		
+		paint(scene1);
+		
+		System.out.println(scene1);
+		
+		save(scene1);*/
+		
+		Scene scene1 = load();
 		
 		paint(scene1);
 		

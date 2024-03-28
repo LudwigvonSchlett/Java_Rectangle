@@ -27,13 +27,15 @@ public abstract class Duplet extends Shape {
 	@Override
 	public int Isin(int x, int y) {
 		int result = 1; 
-		
-		if (Lleaf.Isin(x, y)==0) {
+		if (this.visibility!=0) {
+			if (Lleaf.Isin(x, y)==0) {
 				result = 0;
-		}	
-		if (Rleaf.Isin(x, y)==0) {
-			result = 0;
-		}	
+			}	
+			if (Rleaf.Isin(x, y)==0) {
+				result = 0;
+			}
+		}
+			
 		return result;
 	}
 
