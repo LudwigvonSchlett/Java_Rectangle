@@ -1,4 +1,4 @@
-package form;
+package legacyform;
 
 import java.awt.EventQueue;
 

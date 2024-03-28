@@ -1,4 +1,4 @@
-package form;
+package legacyform;
 
 import java.util.List;
 import java.awt.Graphics;
@@ -25,8 +25,9 @@ public class Group extends Shape{
 		this.Gcontent = Lshape;
 	}
 	
-	
 	public void add(Shape subgroup) {
+		
+		Gcontent.add(subgroup);
 				
 		if(this.x == -1) {
 			this.x = subgroup.getX();
@@ -35,10 +36,7 @@ public class Group extends Shape{
 			this.dy = subgroup.getDY();
 		} else {
 			updateCoord();
-		}
-		
-		Gcontent.add(subgroup);
-		
+		}		
 	}
 
  @Override
@@ -100,8 +98,6 @@ public class Group extends Shape{
 			if(c.getY()>maxy) {
 				maxy = c.getY();
 			}
-			
-			
 		}
 		
 		if (minx!=this.x) {
@@ -157,8 +153,7 @@ public class Group extends Shape{
 		} 
 		else if (mindy!=this.dy) {
 			this.dy = mindy;
-		}
-		
+		}	
 	}
 
 	@Override
