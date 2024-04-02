@@ -51,7 +51,7 @@ public class TerminalDemo {
 		System.out.println(result);
 	}
 	
-	public static void save(Scene sc) {
+	public static void saveXML(Scene sc) {
 		try {
 			XMLEncoder e = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
 			e.writeObject(sc);
@@ -61,7 +61,7 @@ public class TerminalDemo {
 		}
 	}
 	
-	public static Scene load() {
+	public static Scene loadXML() {
 		Scene result = new Scene();
 		try {
 			XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
@@ -95,7 +95,7 @@ public class TerminalDemo {
 		
 		save(scene1);*/
 		
-		Scene scene1 = load();
+		Scene scene1 = loadXML();
 		
 		paint(scene1);
 		
