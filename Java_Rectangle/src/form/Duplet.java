@@ -23,6 +23,13 @@ public abstract class Duplet extends Shape {
 	public Shape getRleaf() {
 		return this.Rleaf;
 	}
+	
+	@Override
+	public void setVisibility(int vis) {
+		this.visibility = vis;
+		Rleaf.visibility = vis;
+		Lleaf.visibility = vis;
+	}
 
 	@Override
 	public int belong(int x, int y) {

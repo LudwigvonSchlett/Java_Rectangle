@@ -13,6 +13,18 @@ public abstract class Triplet extends Duplet {
 	}
 	
 	@Override
+	public void setVisibility(int vis) {
+		/*
+		TODO
+		
+		this.visibility = vis;
+		Rleaf.visibility = vis;
+		Lleaf.visibility = vis;
+		
+		*/
+	}
+	
+	@Override
 	public String toString() {
 		String result = "Triplet : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
