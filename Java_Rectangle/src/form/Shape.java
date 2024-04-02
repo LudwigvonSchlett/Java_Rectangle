@@ -57,12 +57,18 @@ public abstract class Shape implements Serializable{
 		this.visibility = vis;
 	}
 	
-	public abstract int Isin(int x, int y);
+	public abstract int belong(int x, int y);
 	
 	public abstract void move(int dx, int dy);
 		
 	public abstract String toString();
 	
 	public abstract void draw(Graphics g);
+	
+	public abstract Shape intersect(Shape s1);
+	
+	public Shape union(Shape s1) {
+		return new Union(this,s1);
+	}
 	
 }

@@ -60,10 +60,10 @@ public class Scene{
 			c.draw(g);	
 	}
 
-	public int Isin(int x, int y) {
+	public int belong(int x, int y) {
 		int result = 1; 
 		for(Shape c:Gcontent) {
-			if (c.Isin(x, y)==0) {
+			if (c.belong(x, y)==0) {
 				result = 0;
 			}	
 		}

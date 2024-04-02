@@ -73,4 +73,19 @@ public class Union extends Duplet {
 	    return result;
 	}
 
+	@Override
+	public Shape intersect(Shape s1) {
+		if (s1 instanceof Union) {
+			Union s1casted = (Union) s1;
+			Union resultRleaf = new Union(this.Rleaf.intersect(s1casted.getLleaf()),(this.Rleaf.intersect(s1casted.getRleaf())));
+			Union resultLleaf = new Union(this.Lleaf.intersect(s1casted.getLleaf()),(this.Lleaf.intersect(s1casted.getRleaf())));
+			return new Union(resultLleaf,resultRleaf);
+		}
+		if (s1 instanceof Rectangle) {
+			return new Union(this.Rleaf.intersect(s1),this.Lleaf.intersect(s1));
+		}
+		
+		return(new Rectangle(0,0,0,0));
+	}
+
 }

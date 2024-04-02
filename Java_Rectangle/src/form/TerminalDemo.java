@@ -23,11 +23,11 @@ public class TerminalDemo {
 		for(int y = 0; y<maxheight; y++) {
 			
 			for(int x = 0; x<maxwidth; x++) {
-				if (sc.Isin(x, y) == 1) {
+				if (sc.belong(x, y) == 1) {
 					result+="*";
 				}
 					
-				else if (sc.Isin(x, y)==0){
+				else if (sc.belong(x, y)==0){
 					result+="#";
 				}
 				else {
