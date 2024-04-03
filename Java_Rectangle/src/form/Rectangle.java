@@ -46,6 +46,12 @@ public class Rectangle extends Shape {
 			Union s1casted = (Union) s1;
 			return new Union(this.intersect(s1casted.getLleaf()),(this.intersect(s1casted.getRleaf())));
 		}
+
+		if (s1 instanceof Intersection){
+			Intersection s1casted = (Intersection) s1;
+			return this.intersect(s1casted.getIleaf());
+		}
+		
 		
 		if (s1 instanceof Rectangle) {
 			int resultx = -1;
@@ -60,7 +66,7 @@ public class Rectangle extends Shape {
 				}
 				else {
 					resultdx = s1.getDX();
-				}
+				}			
 			} else if (((s1.getX()+s1.getDX())>this.x)&&(s1.getX()<=this.x)) {
 				resultx = this.x;
 				if((s1.getDX()-(this.x-s1.getX()))<=this.x) {
@@ -92,11 +98,7 @@ public class Rectangle extends Shape {
 	
 			return(new Rectangle(resultx,resulty,resultdx,resultdy));
 		}
-		/*
-		 * if (s1 instanceof Intersection){
-		 * 
-		 * }
-		 */
+		
 		return(new Rectangle(0,0,0,0));
 	}
 

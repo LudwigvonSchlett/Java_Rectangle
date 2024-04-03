@@ -95,7 +95,19 @@ public class TerminalDemo {
 		
 		save(scene1);*/
 		
+		/*
 		Scene scene1 = loadXML();
+		*/
+		
+		Scene scene1 = new Scene();
+		
+		Rectangle r1 = new Rectangle(5,5,10,10);
+		
+		Rectangle r2 = new Rectangle(5,5,4,4);
+		
+		Intersection i1 = new Intersection(r1,r2);
+		
+		scene1.add(i1);
 		
 		paint(scene1);
 		

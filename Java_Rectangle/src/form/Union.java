@@ -81,6 +81,10 @@ public class Union extends Duplet {
 			Union resultLleaf = new Union(this.Lleaf.intersect(s1casted.getLleaf()),(this.Lleaf.intersect(s1casted.getRleaf())));
 			return new Union(resultLleaf,resultRleaf);
 		}
+		if (s1 instanceof Intersection) {
+			Intersection s1casted = (Intersection) s1;
+			return new Union(this.Lleaf.intersect(s1casted.getIleaf()),(this.Rleaf.intersect(s1casted.getIleaf())));
+		}
 		if (s1 instanceof Rectangle) {
 			return new Union(this.Rleaf.intersect(s1),this.Lleaf.intersect(s1));
 		}

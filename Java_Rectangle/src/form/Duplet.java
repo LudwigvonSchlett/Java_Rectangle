@@ -35,10 +35,10 @@ public abstract class Duplet extends Shape {
 	public int belong(int x, int y) {
 		int result = 1; 
 		if (this.visibility!=0) {
-			if (Lleaf.belong(x, y)==0) {
+			if ((Lleaf.belong(x, y)==0)&&(Lleaf.getVisibility()!=0)) {
 				result = 0;
 			}	
-			if (Rleaf.belong(x, y)==0) {
+			if ((Rleaf.belong(x, y)==0)&&(Rleaf.getVisibility()!=0)) {
 				result = 0;
 			}
 		}

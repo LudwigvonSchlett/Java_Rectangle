@@ -1,5 +1,7 @@
 package form;
 
+import java.awt.Graphics;
+
 public abstract class Triplet extends Duplet {
 	
 	protected Shape Ileaf = null;
@@ -13,15 +15,11 @@ public abstract class Triplet extends Duplet {
 	}
 	
 	@Override
-	public void setVisibility(int vis) {
-		/*
-		TODO
-		
+	public void setVisibility(int vis) {		
 		this.visibility = vis;
 		Rleaf.visibility = vis;
 		Lleaf.visibility = vis;
-		
-		*/
+		Ileaf.visibility = vis;
 	}
 	
 	@Override
@@ -69,5 +67,11 @@ public abstract class Triplet extends Duplet {
 
 	@Override
 	public abstract Shape intersect(Shape s1);
-
+	
+	@Override
+	public abstract int belong(int x, int y);
+	
+	@Override
+	public abstract void draw(Graphics g);
+	
 }
