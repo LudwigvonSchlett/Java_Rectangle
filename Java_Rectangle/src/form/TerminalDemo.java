@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Termscreen {
+public class TerminalDemo {
 	
 	protected static int maxheight = 20;
 	
@@ -16,16 +16,18 @@ public class Termscreen {
 	
 	private static String file  = "Shape.xml";
 	
-	public static void paint(Group g) {
+	public TerminalDemo() {}
+	
+	public static void paint(Scene sc) {
 		String result="";
 		for(int y = 0; y<maxheight; y++) {
 			
 			for(int x = 0; x<maxwidth; x++) {
-				if (g.Isin(x, y) == 1) {
+				if (sc.belong(x, y) == 1) {
 					result+="*";
 				}
 					
-				else if (g.Isin(x, y)==0){
+				else if (sc.belong(x, y)==0){
 					result+="#";
 				}
 				else {
@@ -49,21 +51,21 @@ public class Termscreen {
 		System.out.println(result);
 	}
 	
-	public static void save(Group g1) {
+	public static void saveXML(Scene sc) {
 		try {
 			XMLEncoder e = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
-			e.writeObject(g1);
+			e.writeObject(sc);
 			e.close();
 		} catch (IOException error) {
 			error.printStackTrace();
 		}
 	}
 	
-	public static Group load() {
-		Group result = new Group();
+	public static Scene loadXML() {
+		Scene result = new Scene();
 		try {
 			XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
-			result = (Group) d.readObject();
+			result = (Scene) d.readObject();
 			d.close();		 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -71,60 +73,53 @@ public class Termscreen {
 		return result;
 	}
 	
-	
-	public Termscreen() {}
-	
 	public static void main(String[] args) {
-				
-		Group maingroup = new Group();
 		
-		Group group1 = new Group();
+		/*Scene scene1 = new Scene();
 		
-		Group group2 = new Group();
+		Rectangle r1 = new Rectangle(5,5,10,10);
 		
-		Rectangle rectangle1 = Rectangle.createRectangle(4,4,6,6);
+		Rectangle r2 = new Rectangle(2,2,2,2);
 		
-		Rectangle rectangle2 = Rectangle.createRectangle(2,2,12,12);
-				
-		group1.add(rectangle1);
+		Rectangle r3 = new Rectangle(15,3,4,4);
 		
-		group2.add(rectangle2);
+		Union u1 = new Union(r1,r2);
 		
-		//Group group3 = group1.Union(group2);
+		Union u2 = new Union(u1,r3);
 		
-		maingroup.add(group1);
+		scene1.add(u2);
 		
-		maingroup.add(group2);
+		paint(scene1);
 		
-		//maingroup.add(group3);
+		System.out.println(scene1);
 		
-		paint(maingroup);
-		
-		System.out.println(maingroup);
-		
-		jump();
-		
-		maingroup = Group.createGroup(group2.Intersect(group1));
-		
-		paint(maingroup);
-		
-		System.out.println(maingroup);
-		
-		jump();
-		
-		save(maingroup);
+		save(scene1);*/
 		
 		/*
-		
-		maingroup = load();
-		
-		jump();
-		
-		paint(maingroup);
-		
-		System.out.println(maingroup);
-		
+		Scene scene1 = loadXML();
 		*/
+		
+		Scene scene1 = new Scene();
+		
+		Rectangle r1 = new Rectangle(5,5,10,10);
+		
+		Rectangle r2 = new Rectangle(5,5,4,4);
+		
+		Rectangle r3 = new Rectangle(5,5,2,2);
+		
+		Rectangle r4 = new Rectangle(5,5,8,8);
+		
+		Difference d1 = new Difference(r1,r2);
+		
+		Union u1 = new Union(d1,r3);
+		
+		Intersection i1 = new Intersection(u1,r4);
+		
+		scene1.add(i1);
+		
+		paint(scene1);
+		
+		System.out.println(scene1);
 		
 	}
 		

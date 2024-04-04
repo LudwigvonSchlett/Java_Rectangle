@@ -1,11 +1,11 @@
-package form;
+package legacyform;
 
 import java.awt.Graphics;
 import java.io.Serializable;
 
 public abstract class Shape implements Serializable{
 	
-	
+	private static final long serialVersionUID = 1L;
 	
 	protected int x=-1;
 	
@@ -47,17 +47,7 @@ public abstract class Shape implements Serializable{
 		this.dy = dy;
 	}
 	
-	protected int visibility = 1;
-	
-	public int getVisibility() {
-		return visibility;
-	}
-	
-	public void setVisibility(int vis) {
-		this.visibility = vis;
-	}
-	
-	public abstract int belong(int x, int y);
+	public abstract int Isin(int x, int y);
 	
 	public abstract void move(int dx, int dy);
 		
@@ -65,10 +55,14 @@ public abstract class Shape implements Serializable{
 	
 	public abstract void draw(Graphics g);
 	
-	public abstract Shape intersect(Shape s1);
-	
-	public Shape union(Shape s1) {
-		return new Union(this,s1);
+	public Group Union(Shape s1) {
+		Group g2 = new Group();
+		g2.add(this);
+		g2.add(s1);
+		g2.updateCoord();
+		return g2;
 	}
 	
+	public abstract Group Intersect(Shape s1);
+
 }
