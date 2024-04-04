@@ -42,6 +42,31 @@ public class Union extends Duplet {
 	}
 	
 	@Override
+	public int belong(int x, int y) {
+		int result = 1; 
+		if (this.visibility!=0) {
+			if ((Lleaf.belong(x, y)==0)&&(Lleaf.getVisibility()!=0)) {
+				result = 0;
+			}	
+			if ((Rleaf.belong(x, y)==0)&&(Rleaf.getVisibility()!=0)) {
+				result = 0;
+			}
+		}
+			
+		return result;
+	}
+
+	@Override
+	public void move(int dx, int dy) {
+		if ((this.x+dx>=0) && (this.y+dy>=0)) {
+			this.x=this.x+dx;
+			this.y=this.y+dy;
+			Lleaf.move(dx, dy);
+			Rleaf.move(dx, dy);
+		}
+	}
+	
+	@Override
 	public String toString() {
 		String result = "Union : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
 	    if (!(this.Lleaf instanceof Duplet)) {

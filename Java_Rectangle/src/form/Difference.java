@@ -1,70 +1,25 @@
 package form;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
-public abstract class Duplet extends Shape {
+public class Difference extends Triplet {
 	
-	protected Shape Lleaf = null;
+	public Difference() {}
 	
-	public void setLleaf(Shape s1) {
-		this.Lleaf=s1;
+	public Difference(Shape Lleaf,Shape Rleaf) {
+		this.Lleaf = Lleaf;
+		this.Rleaf = Rleaf;
+		this.Ileaf = Lleaf.intersect(Rleaf);
+		this.x=Lleaf.getX();
+		this.y=Lleaf.getY();
+		this.dx=Lleaf.getDX();
+		this.dy=Lleaf.getDY();
 	}
 	
-	public Shape getLleaf() {
-		return this.Lleaf;
-	}
-	
-	protected Shape Rleaf = null;
-	
-	public void setRleaf(Shape s1) {
-		this.Rleaf=s1;
-	}
-	
-	public Shape getRleaf() {
-		return this.Rleaf;
-	}
-	
-	@Override
-	public void setVisibility(int vis) {
-		this.visibility = vis;
-		Rleaf.visibility = vis;
-		Lleaf.visibility = vis;
-	}
-	
-	/*
-	@Override
-	public int belong(int x, int y) {
-		int result = 1; 
-		if (this.visibility!=0) {
-			if ((Lleaf.belong(x, y)==0)&&(Lleaf.getVisibility()!=0)) {
-				result = 0;
-			}	
-			if ((Rleaf.belong(x, y)==0)&&(Rleaf.getVisibility()!=0)) {
-				result = 0;
-			}
-		}
-			
-		return result;
-	}
-
-	@Override
-	public void move(int dx, int dy) {
-		if ((this.x+dx>=0) && (this.y+dy>=0)) {
-			this.x=this.x+dx;
-			this.y=this.y+dy;
-			Lleaf.move(dx, dy);
-			Rleaf.move(dx, dy);
-		}
-	}
-	*/
-	
-	public abstract int belong(int x, int y);
-	
-	public abstract void move(int dx, int dy);
-
 	@Override
 	public String toString() {
-		String result = "Duplet : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
+		String result = "Difference : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
 	            result += "|-----";
 	            result += " " + this.Lleaf.toString() + "\n";
@@ -95,9 +50,29 @@ public abstract class Duplet extends Shape {
 	}
 
 	@Override
+	public Shape intersect(Shape s1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int belong(int x, int y) {
+		int result = 1; 
+
+		if ((this.visibility!=0)&&(Ileaf.getVisibility()!=0)&&(Lleaf.getVisibility()!=0)&&(Rleaf.belong(x, y)==1)) {
+				return Lleaf.belong(x, y);
+		}
+		
+		return result;
+	}
+
+	@Override
 	public void draw(Graphics g) {
 		Lleaf.draw(g);
-		Rleaf.draw(g);
+		g.setColor(Color.WHITE);
+		Ileaf.draw(g);
+		g.setColor(Color.BLACK);
+
 	}
-	
+
 }
