@@ -105,7 +105,15 @@ public class TerminalDemo {
 		
 		Rectangle r2 = new Rectangle(5,5,4,4);
 		
-		Intersection i1 = new Intersection(r1,r2);
+		Rectangle r3 = new Rectangle(5,5,2,2);
+		
+		Rectangle r4 = new Rectangle(5,5,8,8);
+		
+		Difference d1 = new Difference(r1,r2);
+		
+		Union u1 = new Union(d1,r3);
+		
+		Intersection i1 = new Intersection(u1,r4);
 		
 		scene1.add(i1);
 		
