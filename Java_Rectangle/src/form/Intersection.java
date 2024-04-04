@@ -58,6 +58,11 @@ public class Intersection extends Triplet {
 			Intersection s1casted = (Intersection) s1;
 			return this.Ileaf.intersect(s1casted.getIleaf());
 		}
+		if (s1 instanceof Difference) {
+			Difference s1casted = (Difference) s1;
+			return new Difference(intersect(s1casted.getLleaf()),s1casted.getRleaf());
+		}
+		
 		if (s1 instanceof Rectangle) {
 			return this.Ileaf.intersect(s1);
 		}

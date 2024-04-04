@@ -46,10 +46,13 @@ public class Rectangle extends Shape {
 			Union s1casted = (Union) s1;
 			return new Union(this.intersect(s1casted.getLleaf()),(this.intersect(s1casted.getRleaf())));
 		}
-
 		if (s1 instanceof Intersection){
 			Intersection s1casted = (Intersection) s1;
 			return this.intersect(s1casted.getIleaf());
+		}
+		if (s1 instanceof Difference) {
+			Difference s1casted = (Difference) s1;
+			return new Difference(intersect(s1casted.getLleaf()),s1casted.getRleaf());
 		}
 		
 		
