@@ -42,9 +42,13 @@ public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected int MAX_WINDOW_WIDTH=700;
+	protected static int MAX_WINDOW_WIDTH=700;
 	
-	protected int MAX_WINDOW_HEIGHT=500;
+	protected static int MAX_WINDOW_HEIGHT=500;
+
+	private Scene scene1 = new Scene();
+
+	private String mode = "rectangle";
 	
 	private List<Rectangle> rectanglelist;
 	
@@ -56,6 +60,7 @@ public class Window extends JFrame {
 				try {
 					Window window = new Window();
 					window.setVisible(true);
+					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -88,38 +93,93 @@ public class Window extends JFrame {
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
+		JButton rectangleButton = new JButton(new ImageIcon("icons/rectangle.png"));
+		toolBar.add(rectangleButton);
+
+		rectangleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mode= "rectangle";
+			}
+		});
+		
 		JButton unionButton = new JButton(new ImageIcon("icons/union.png"));
 		toolBar.add(unionButton);
 		
+		unionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mode= "union";
+			}
+		});
+
 		JButton interButton = new JButton(new ImageIcon("icons/inter.png"));
 		toolBar.add(interButton);
+
+		interButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mode= "inter";
+			}
+		});
 		
 		JButton diffButton = new JButton(new ImageIcon("icons/diff.png"));
 		toolBar.add(diffButton);
+
+		diffButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mode= "diff";
+			}
+		});
 		
 		Canvas canvas = new Canvas() {
 			public void paint(Graphics g) {
 				super.paint(g);
 				g.setColor(Color.BLACK);
-				for (Rectangle rect : rectanglelist) {
+				
+				Rectangle r1 = new Rectangle(100,100,100,100);
+				scene1.add(r1);
+				Rectangle r2 = new Rectangle(10,10,100,100);
+				scene1.add(r2);
+				for (Shape rect : scene1.getGcontent()) {
 					g.fillRect(rect.x, rect.y, rect.dx, rect.dy);
 				}
 			}
 		};
 		
 		canvas.addMouseListener((MouseListener) new MouseAdapter() {
-			private Point topLeft = null;
+			private Point P1 = null;
+			private Point P2 = null;
 
     public void mouseClicked(MouseEvent e) {
-        if (topLeft == null) {
-            topLeft = e.getPoint();
-        } else {
-            int width = Math.abs(e.getX() - topLeft.x);
-            int height = Math.abs(e.getY() - topLeft.y);
-            rectanglelist.add(new Rectangle(topLeft.x, topLeft.y, width, height));
-            canvas.repaint();
-            topLeft = null;
-        }
+
+		if (mode.equals("rectangle")) {
+			if (P1 == null) {
+				P1 = e.getPoint();
+			} else {
+				P2 = e.getPoint();
+				int width = Math.abs(P2.x - P1.x);
+				int height = Math.abs(P2.y - P1.y);
+				
+				if (P1.x > P2.x && P1.y > P2.y) {
+					scene1.add(new Rectangle(P1.x-width, P1.y-height, width, height));
+				}
+				else if (P1.x > P2.x && P1.y < P2.y) {
+					scene1.add(new Rectangle(P1.x-width, P2.y-height, width, height));
+				}
+				else if (P1.x < P2.x && P1.y > P2.y) {
+					scene1.add(new Rectangle(P2.x-width, P1.y-height, width, height));
+				}
+				else if (P1.x < P2.x && P1.y < P2.y) {
+					scene1.add(new Rectangle(P2.x-width, P2.y-height, width, height));
+				}
+				
+				canvas.repaint();
+				P1 = null;
+				P2 = null;
+			}
+		}
+
+		if (mode.equals("union")) {
+			
+		}
     }
 		});
 		
