@@ -12,24 +12,41 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Desktop;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Color;
 
 public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	protected int MAX_WINDOW_WIDTH=700;
+	
+	protected int MAX_WINDOW_HEIGHT=500;
+	
+	private List<Rectangle> rectanglelist;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -39,6 +56,7 @@ public class Window extends JFrame {
 				try {
 					Window window = new Window();
 					window.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,15 +70,18 @@ public class Window extends JFrame {
 	        dispose();
 	    }
 	}
+
 	
 	public Window() { //constructeur
-		super("Paint");	
-		this.setBounds(100, 100, 450, 300);
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setSize(800, 600);
-		this.setLocationRelativeTo(null);
 		
-		JPanel contentPanel = (JPanel) this.getContentPane();
+		super("Paint");
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setSize(714, 611);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+		
+		this.rectanglelist = new ArrayList<Rectangle>();
+		
 		this.setJMenuBar(createJMenuBar());
 		
 		JToolBar toolBar = new JToolBar();
@@ -76,7 +97,32 @@ public class Window extends JFrame {
 		JButton diffButton = new JButton(new ImageIcon("icons/diff.png"));
 		toolBar.add(diffButton);
 		
-		Canvas canvas = new Canvas();
+		Canvas canvas = new Canvas() {
+			public void paint(Graphics g) {
+				super.paint(g);
+				g.setColor(Color.BLACK);
+				for (Rectangle rect : rectanglelist) {
+					g.fillRect(rect.x, rect.y, rect.dx, rect.dy);
+				}
+			}
+		};
+		
+		canvas.addMouseListener((MouseListener) new MouseAdapter() {
+			private Point topLeft = null;
+
+    public void mouseClicked(MouseEvent e) {
+        if (topLeft == null) {
+            topLeft = e.getPoint();
+        } else {
+            int width = Math.abs(e.getX() - topLeft.x);
+            int height = Math.abs(e.getY() - topLeft.y);
+            rectanglelist.add(new Rectangle(topLeft.x, topLeft.y, width, height));
+            canvas.repaint();
+            topLeft = null;
+        }
+    }
+		});
+		
 		getContentPane().add(canvas, BorderLayout.CENTER);
 		
 		
@@ -87,6 +133,7 @@ public class Window extends JFrame {
 				}
 		});
 	}
+		
 
 	private JMenuBar createJMenuBar() { //barre de menu
 		JMenuBar menuBar = new JMenuBar();
@@ -154,6 +201,7 @@ public class Window extends JFrame {
 		menuUndo.setIcon(new ImageIcon("icons/undo.png"));
 		menuBar.add(menuUndo);
 		
+		
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon("icons/redo.png"));
 		menuBar.add(menuRedo);
@@ -177,4 +225,5 @@ public class Window extends JFrame {
 		
 		return menuBar;
 	}
+	
 }
