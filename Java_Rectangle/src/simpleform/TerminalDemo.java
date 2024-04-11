@@ -46,13 +46,31 @@ public class TerminalDemo {
 	
 	public static void main(String[] args) {
 		
-		Scene scene1 = new Scene();
+		Scene scene1 = new Scene(1920,1080);
 		
-		//Scene scene1 = Scene.load(file);
+		//Scene scene1 = Scene.loadXML(file);
+		
+		
+		
+		Rectangle r1 = new Rectangle(5,5,5,5);
+		
+		Rectangle r2 = new Rectangle(7,7,5,5);
+		
+		Rectangle r3 = new Rectangle(2,5,5,10);
+		
+		Union u1 = new Union(r1,r2);
+		
+		Inter i1 = new Inter(u1,r3);
+		
+		scene1.add(i1);
+		
+		
 		
 		paint(scene1);
 		
 		System.out.println(scene1);
+		
+		scene1.saveXML(file);
 		
 	}
 		

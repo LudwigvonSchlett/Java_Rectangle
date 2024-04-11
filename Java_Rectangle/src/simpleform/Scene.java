@@ -2,7 +2,7 @@ package simpleform;
 
 import java.util.List;
 import java.util.ArrayList;
-
+import java.awt.Graphics;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -17,6 +17,34 @@ public class Scene{
 	
 	protected  List<Shape> Gcontent = new ArrayList<Shape>();
 	
+	public List<Shape> getGcontent() {
+		return Gcontent;
+	}
+	
+	public void setGcontent(List<Shape> Lshape) {
+		this.Gcontent = Lshape;
+	}
+	
+	protected int height = 1080;
+	
+	public void setHeight(int h) {
+		this.height=h;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
+	protected int width = 1920;
+	
+	public void setWidth(int w) {
+		this.width=w;
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
 	public Scene() {}
 	
 	public Scene(Shape s1) {
@@ -27,12 +55,21 @@ public class Scene{
 		this.Gcontent = l1;
 	}
 	
-	public List<Shape> getGcontent() {
-		return Gcontent;
+	public Scene(int w, int h) {
+		this.width=w;
+		this.height=h;
 	}
 	
-	public void setGcontent(List<Shape> Lshape) {
-		this.Gcontent = Lshape;
+	public Scene(Shape s1, int w, int h) {
+		Gcontent.add(s1);
+		this.width=w;
+		this.height=h;
+	}
+	
+	public Scene(List<Shape> l1, int w, int h) {
+		this.Gcontent = l1;
+		this.width=w;
+		this.height=h;
 	}
 	
 	public void add(Shape subgroup) {
@@ -69,6 +106,17 @@ public class Scene{
 			}	
 		}
 		return result;
+	}
+	
+	public void paint(Graphics g) {
+		for(int y = 0; y<height; y++) {
+			
+			for(int x = 0; x<width; x++) {
+				if(belong(x,y)==0) {
+					g.fillRect(x, y, 1, 1);
+				}
+			}
+		}
 	}
 	
 	public void saveXML(String file) {
