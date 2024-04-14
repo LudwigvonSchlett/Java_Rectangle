@@ -17,14 +17,14 @@ public class TerminalDemo {
 			
 			for(int x = 0; x<maxwidth; x++) {
 				if (sc.belong(x, y) == 1) {
-					result+="*";
+					result+="-";
 				}
 					
 				else if (sc.belong(x, y)==0){
 					result+="#";
 				}
 				else {
-					result+="-";
+					result+="=";
 				}
 			}
 			
