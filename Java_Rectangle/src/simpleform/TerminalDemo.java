@@ -50,21 +50,21 @@ public class TerminalDemo {
 		
 		//Scene scene1 = Scene.loadXML(file);
 		
-		
-		
 		Rectangle r1 = new Rectangle(5,5,5,5);
 		
 		Rectangle r2 = new Rectangle(7,7,5,5);
 		
 		Rectangle r3 = new Rectangle(2,5,5,10);
 		
+		Rectangle r4 = new Rectangle(5,7,5,1);
+		
 		Union u1 = new Union(r1,r2);
 		
 		Inter i1 = new Inter(u1,r3);
 		
-		scene1.add(i1);
+		Diffe d1 = new Diffe(i1,r4);
 		
-		
+		scene1.add(d1);
 		
 		paint(scene1);
 		
