@@ -3,9 +3,9 @@ package simpleform;
 
 public class TerminalDemo {
 	
-	protected static int maxheight = 20;
+	protected static int maxheight = 50;
 	
-	protected static int maxwidth = 150;
+	protected static int maxwidth = 180;
 	
 	private static String file  = "SimpleShape.xml";
 	
