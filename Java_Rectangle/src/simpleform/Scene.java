@@ -108,7 +108,7 @@ public class Scene{
 		return result;
 	}
 	
-	public void paint(Graphics g) {
+	public void draw(Graphics g) {
 		for(int y = 0; y<height; y++) {
 			
 			for(int x = 0; x<width; x++) {
@@ -135,8 +135,8 @@ public class Scene{
 			XMLDecoder d = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)));
 			result = (Scene) d.readObject();
 			d.close();		 
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException error) {
+			error.printStackTrace();
 		}
 		return result;
 	}

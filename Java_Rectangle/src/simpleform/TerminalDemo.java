@@ -70,6 +70,14 @@ public class TerminalDemo {
 		
 		System.out.println(scene1);
 		
+		jump();
+		
+		scene1.Gcontent.get(0).move(10,10);
+		
+		paint(scene1);
+		
+		System.out.println(scene1);
+		
 		scene1.saveXML(file);
 		
 	}
