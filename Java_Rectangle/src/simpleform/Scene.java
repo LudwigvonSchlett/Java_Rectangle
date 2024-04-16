@@ -76,7 +76,7 @@ public class Scene{
 		Gcontent.add(subgroup);			
 	}
 
- @Override
+ 	@Override
 	public String toString() {
 	 	String result = "Scene \n";
 	    for (Shape c : Gcontent) {

@@ -11,6 +11,13 @@ public class Rect extends Shape {
 		this.y2=y2;
 	}
 
+	public static Rect RectVD(int x, int y, int dx, int dy) {
+		if ((dx<=0)||(dy<=0)) {
+			return null;
+		}
+		return new Rect(x, y, x+dx-1, y+dy-1);
+	}
+
 	@Override
 	public int belong(int x, int y) {
 		int result = 1;
