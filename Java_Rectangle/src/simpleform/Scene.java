@@ -89,10 +89,10 @@ public class Scene{
 	            String[] lines = c.toString().split("\\r?\\n");
 	            
 	            for (int i = 1; i < lines.length; i++) {
-	            	lines[i] = "|      " + lines[i];
+	            	lines[i] = "|     " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
-	            result += "\n|\n";	            
+	            result += "\n\n";	            
 	        }
 	    }
 	    return result;

@@ -32,7 +32,7 @@ public Rectangle() {}
 
 	@Override
 	public String toString() {
-		return ("Rectangle : x1 = " + this.x1 +" y1 = " + this.y1 + " x2 = " + this.x1 + " y2 = "+ this.y2);
+		return ("Rectangle : x1 = " + this.x1 +"  y1 = " + this.y1 + "  x2 = " + this.x1 + "  y2 = "+ this.y2);
 	}
 
 }

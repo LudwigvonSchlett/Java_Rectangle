@@ -46,9 +46,11 @@ public class TerminalDemo {
 	
 	public static void main(String[] args) {
 		
-		Scene scene1 = new Scene(1920,1080);
+		//Scene scene1 = new Scene(1920,1080);
 		
-		//Scene scene1 = Scene.loadXML(file);
+		Scene scene1 = Scene.loadXML(file);
+
+		/*
 		
 		Rectangle r1 = new Rectangle(5,5,10,10);
 		
@@ -62,9 +64,11 @@ public class TerminalDemo {
 		
 		Inter i1 = new Inter(u1,r3);
 		
-		Diffe d1 = new Diffe(i1,r4);
+		Diffe d1 = new Diffe(i1,r4)
 		
 		scene1.add(d1);
+
+		*/
 		
 		paint(scene1);
 		
@@ -72,11 +76,11 @@ public class TerminalDemo {
 		
 		jump();
 		
-		//scene1.Gcontent.get(0).move(10,10);
+		scene1.Gcontent.get(0).move(10,10);
 		
-		//paint(scene1);
+		paint(scene1);
 		
-		//System.out.println(scene1);
+		System.out.println(scene1);
 		
 		scene1.saveXML(file);
 		

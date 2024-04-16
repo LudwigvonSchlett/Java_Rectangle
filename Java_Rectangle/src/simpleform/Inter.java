@@ -75,7 +75,8 @@ public class Inter extends Duplet {
 	            	lines[i] = "|      " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
-	            result += "\n|\n";	            
+	            //result += "\n|\n";
+				result += "\n";			             
 	    }
 	    if (!(this.Rleaf instanceof Duplet)) {
             	result += "|-----";
@@ -88,7 +89,8 @@ public class Inter extends Duplet {
         			lines[i] = "|      " + lines[i];
         		}
         		result += String.join(System.lineSeparator(), lines);
-        		result += "\n|\n";	            
+        		//result += "\n|\n";
+				result += "\n";		 	            
 	    }
 	    return result;
 	}
