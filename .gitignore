@@ -1,8 +1,11 @@
 Java_Rectangle/bin/
 Java_Rectangle/.classpath
 Java_Rectangle/.project
+Java_Rectangle/.settings/org.eclipse.core.resources.prefs
+
+
 .vscode/settings.json
 .vscode/*
-Java_Rectangle/Shape.xml
-Java_Rectangle/.settings/org.eclipse.core.resources.prefs
-Java_Rectangle/SimpleShape.xml
+Java_Rectangle.code-workspace
+
+*.xml
