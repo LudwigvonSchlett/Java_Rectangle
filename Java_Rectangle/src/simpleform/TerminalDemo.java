@@ -64,7 +64,7 @@ public class TerminalDemo {
 		
 		Inter i1 = new Inter(u1,r3);
 		
-		Diffe d1 = new Diffe(i1,r4)
+		Diffe d1 = new Diffe(i1,r4);
 		
 		scene1.add(d1);
 
