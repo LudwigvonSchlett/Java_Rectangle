@@ -6,11 +6,12 @@ public class Diffe extends Duplet {
 	
 	public Diffe (Shape s1,Shape s2) {
 		this.Lleaf=s1;
-		this.x=s1.getX();
-		this.y=s1.getY();
 		this.Rleaf=s2;
-		this.dx=s2.getX();
-		this.dy=s2.getY();
+
+		this.x1=s1.getX1();
+		this.x2=s1.getX2();
+		this.y1=s1.getY1();
+		this.y2=s1.getY2();
 		
 	}
 
@@ -21,18 +22,6 @@ public class Diffe extends Duplet {
 			result = 0;
 		}	
 		return result;
-	}
-
-	@Override
-	public void move(int dx, int dy) {
-		if((getminX()+dx>=0)&&(getminY()+dy>=0)) {
-			this.x=this.x+dx;
-			this.y=this.y+dy;
-			this.dx=this.dx+dx;
-			this.dy=this.dy+dy;
-			Lleaf.move(dx, dy);
-			Rleaf.move(dx, dy);
-		}
 	}
 
 	@Override

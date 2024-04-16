@@ -4,49 +4,45 @@ import java.io.Serializable;
 
 public abstract class Shape implements Serializable{
 	
-	protected int x=-1;
+	protected int x1=-1;
 	
-	public int getX() {
-		return this.x;
+	public int getX1() {
+		return this.x1;
 	}
 	
-	public void setX(int x) {
-		this.x = x;
+	public void setX1(int x) {
+		this.x1 = x;
 	}
 	
-	protected int y=-1;
+	protected int y1=-1;
 	
-	public int getY() {
-		return this.y;
+	public int getY1() {
+		return this.y1;
 	}
 	
-	public void setY(int y) {
-		this.y = y;
+	public void setY1(int y) {
+		this.y1 = y;
 	}
 	
-	protected int dx=-1;
+	protected int x2=-1;
 	
-	public int getDX() {
-		return this.dx;
+	public int getX2() {
+		return this.x2;
 	}
 	
-	public void setDX(int dx) {
-		this.dx = dx;
+	public void setX2(int x) {
+		this.x2 = x;
 	}
 	
-	protected int dy=-1;
+	protected int y2=-1;
 	
-	public int getDY() {
-		return this.dy;
+	public int getY2() {
+		return this.y2;
 	}
 	
-	public void setDY(int dy) {
-		this.dy = dy;
+	public void setY2(int y) {
+		this.y2 = y;
 	}
-	
-	public abstract int getminX();
-	
-	public abstract int getminY();
 	
 	public abstract int belong(int x, int y);
 	

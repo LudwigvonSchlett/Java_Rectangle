@@ -50,13 +50,13 @@ public class TerminalDemo {
 		
 		//Scene scene1 = Scene.loadXML(file);
 		
-		Rectangle r1 = new Rectangle(5,5,5,5);
+		Rectangle r1 = new Rectangle(5,5,10,10);
 		
-		Rectangle r2 = new Rectangle(7,7,5,5);
+		Rectangle r2 = new Rectangle(7,7,12,12);
 		
-		Rectangle r3 = new Rectangle(2,5,5,10);
+		Rectangle r3 = new Rectangle(2,5,7,15);
 		
-		Rectangle r4 = new Rectangle(5,7,5,1);
+		Rectangle r4 = new Rectangle(5,7,10,9);
 		
 		Union u1 = new Union(r1,r2);
 		
@@ -72,11 +72,11 @@ public class TerminalDemo {
 		
 		jump();
 		
-		scene1.Gcontent.get(0).move(10,10);
+		//scene1.Gcontent.get(0).move(10,10);
 		
-		paint(scene1);
+		//paint(scene1);
 		
-		System.out.println(scene1);
+		//System.out.println(scene1);
 		
 		scene1.saveXML(file);
 		

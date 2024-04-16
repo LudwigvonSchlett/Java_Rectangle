@@ -4,17 +4,17 @@ public class Rectangle extends Shape {
 
 public Rectangle() {}
 	
-	public Rectangle(int x, int y, int dx, int dy) {
-		this.x=x;
-		this.y=y;
-		this.dx=dx;
-		this.dy=dy;
+	public Rectangle(int x1, int y1, int x2, int y2) {
+		this.x1=x1;
+		this.y1=y1;
+		this.x2=x2;
+		this.y2=y2;
 	}
 
 	@Override
 	public int belong(int x, int y) {
 		int result = 1;
-			if ((this.x<=x)&&((this.dx+this.x)>x)&&(this.y<=y)&&((this.dy+this.y)>y)) {
+			if ((this.x1<=x)&&((this.x2)>=x)&&(this.y1<=y)&&((this.y2)>=y)) {
 				result = 0;
 			}
 		return result;
@@ -22,25 +22,17 @@ public Rectangle() {}
 
 	@Override
 	public void move(int dx, int dy) {
-		if ((this.x+dx>=0) && (this.y+dy>=0)) {
-			this.x=this.x+dx;
-			this.y=this.y+dy;
+		if ((this.x1+dx>=0) && (this.y1+dy>=0)) {
+			this.x1=this.x1+dx;
+			this.y1=this.y1+dy;
+			this.x2=this.x2+dx;
+			this.y2=this.y2+dy;
 		}			
 	}
 
 	@Override
 	public String toString() {
-		return ("Rectangle : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy);
-	}
-
-	@Override
-	public int getminX() {
-		return this.x;
-	}
-
-	@Override
-	public int getminY() {
-		return this.y;
+		return ("Rectangle : x1 = " + this.x1 +" y1 = " + this.y1 + " x2 = " + this.x1 + " y2 = "+ this.y2);
 	}
 
 }
