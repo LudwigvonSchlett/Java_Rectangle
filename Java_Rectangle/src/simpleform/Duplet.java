@@ -37,6 +37,9 @@ public abstract class Duplet extends Shape {
 	}
 
 	@Override
+	public abstract Shape copy();
+
+	@Override
 	public abstract int belong(int x, int y);
 
 	@Override

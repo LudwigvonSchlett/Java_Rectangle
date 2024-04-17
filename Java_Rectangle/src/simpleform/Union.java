@@ -99,4 +99,9 @@ public class Union extends Duplet {
 	    return result;
 	}
 
+	public Shape copy(){
+		Union result = new Union(Lleaf.copy(),Rleaf.copy());
+		return result;
+	}
+
 }

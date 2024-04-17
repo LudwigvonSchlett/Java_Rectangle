@@ -57,6 +57,8 @@ public abstract class Shape implements Serializable{
 	public abstract void select();
 
 	public abstract void unselect();
+
+	public abstract Shape copy();
 	
 	public abstract int belong(int x, int y);
 	

@@ -113,12 +113,29 @@ public class Scene{
 		return result;
 	}
 
+	/**
+	 * @return Une copie de la scene
+	 */
+	public Scene copy(){
+		Scene result = new Scene(this.width, this.height);
+		for(Shape c:Gcontent) {
+			result.add(c.copy());
+		}
+		return result;
+	}
+
+	/**
+	 * Désecltionne tous les éléments de la scène
+	 */
 	public void unselectall() {
 		for(Shape c:Gcontent) {
 			c.unselect();
 		}
 	}
 
+	/**
+	 * @return le premier élément correspondant au critère de sélection et le sélectionne
+	 */
 	public Shape select(int x, int y){
 		for(Shape c:Gcontent) {
 			if(c.belong(x, y)==0){

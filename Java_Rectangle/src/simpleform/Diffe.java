@@ -57,4 +57,10 @@ public class Diffe extends Duplet {
 	    }
 	    return result;
 	}
+
+	public Shape copy(){
+		Diffe result = new Diffe(Lleaf.copy(),Rleaf.copy());
+		return result;
+	}
+
 }

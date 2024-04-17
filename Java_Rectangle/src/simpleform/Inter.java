@@ -94,4 +94,10 @@ public class Inter extends Duplet {
 	    }
 	    return result;
 	}
+
+	public Shape copy(){
+		Inter result = new Inter(Lleaf.copy(),Rleaf.copy());
+		return result;
+	}
+
 }
