@@ -57,14 +57,9 @@ public class Union extends Duplet {
 	@Override
 	public int belong(int x, int y) {
 		int result = 1; 
-		if ((Lleaf.belong(x, y)==0)) {
+		if ((Lleaf.belong(x, y)==0)||(Rleaf.belong(x, y)==0)) {
 			result = 0;
-			return result;
 		}	
-		if ((Rleaf.belong(x, y)==0)) {
-			result = 0;
-			return result;
-		}
 		return result;
 	}
 
