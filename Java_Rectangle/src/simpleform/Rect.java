@@ -19,6 +19,16 @@ public class Rect extends Shape {
 	}
 
 	@Override
+	public void select() {
+		this.selected = 1;
+	}
+
+	@Override
+	public void unselect() {
+		this.selected = 0;
+	}
+
+	@Override
 	public int belong(int x, int y) {
 		int result = 1;
 			if ((this.x1<=x)&&((this.x2)>=x)&&(this.y1<=y)&&((this.y2)>=y)) {
@@ -41,5 +51,7 @@ public class Rect extends Shape {
 	public String toString() {
 		return ("Rectangle : x1 = " + this.x1 +"  y1 = " + this.y1 + "  x2 = " + this.x1 + "  y2 = "+ this.y2);
 	}
+
+	
 
 }

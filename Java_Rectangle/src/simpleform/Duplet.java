@@ -23,6 +23,20 @@ public abstract class Duplet extends Shape {
 	}
 	
 	@Override
+	public void select() {
+		this.selected = 1;
+		Lleaf.select();
+		Rleaf.select();
+	}
+
+	@Override
+	public void unselect() {
+		this.selected = 0;
+		Lleaf.unselect();
+		Rleaf.unselect();
+	}
+
+	@Override
 	public abstract int belong(int x, int y);
 
 	@Override

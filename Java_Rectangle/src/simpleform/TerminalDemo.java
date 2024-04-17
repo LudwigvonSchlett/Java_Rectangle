@@ -46,11 +46,11 @@ public class TerminalDemo {
 	
 	public static void main(String[] args) {
 		
-		//Scene scene1 = new Scene(1920,1080);
+		Scene scene1 = new Scene(1920,1080);
 		
-		Scene scene1 = Scene.loadXML(file);
+		//Scene scene1 = Scene.loadXML(file);
 
-		/*
+		
 		
 		Rect r1 = new Rect(5,5,10,10);
 		
@@ -67,8 +67,6 @@ public class TerminalDemo {
 		Diffe d1 = new Diffe(i1,r4);
 		
 		scene1.add(d1);
-
-		*/		
 		
 		paint(scene1);
 		

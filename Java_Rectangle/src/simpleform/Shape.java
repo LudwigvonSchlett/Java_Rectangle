@@ -43,6 +43,20 @@ public abstract class Shape implements Serializable{
 	public void setY2(int y) {
 		this.y2 = y;
 	}
+
+	protected int selected = 0;
+
+	public int getSelected(){
+		return this.selected;
+	}
+
+	public void setSelected(int state){
+		this.selected = state;
+	}
+
+	public abstract void select();
+
+	public abstract void unselect();
 	
 	public abstract int belong(int x, int y);
 	

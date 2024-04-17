@@ -3,6 +3,7 @@ package simpleform;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.Graphics;
+import java.awt.Color;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -101,20 +102,56 @@ public class Scene{
 	public int belong(int x, int y) {
 		int result = 1; 
 		for(Shape c:Gcontent) {
-			if (c.belong(x, y)==0) {
+			if ((c.getSelected()==1)&&(c.belong(x, y)==0)) {
+				result = -1;
+				return result;
+			} else if(c.belong(x, y)==0){
 				result = 0;
-			}	
+				return result;
+			}
 		}
 		return result;
 	}
+
+	public void unselectall() {
+		for(Shape c:Gcontent) {
+			c.unselect();
+		}
+	}
+
+	public Shape select(int x, int y){
+		for(Shape c:Gcontent) {
+			if(c.belong(x, y)==0){
+				c.select();
+				return c;
+			}
+		}
+		return null;
+	}
 	
 	public void draw(Graphics g) {
+
+		int pixel = 0;
+
 		for(int y = 0; y<height; y++) {
 			
 			for(int x = 0; x<width; x++) {
-				if(belong(x,y)==0) {
+
+				g.setColor(Color.BLACK);
+				pixel = 0;
+
+				if((pixel==0)&&(belong(x,y)==0)) {
+					pixel = 1;
+				}
+				if(belong(x, y)==-1) {
+					g.setColor(Color.RED);
+					pixel = 1;
+				}
+
+				if (pixel!=0){
 					g.fillRect(x, y, 1, 1);
 				}
+				
 			}
 		}
 	}

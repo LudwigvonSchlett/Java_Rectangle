@@ -59,9 +59,11 @@ public class Union extends Duplet {
 		int result = 1; 
 		if ((Lleaf.belong(x, y)==0)) {
 			result = 0;
+			return result;
 		}	
 		if ((Rleaf.belong(x, y)==0)) {
 			result = 0;
+			return result;
 		}
 		return result;
 	}
