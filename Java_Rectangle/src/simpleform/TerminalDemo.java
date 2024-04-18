@@ -49,8 +49,6 @@ public class TerminalDemo {
 		Scene scene1 = new Scene(1920,1080);
 		
 		//Scene scene1 = Scene.loadXML(file);
-
-		
 		
 		Rect r1 = new Rect(5,5,10,10);
 		
@@ -80,7 +78,7 @@ public class TerminalDemo {
 		
 		//System.out.println(scene1);
 		
-		scene1.saveXML(file);
+		//scene1.saveXML(file);
 		
 	}
 		
