@@ -141,7 +141,6 @@ public class Scene{
 		for(Shape c:Gcontent) {
 			if(c.belong(x, y)==0){
 				c.select();
-				System.out.println(c);
 				result = c;
 			} else {
 				c.unselect();
