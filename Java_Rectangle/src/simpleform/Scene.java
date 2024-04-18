@@ -137,13 +137,17 @@ public class Scene{
 	 * @return le premier élément correspondant au critère de sélection et le sélectionne
 	 */
 	public Shape select(int x, int y){
+		Shape result = null;
 		for(Shape c:Gcontent) {
 			if(c.belong(x, y)==0){
 				c.select();
-				return c;
+				System.out.println(c);
+				result = c;
+			} else {
+				c.unselect();
 			}
 		}
-		return null;
+		return result;
 	}
 	
 	public void draw(Graphics g) {
