@@ -42,9 +42,9 @@ public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected static int MAX_WINDOW_WIDTH=700;
+	protected static int MAX_WINDOW_WIDTH=1920;
 	
-	protected static int MAX_WINDOW_HEIGHT=500;
+	protected static int MAX_WINDOW_HEIGHT=1080;
 
 	private Scene scene1 = new Scene(new Rect(10,10,100,100));
 	
@@ -93,7 +93,7 @@ public class Window extends JFrame {
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
-		JButton RectButton = new JButton(new ImageIcon("icons/Rectangle.png"));
+		JButton RectButton = new JButton(new ImageIcon("icons/rectangle.png"));
 		toolBar.add(RectButton);
 
 		RectButton.addActionListener(new ActionListener() {
@@ -147,54 +147,51 @@ public class Window extends JFrame {
 			private Point P2 = null;
 			private Point P3 = null;
 
-    public void mouseClicked(MouseEvent e) {
+		    public void mouseClicked(MouseEvent e) {
 
-		if (mode.equals("Rectangle")) {
-			scene1.unselectall();
-			canvas.repaint();
-			if (P1 == null) {
-				P1 = e.getPoint();
-			} else {
-				P2 = e.getPoint();
-				
-				if (P1.x >= P2.x && P1.y >= P2.y) {
-					scene1.add(new Rect(P2.x, P2.y, P1.x, P1.y));
+				if (mode.equals("Select")) {
+					P3 = e.getPoint();
+					Shape form = scene1.select(P3.x, P3.y);
+					if (form != null) {
+						//System.out.println(form);
+					}
+					canvas.repaint();
+					P3 = null;
 				}
-				else if (P1.x >= P2.x && P1.y <= P2.y) {
-					scene1.add(new Rect(P2.x, P1.y, P1.x, P2.y));
-				}
-				else if (P1.x <= P2.x && P1.y >= P2.y) {
-					scene1.add(new Rect(P1.x, P2.y, P2.x, P1.y));
-				}
-				else if (P1.x <= P2.x && P1.y <= P2.y) {
-					scene1.add(new Rect(P1.x, P1.y, P2.x, P2.y));
-				}
-				
-				canvas.repaint();
-				P1 = null;
-				P2 = null;
-				mode="Select";
-				
-				for(Shape c:scene1.Gcontent) {
-					System.out.println(c.selected);
-				}
-				
-			}
-		}
 		
-		if (mode.equals("Select")) {
-			P3 = e.getPoint();
-			Shape form = scene1.select(P3.x, P3.y);
-			//System.out.println(form);
-			canvas.repaint();
-			P3 = null;
-			
-		}
+				if (mode.equals("Rectangle")) {
+					scene1.unselectall();
+					if (P1 == null) {
+						P1 = e.getPoint();
+						canvas.repaint();
+					} else {
+						P2 = e.getPoint();
+						
+						if (P1.x >= P2.x && P1.y >= P2.y) {
+							scene1.add(new Rect(P2.x, P2.y, P1.x, P1.y));
+						}
+						else if (P1.x >= P2.x && P1.y <= P2.y) {
+							scene1.add(new Rect(P2.x, P1.y, P1.x, P2.y));
+						}
+						else if (P1.x <= P2.x && P1.y >= P2.y) {
+							scene1.add(new Rect(P1.x, P2.y, P2.x, P1.y));
+						}
+						else if (P1.x <= P2.x && P1.y <= P2.y) {
+							scene1.add(new Rect(P1.x, P1.y, P2.x, P2.y));
+						}
 
-		if (mode.equals("union")) {
-			
-		}
-    }
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+
+						mode = "Select";
+					}
+				}
+		
+				if (mode.equals("union")) {
+					
+				}
+		    }
 		});
 		
 		getContentPane().add(canvas, BorderLayout.CENTER);
