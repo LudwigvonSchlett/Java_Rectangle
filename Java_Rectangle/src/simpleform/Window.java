@@ -93,7 +93,7 @@ public class Window extends JFrame {
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
-		JButton RectButton = new JButton(new ImageIcon("icons/rectangle.png"));
+		JButton RectButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
 		toolBar.add(RectButton);
 
 		RectButton.addActionListener(new ActionListener() {
@@ -102,7 +102,7 @@ public class Window extends JFrame {
 			}
 		});
 		
-		JButton unionButton = new JButton(new ImageIcon("icons/union.png"));
+		JButton unionButton = new JButton(new ImageIcon(this.getClass().getResource("icons/union.png")));
 		toolBar.add(unionButton);
 		
 		unionButton.addActionListener(new ActionListener() {
@@ -111,7 +111,7 @@ public class Window extends JFrame {
 			}
 		});
 
-		JButton interButton = new JButton(new ImageIcon("icons/inter.png"));
+		JButton interButton = new JButton(new ImageIcon(this.getClass().getResource("icons/inter.png")));
 		toolBar.add(interButton);
 
 		interButton.addActionListener(new ActionListener() {
@@ -120,7 +120,7 @@ public class Window extends JFrame {
 			}
 		});
 		
-		JButton diffButton = new JButton(new ImageIcon("icons/diff.png"));
+		JButton diffButton = new JButton(new ImageIcon(this.getClass().getResource("icons/diff.png")));
 		toolBar.add(diffButton);
 
 		diffButton.addActionListener(new ActionListener() {
@@ -269,12 +269,12 @@ public class Window extends JFrame {
 		});
 		
 		JButton menuUndo = new JButton();
-		menuUndo.setIcon(new ImageIcon("icons/undo.png"));
+		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
 		
 		
 		JButton menuRedo = new JButton();
-		menuRedo.setIcon(new ImageIcon("icons/redo.png"));
+		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
 		menuBar.add(menuRedo);
 		
 		JMenu menuHelp = new JMenu("Help");
