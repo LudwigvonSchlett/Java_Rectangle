@@ -20,8 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -46,11 +44,9 @@ public class Window extends JFrame {
 	
 	protected static int MAX_WINDOW_HEIGHT=1080;
 
-	private Scene scene1 = new Scene(new Rect(10,10,100,100));
+	private Scene scene1 = new Scene();
 	
 	private String mode = "Select";
-	
-	private List<Rect> Rectlist;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -58,6 +54,7 @@ public class Window extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					Window window = new Window();
 					window.setVisible(true);
 					
@@ -85,9 +82,12 @@ public class Window extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		this.Rectlist = new ArrayList<Rect>();
-		
 		this.setJMenuBar(createJMenuBar());
+
+		// Test de la classe Scene
+		scene1.add(new Rect(10,10,100,100));
+		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
+		System.out.println(scene1);
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -134,9 +134,6 @@ public class Window extends JFrame {
 				super.paint(g);
 				g.setColor(Color.decode("#D6D9DF"));
 				g.fillRect(0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
-				
-				
-				
 				scene1.draw(g);
 				
 			}

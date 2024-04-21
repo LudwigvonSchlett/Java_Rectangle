@@ -1,5 +1,7 @@
 package simpleform;
 
+import java.awt.Graphics;
+
 public abstract class Duplet extends Shape {
 	
 	protected Shape Lleaf = null;
@@ -35,6 +37,9 @@ public abstract class Duplet extends Shape {
 		Lleaf.unselect();
 		Rleaf.unselect();
 	}
+
+	@Override
+	public abstract void draw(Graphics g);
 
 	@Override
 	public abstract Shape copy();
