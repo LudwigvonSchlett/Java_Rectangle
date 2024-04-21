@@ -149,6 +149,7 @@ public class Scene{
 		return result;
 	}
 	
+	/*
 	public void draw(Graphics g) {
 
 		int pixel = 0;
@@ -173,6 +174,13 @@ public class Scene{
 				}
 				
 			}
+		}
+	}
+	*/
+
+	public void draw(Graphics g) {
+		for(Shape c:Gcontent) {
+			c.draw(g);
 		}
 	}
 	

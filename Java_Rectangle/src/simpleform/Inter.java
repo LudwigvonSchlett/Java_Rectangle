@@ -1,5 +1,8 @@
 package simpleform;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Inter extends Duplet {
 
 	public Inter () {}
@@ -26,6 +29,7 @@ public class Inter extends Duplet {
 		}
 		*/
 		
+		/*
 		if(s1.getX1()<=s2.getX1()) {
 			this.x1=s1.getX1();
 		} else {
@@ -49,6 +53,12 @@ public class Inter extends Duplet {
 		} else {
 			this.x1=s2.getY2();
 		}
+		*/
+
+		this.x1 = s1.getX1();
+		this.y1 = s1.getY1();
+		this.x2 = s1.getX2();
+		this.y2 = s1.getY2();
 
 	}
 
@@ -93,6 +103,27 @@ public class Inter extends Duplet {
 				result += "\n";		 	            
 	    }
 	    return result;
+	}
+
+	public void draw(Graphics g) {
+
+		if (this.selected == 1) {
+			g.setColor(Color.RED);
+		}
+		else {
+			g.setColor(Color.BLACK);
+		}
+
+		for(int y = this.y1; y<this.y2+1; y++) {
+			
+			for(int x = this.x1; x<this.x2+1; x++) {
+
+				if (belong(x, y)==0){
+					g.fillRect(x, y, 1, 1);
+				}
+				
+			}
+		}
 	}
 
 	public Shape copy(){

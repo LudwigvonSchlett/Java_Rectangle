@@ -1,5 +1,8 @@
 package simpleform;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Diffe extends Duplet {
 
 	public Diffe () {}
@@ -56,6 +59,27 @@ public class Diffe extends Duplet {
 				result += "\n";	 	            
 	    }
 	    return result;
+	}
+
+	public void draw(Graphics g) {
+
+		if (this.selected == 1) {
+			g.setColor(Color.RED);
+		}
+		else {
+			g.setColor(Color.BLACK);
+		}
+
+		for(int y = this.y1; y<this.y2+1; y++) {
+			
+			for(int x = this.x1; x<this.x2+1; x++) {
+
+				if (belong(x, y)==0){
+					g.fillRect(x, y, 1, 1);
+				}
+				
+			}
+		}
 	}
 
 	public Shape copy(){
