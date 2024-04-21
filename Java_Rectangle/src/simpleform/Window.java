@@ -89,6 +89,7 @@ public class Window extends JFrame {
 		// Test de la classe Scene
 		scene1.add(new Rect(10,10,100,100));
 		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
+		System.out.println(scene1);
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);

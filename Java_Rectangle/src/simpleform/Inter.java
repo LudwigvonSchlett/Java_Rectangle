@@ -10,50 +10,6 @@ public class Inter extends Duplet {
 	public Inter (Shape s1,Shape s2) {
 		this.Lleaf=s1;
 		this.Rleaf=s2;
-		
-		/*
-		if((s1.getX1()>=s2.getX1())&&(s1.getX1()<=s2.getX2())){
-			this.x1=s1.getX1();
-		} else if((s2.getX1()>=s1.getX1())&&(s2.getX1()<=s1.getX2())){
-			this.x1=s2.getX1();
-		} else {
-			this.x1=-1;
-		}
-
-		if((s1.getX2()>=s2.getX1())&&(s1.getX2()<=s2.getX2())){
-			this.x2=s1.getX2();
-		} else if((s2.getX1()>=s1.getX1())&&(s2.getX1()<=s1.getX2())){
-			this.x1=s2.getX1();
-		} else {
-			this.x1=-1;
-		}
-		*/
-		
-		/*
-		if(s1.getX1()<=s2.getX1()) {
-			this.x1=s1.getX1();
-		} else {
-			this.x1=s2.getX1();
-		}
-
-		if(s1.getY1()<=s2.getY1()) {
-			this.x1=s1.getY1();
-		} else {
-			this.x1=s2.getY1();
-		}
-
-		if(s1.getX2()>=s2.getX2()) {
-			this.x1=s1.getX2();
-		} else {
-			this.x1=s2.getX2();
-		}
-
-		if(s1.getY2()>=s2.getY2()) {
-			this.x1=s1.getY2();
-		} else {
-			this.x1=s2.getY2();
-		}
-		*/
 
 		this.x1 = s1.getX1();
 		this.y1 = s1.getY1();
@@ -136,13 +92,6 @@ public class Inter extends Duplet {
 						maxx = x;
 					}
 				}
-								
-				/*
-				if (belong(x, y)==0){
-					//g.fillRect(x, y, 1, 1);
-				}
-				 */
-
 			}
 		}
 	}

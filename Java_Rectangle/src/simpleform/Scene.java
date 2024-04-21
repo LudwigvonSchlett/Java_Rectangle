@@ -3,7 +3,6 @@ package simpleform;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.Graphics;
-import java.awt.Color;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -149,41 +148,18 @@ public class Scene{
 		return result;
 	}
 	
-	/*
-	public void draw(Graphics g) {
-
-		int pixel = 0;
-
-		for(int y = 0; y<height; y++) {
-			
-			for(int x = 0; x<width; x++) {
-
-				g.setColor(Color.BLACK);
-				pixel = 0;
-
-				if((pixel==0)&&(belong(x,y)==0)) {
-					pixel = 1;
-				}
-				if(belong(x, y)==-1) {
-					g.setColor(Color.RED);
-					pixel = 1;
-				}
-
-				if (pixel!=0){
-					g.fillRect(x, y, 1, 1);
-				}
-				
-			}
-		}
-	}
-	*/
-
+	/**
+	 * Dessine la scène
+	 */
 	public void draw(Graphics g) {
 		for(Shape c:Gcontent) {
 			c.draw(g);
 		}
 	}
 	
+	/**
+	 * Exporte sous format XML
+	 */
 	public void saveXML(String file) {
 		try {
 			XMLEncoder e = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)));
@@ -194,6 +170,9 @@ public class Scene{
 		}
 	}
 	
+	/**
+	 * Importe un fichier sous format XML
+	 */
 	public static Scene loadXML(String file) {
 		Scene result = new Scene();
 		try {
@@ -205,5 +184,4 @@ public class Scene{
 		}
 		return result;
 	}
-
 }

@@ -92,13 +92,6 @@ public class Diffe extends Duplet {
 						maxx = x;
 					}
 				}
-								
-				/*
-				if (belong(x, y)==0){
-					//g.fillRect(x, y, 1, 1);
-				}
-				 */
-
 			}
 		}
 	}
