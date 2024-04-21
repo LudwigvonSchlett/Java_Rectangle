@@ -1,4 +1,4 @@
-package simpleform;
+package oldform;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -40,13 +42,15 @@ public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected static int MAX_WINDOW_WIDTH=1920;
+	protected static int MAX_WINDOW_WIDTH=700;
 	
-	protected static int MAX_WINDOW_HEIGHT=1080;
+	protected static int MAX_WINDOW_HEIGHT=500;
 
 	private Scene scene1 = new Scene();
+
+	private String mode = "rectangle";
 	
-	private String mode = "Select";
+	private List<Rectangle> rectanglelist;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -54,7 +58,6 @@ public class Window extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					Window window = new Window();
 					window.setVisible(true);
 					
@@ -82,27 +85,24 @@ public class Window extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
+		this.rectanglelist = new ArrayList<Rectangle>();
+		
 		this.setJMenuBar(createJMenuBar());
-
-		// Test de la classe Scene
-		scene1.add(new Rect(10,10,100,100));
-		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
-		System.out.println(scene1);
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 		
-		JButton RectButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
-		toolBar.add(RectButton);
+		JButton rectangleButton = new JButton(new ImageIcon("icons/rectangle.png"));
+		toolBar.add(rectangleButton);
 
-		RectButton.addActionListener(new ActionListener() {
+		rectangleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mode= "Rectangle";
+				mode= "rectangle";
 			}
 		});
 		
-		JButton unionButton = new JButton(new ImageIcon(this.getClass().getResource("icons/union.png")));
+		JButton unionButton = new JButton(new ImageIcon("icons/union.png"));
 		toolBar.add(unionButton);
 		
 		unionButton.addActionListener(new ActionListener() {
@@ -111,7 +111,7 @@ public class Window extends JFrame {
 			}
 		});
 
-		JButton interButton = new JButton(new ImageIcon(this.getClass().getResource("icons/inter.png")));
+		JButton interButton = new JButton(new ImageIcon("icons/inter.png"));
 		toolBar.add(interButton);
 
 		interButton.addActionListener(new ActionListener() {
@@ -120,7 +120,7 @@ public class Window extends JFrame {
 			}
 		});
 		
-		JButton diffButton = new JButton(new ImageIcon(this.getClass().getResource("icons/diff.png")));
+		JButton diffButton = new JButton(new ImageIcon("icons/diff.png"));
 		toolBar.add(diffButton);
 
 		diffButton.addActionListener(new ActionListener() {
@@ -132,63 +132,55 @@ public class Window extends JFrame {
 		Canvas canvas = new Canvas() {
 			public void paint(Graphics g) {
 				super.paint(g);
-				g.setColor(Color.decode("#D6D9DF"));
-				g.fillRect(0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
-				scene1.draw(g);
+				g.setColor(Color.BLACK);
 				
+				Rectangle r1 = new Rectangle(100,100,100,100);
+				scene1.add(r1);
+				Rectangle r2 = new Rectangle(10,10,100,100);
+				scene1.add(r2);
+				for (Shape rect : scene1.getGcontent()) {
+					g.fillRect(rect.x, rect.y, rect.dx, rect.dy);
+				}
 			}
 		};
 		
 		canvas.addMouseListener((MouseListener) new MouseAdapter() {
 			private Point P1 = null;
 			private Point P2 = null;
-			private Point P3 = null;
 
-		    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
 
-				if (mode.equals("Select")) {
-					P3 = e.getPoint();
-					Shape form = scene1.select(P3.x, P3.y);
-					if (form != null) {
-						//System.out.println(form);
-					}
-					canvas.repaint();
-					P3 = null;
+		if (mode.equals("rectangle")) {
+			if (P1 == null) {
+				P1 = e.getPoint();
+			} else {
+				P2 = e.getPoint();
+				int width = Math.abs(P2.x - P1.x);
+				int height = Math.abs(P2.y - P1.y);
+				
+				if (P1.x > P2.x && P1.y > P2.y) {
+					scene1.add(new Rectangle(P1.x-width, P1.y-height, width, height));
 				}
-		
-				if (mode.equals("Rectangle")) {
-					scene1.unselectall();
-					if (P1 == null) {
-						P1 = e.getPoint();
-						canvas.repaint();
-					} else {
-						P2 = e.getPoint();
-						
-						if (P1.x >= P2.x && P1.y >= P2.y) {
-							scene1.add(new Rect(P2.x, P2.y, P1.x, P1.y));
-						}
-						else if (P1.x >= P2.x && P1.y <= P2.y) {
-							scene1.add(new Rect(P2.x, P1.y, P1.x, P2.y));
-						}
-						else if (P1.x <= P2.x && P1.y >= P2.y) {
-							scene1.add(new Rect(P1.x, P2.y, P2.x, P1.y));
-						}
-						else if (P1.x <= P2.x && P1.y <= P2.y) {
-							scene1.add(new Rect(P1.x, P1.y, P2.x, P2.y));
-						}
-
-						canvas.repaint();
-						P1 = null;
-						P2 = null;
-
-						mode = "Select";
-					}
+				else if (P1.x > P2.x && P1.y < P2.y) {
+					scene1.add(new Rectangle(P1.x-width, P2.y-height, width, height));
 				}
-		
-				if (mode.equals("union")) {
-					
+				else if (P1.x < P2.x && P1.y > P2.y) {
+					scene1.add(new Rectangle(P2.x-width, P1.y-height, width, height));
 				}
-		    }
+				else if (P1.x < P2.x && P1.y < P2.y) {
+					scene1.add(new Rectangle(P2.x-width, P2.y-height, width, height));
+				}
+				
+				canvas.repaint();
+				P1 = null;
+				P2 = null;
+			}
+		}
+
+		if (mode.equals("union")) {
+			
+		}
+    }
 		});
 		
 		getContentPane().add(canvas, BorderLayout.CENTER);
@@ -266,12 +258,12 @@ public class Window extends JFrame {
 		});
 		
 		JButton menuUndo = new JButton();
-		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
+		menuUndo.setIcon(new ImageIcon("icons/undo.png"));
 		menuBar.add(menuUndo);
 		
 		
 		JButton menuRedo = new JButton();
-		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
+		menuRedo.setIcon(new ImageIcon("icons/redo.png"));
 		menuBar.add(menuRedo);
 		
 		JMenu menuHelp = new JMenu("Help");
@@ -284,7 +276,7 @@ public class Window extends JFrame {
 		menuGithub.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        try {
-		            Desktop.getDesktop().browse(new URI("https://github.com/LudwigvonSchlett/Java_Rect"));
+		            Desktop.getDesktop().browse(new URI("https://github.com/LudwigvonSchlett/Java_Rectangle"));
 		        } catch (IOException | URISyntaxException e1) {
 		            e1.printStackTrace();
 		        }

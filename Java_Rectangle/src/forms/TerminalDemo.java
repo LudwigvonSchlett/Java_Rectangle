@@ -1,4 +1,4 @@
-package simpleform;
+package forms;
 
 
 public class TerminalDemo {

@@ -1,4 +1,4 @@
-package simpleform;
+package forms;
 
 import java.awt.Color;
 import java.awt.Graphics;
