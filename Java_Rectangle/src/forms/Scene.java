@@ -1,4 +1,4 @@
-package simpleform;
+package forms;
 
 import java.util.List;
 import java.util.ArrayList;

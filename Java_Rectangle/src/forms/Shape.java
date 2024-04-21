@@ -1,4 +1,4 @@
-package simpleform;
+package forms;
 
 import java.io.Serializable;
 import java.awt.Graphics;

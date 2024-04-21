@@ -1,27 +1,27 @@
-package simpleform;
+package forms;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Inter extends Duplet {
+public class Diffe extends Duplet {
 
-	public Inter () {}
+	public Diffe () {}
 	
-	public Inter (Shape s1,Shape s2) {
+	public Diffe (Shape s1,Shape s2) {
 		this.Lleaf=s1;
 		this.Rleaf=s2;
 
-		this.x1 = s1.getX1();
-		this.y1 = s1.getY1();
-		this.x2 = s1.getX2();
-		this.y2 = s1.getY2();
-
+		this.x1=s1.getX1();
+		this.x2=s1.getX2();
+		this.y1=s1.getY1();
+		this.y2=s1.getY2();
+		
 	}
 
 	@Override
 	public int belong(int x, int y) {
 		int result = 1; 
-		if ((Lleaf.belong(x, y)==0) && (Rleaf.belong(x, y)==0)) {
+		if ((Lleaf.belong(x, y)==0) && (Rleaf.belong(x, y)==1)) {
 			result = 0;
 		}	
 		return result;
@@ -29,7 +29,7 @@ public class Inter extends Duplet {
 
 	@Override
 	public String toString() {
-		String result = "Inter :\n";
+		String result = "Diffe :\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
 	            result += "|-----";
 	            result += " " + this.Lleaf.toString() + "\n";
@@ -42,7 +42,7 @@ public class Inter extends Duplet {
 	            }
 	            result += String.join(System.lineSeparator(), lines);
 	            //result += "\n|\n";
-				result += "\n";			             
+				result += "\n";	 	            
 	    }
 	    if (!(this.Rleaf instanceof Duplet)) {
             	result += "|-----";
@@ -56,7 +56,7 @@ public class Inter extends Duplet {
         		}
         		result += String.join(System.lineSeparator(), lines);
         		//result += "\n|\n";
-				result += "\n";		 	            
+				result += "\n";	 	            
 	    }
 	    return result;
 	}
@@ -97,7 +97,7 @@ public class Inter extends Duplet {
 	}
 
 	public Shape copy(){
-		Inter result = new Inter(Lleaf.copy(),Rleaf.copy());
+		Diffe result = new Diffe(Lleaf.copy(),Rleaf.copy());
 		return result;
 	}
 
