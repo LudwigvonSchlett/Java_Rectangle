@@ -70,14 +70,35 @@ public class Diffe extends Duplet {
 			g.setColor(Color.BLACK);
 		}
 
+		int minx = 0;
+		int maxx = 0;
+		int drawLine = 0;
+
 		for(int y = this.y1; y<this.y2+1; y++) {
 			
 			for(int x = this.x1; x<this.x2+1; x++) {
 
-				if (belong(x, y)==0){
-					g.fillRect(x, y, 1, 1);
+				if (drawLine == 0) {
+					if (belong(x, y)==0){
+						minx = x;
+						maxx = x;
+						drawLine = 1;
+					}
+				} else {
+					if ((belong(x, y)==1)||(x==this.x2)){
+						g.drawLine(minx, y, maxx, y);
+						drawLine = 0;
+					} else {
+						maxx = x;
+					}
 				}
-				
+								
+				/*
+				if (belong(x, y)==0){
+					//g.fillRect(x, y, 1, 1);
+				}
+				 */
+
 			}
 		}
 	}
