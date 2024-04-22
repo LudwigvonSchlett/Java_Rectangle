@@ -1,4 +1,6 @@
-package simpleform;
+package forms;
+
+import java.awt.Graphics;
 
 public class Union extends Duplet {
 	
@@ -97,6 +99,12 @@ public class Union extends Duplet {
 				result += "\n";	            
 	    }
 	    return result;
+	}
+
+	@Override
+	public void draw(Graphics g){
+		Lleaf.draw(g);
+		Rleaf.draw(g);
 	}
 
 	public Shape copy(){

@@ -1,4 +1,4 @@
-package form;
+package oldform;
 
 public class Union extends Duplet {
 	

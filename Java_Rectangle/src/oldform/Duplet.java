@@ -1,30 +1,70 @@
-package form;
+package oldform;
 
 import java.awt.Graphics;
 
-public abstract class Triplet extends Duplet {
+public abstract class Duplet extends Shape {
 	
-	protected Shape Ileaf = null;
+	protected Shape Lleaf = null;
 	
-	public void setIleaf(Shape s1) {
-		this.Ileaf=s1;
+	public void setLleaf(Shape s1) {
+		this.Lleaf=s1;
 	}
 	
-	public Shape getIleaf() {
-		return this.Ileaf;
+	public Shape getLleaf() {
+		return this.Lleaf;
+	}
+	
+	protected Shape Rleaf = null;
+	
+	public void setRleaf(Shape s1) {
+		this.Rleaf=s1;
+	}
+	
+	public Shape getRleaf() {
+		return this.Rleaf;
 	}
 	
 	@Override
-	public void setVisibility(int vis) {		
+	public void setVisibility(int vis) {
 		this.visibility = vis;
 		Rleaf.visibility = vis;
 		Lleaf.visibility = vis;
-		Ileaf.visibility = vis;
 	}
 	
+	/*
+	@Override
+	public int belong(int x, int y) {
+		int result = 1; 
+		if (this.visibility!=0) {
+			if ((Lleaf.belong(x, y)==0)&&(Lleaf.getVisibility()!=0)) {
+				result = 0;
+			}	
+			if ((Rleaf.belong(x, y)==0)&&(Rleaf.getVisibility()!=0)) {
+				result = 0;
+			}
+		}
+			
+		return result;
+	}
+
+	@Override
+	public void move(int dx, int dy) {
+		if ((this.x+dx>=0) && (this.y+dy>=0)) {
+			this.x=this.x+dx;
+			this.y=this.y+dy;
+			Lleaf.move(dx, dy);
+			Rleaf.move(dx, dy);
+		}
+	}
+	*/
+	
+	public abstract int belong(int x, int y);
+	
+	public abstract void move(int dx, int dy);
+
 	@Override
 	public String toString() {
-		String result = "Triplet : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
+		String result = "Duplet : x = " + this.x +" y = " + this.y + " dx = " + this.dx + " dy = "+ this.dy + "\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
 	            result += "|-----";
 	            result += " " + this.Lleaf.toString() + "\n";
@@ -53,25 +93,11 @@ public abstract class Triplet extends Duplet {
 	    }
 	    return result;
 	}
-	
-	@Override
-	public void move(int dx, int dy) {
-		if ((this.x+dx>=0) && (this.y+dy>=0)) {
-			this.x=this.x+dx;
-			this.y=this.y+dy;
-			Lleaf.move(dx, dy);
-			Rleaf.move(dx, dy);
-			Ileaf.move(dx, dy);
-		}
-	}
 
 	@Override
-	public abstract Shape intersect(Shape s1);
-	
-	@Override
-	public abstract int belong(int x, int y);
-	
-	@Override
-	public abstract void draw(Graphics g);
+	public void draw(Graphics g) {
+		Lleaf.draw(g);
+		Rleaf.draw(g);
+	}
 	
 }

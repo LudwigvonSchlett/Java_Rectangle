@@ -1,6 +1,7 @@
-package simpleform;
+package forms;
 
 import java.io.Serializable;
+import java.awt.Graphics;
 
 public abstract class Shape implements Serializable{
 	
@@ -57,6 +58,8 @@ public abstract class Shape implements Serializable{
 	public abstract void select();
 
 	public abstract void unselect();
+
+	public abstract void draw(Graphics g);
 
 	public abstract Shape copy();
 	

@@ -1,4 +1,8 @@
-package simpleform;
+package forms;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
 
 public class Rect extends Shape {
 
@@ -26,6 +30,17 @@ public class Rect extends Shape {
 	@Override
 	public void unselect() {
 		this.selected = 0;
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		if (this.selected == 1) {
+			g.setColor(Color.RED);
+		}
+		else {
+			g.setColor(Color.BLACK);
+		}
+		g.fillRect(this.x1, this.y1, this.x2-this.x1+1, this.y2-this.y1+1);
 	}
 
 	@Override
