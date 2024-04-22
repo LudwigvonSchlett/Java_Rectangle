@@ -85,7 +85,8 @@ public class Window extends JFrame {
 		this.setJMenuBar(createJMenuBar());
 
 		// Test de la classe Scene
-		scene1.add(new Rect(10,10,100,100));
+		
+		scene1.add(new Inter(new Rect(10,10,100,100),new Rect(50,50,150,150)));
 		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
 		System.out.println(scene1);
 		
@@ -107,7 +108,7 @@ public class Window extends JFrame {
 		
 		unionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mode= "union";
+				mode= "Union";
 			}
 		});
 
@@ -116,7 +117,7 @@ public class Window extends JFrame {
 
 		interButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mode= "inter";
+				mode= "Inter";
 			}
 		});
 		
@@ -125,7 +126,7 @@ public class Window extends JFrame {
 
 		diffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mode= "diff";
+				mode= "Diff";
 			}
 		});
 		
@@ -143,10 +144,13 @@ public class Window extends JFrame {
 			private Point P1 = null;
 			private Point P2 = null;
 			private Point P3 = null;
+			Shape form1 = null;
+			Shape form2 = null;
 
 		    public void mouseClicked(MouseEvent e) {
 
 				if (mode.equals("Select")) {
+					System.out.println("mode = Select");
 					P3 = e.getPoint();
 					Shape form = scene1.select(P3.x, P3.y);
 					if (form != null) {
@@ -185,8 +189,71 @@ public class Window extends JFrame {
 					}
 				}
 		
-				if (mode.equals("union")) {
+				if (mode.equals("Union")) {
 					
+				}
+
+				if (mode.equals("Inter")) {
+					scene1.unselectall();
+					if (P1 == null) {
+						P1 = e.getPoint();
+						form1 = scene1.select(P1.x, P1.y);
+						canvas.repaint();
+					}
+					else{
+						P2 = e.getPoint();
+						form2 = scene1.select(P2.x, P2.y);
+						Inter intersection = null;
+						intersection = new Inter(form1, form2);
+						scene1.add(intersection);
+						System.out.println(intersection);
+						if (intersection != null) {
+							scene1.remove(form1);
+							scene1.remove(form2);
+						}
+						else {
+							System.out.println("Intersection impossible");
+						}
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						form1 = null;
+						form2 = null;
+						intersection = null;
+						mode = "Select";
+					}
+				}
+
+				if (mode.equals("Diff")) {
+					scene1.unselectall();
+					if (P1 == null) {
+						P1 = e.getPoint();
+						form1 = scene1.select(P1.x, P1.y);
+						canvas.repaint();
+					}
+					else{
+						P2 = e.getPoint();
+						form2 = scene1.select(P2.x, P2.y);
+						
+						
+						Diffe difference = null;
+						difference = new Diffe(form1, form2);
+						scene1.add(difference);
+						System.out.println(difference);
+						if (difference != null) {
+							scene1.remove(form1);
+							scene1.remove(form2);
+						}
+						else {
+							System.out.println("Intersection impossible");
+						}
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						form1 = null;
+						form2 = null;
+						mode = "Select";
+					}
 				}
 		    }
 		});
