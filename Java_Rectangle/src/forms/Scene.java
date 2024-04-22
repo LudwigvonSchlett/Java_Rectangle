@@ -76,6 +76,10 @@ public class Scene{
 		Gcontent.add(subgroup);			
 	}
 
+	public void remove(Shape subgroup) {
+		Gcontent.remove(subgroup);			
+	}
+
  	@Override
 	public String toString() {
 	 	String result = "Scene \n";
