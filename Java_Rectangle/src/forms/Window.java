@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Stack;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -47,9 +48,14 @@ public class Window extends JFrame {
 	protected static int MAX_WINDOW_HEIGHT=1080;
 
 	private Scene scene1 = new Scene();
-	private Scene scene = new Scene();
+
+	private Stack<Scene> leftStack = new Stack<Scene>();
+
+	private Stack<Scene> rightStack = new Stack<Scene>();
 	
 	private String mode = "Select";
+
+	private String filepath = null;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -76,6 +82,7 @@ public class Window extends JFrame {
 	    }
 	}
 
+
 	public Window() { //constructeur
 		
 		super("Paint");
@@ -84,14 +91,13 @@ public class Window extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
-		this.setJMenuBar(createJMenuBar());
-
 		// Test de la classe Scene
 		
 		//scene1.add(new Inter(new Rect(10,10,100,100),new Rect(50,50,150,150)));
 		//scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
 		System.out.println(scene1);
 		
+		// Barre d'outils
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
@@ -101,6 +107,7 @@ public class Window extends JFrame {
 
 		RectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
 				mode= "Rectangle";
 			}
 		});
@@ -110,6 +117,7 @@ public class Window extends JFrame {
 		
 		unionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
 				mode= "Union";
 			}
 		});
@@ -119,6 +127,7 @@ public class Window extends JFrame {
 
 		interButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
 				mode= "Inter";
 			}
 		});
@@ -128,17 +137,18 @@ public class Window extends JFrame {
 
 		diffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
 				mode= "Diff";
 			}
 		});
 		
+		// Canvas
 		Canvas canvas = new Canvas() {
 			public void paint(Graphics g) {
 				super.paint(g);
 				g.setColor(Color.decode("#D6D9DF"));
 				g.fillRect(0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
 				scene1.draw(g);
-				
 			}
 		};
 		
@@ -294,45 +304,70 @@ public class Window extends JFrame {
 		menuFile.add(menuOpen);
 		menuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		menuOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Specify a file to open");   
-		
-				int userSelection = fileChooser.showOpenDialog(null);
-		
-				if (userSelection == JFileChooser.APPROVE_OPTION) {
-					File fileToOpen = fileChooser.getSelectedFile();
-					// Create a new window
-					Window newWindow = new Window();
-					// Load the XML file in the new window
-					scene.loadXML(fileToOpen.getAbsolutePath());
-					System.out.println(newWindow.scene.toString());
-					newWindow.setVisible(true);
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        JFileChooser fileChooser = new JFileChooser();
+		        int returnValue = fileChooser.showOpenDialog(null);
+		        if (returnValue == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            try {
+						filepath = selectedFile.getPath();
+		                scene1 = Scene.loadXML(filepath);          
+						leftStack.clear();
+						rightStack.clear();
+		                canvas.repaint();
+		            } catch (Exception e1) {
+		                e1.printStackTrace();
+		            }
+					
+		        }
+		    }
 		});
 		
 		menuFile.addSeparator();
 		
-		JMenuItem menuSave = new JMenuItem("Save");
+		JMenuItem menuSave = new JMenuItem("Save XML");
 		menuFile.add(menuSave);
 		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		menuSave.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if(filepath == null) {
+					JFileChooser fileChooser = new JFileChooser();
+					int returnValue = fileChooser.showOpenDialog(null);
+					if (returnValue == JFileChooser.APPROVE_OPTION) {
+						File selectedFile = fileChooser.getSelectedFile();
+						try {
+							filepath = selectedFile.getPath();
+							scene1.saveXML(filepath);          
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						
+					}
+				}
+				else {
+					scene1.saveXML(filepath);
+				}
+		    }
+		});
 		
-		JMenuItem menuSaveAs = new JMenuItem("Save As...");
+		JMenuItem menuSaveAs = new JMenuItem("Save XML As...");
 		menuFile.add(menuSaveAs);
 		menuSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 		menuSaveAs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Specify a file to save");   
-		
-				int userSelection = fileChooser.showSaveDialog(null);
-		
-				if (userSelection == JFileChooser.APPROVE_OPTION) {
-					File fileToSave = fileChooser.getSelectedFile();
-					scene1.saveXML(fileToSave.getAbsolutePath());
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        JFileChooser fileChooser = new JFileChooser();
+		        int returnValue = fileChooser.showOpenDialog(null);
+		        if (returnValue == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            try {
+						filepath = selectedFile.getPath();
+		                scene1.saveXML(filepath);          
+		            } catch (Exception e1) {
+		                e1.printStackTrace();
+		            }
+					
+		        }
+		    }
 		});
 		
 		menuFile.addSeparator();
@@ -358,11 +393,30 @@ public class Window extends JFrame {
 		JButton menuUndo = new JButton();
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
-		
+
+		menuUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if((leftStack.empty() == false)&&(leftStack.peek().equals(scene1)==false)){
+					rightStack.push(scene1.copy());
+					scene1 = leftStack.pop();
+					canvas.repaint();
+				}
+			}
+		});		
 		
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
 		menuBar.add(menuRedo);
+
+		menuRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if ((rightStack.empty() == false)&&(rightStack.peek().equals(scene1)==false)) {
+					leftStack.push(scene1.copy());
+					scene1 = rightStack.pop();
+					canvas.repaint();
+				}
+			}
+		});	
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
@@ -380,10 +434,142 @@ public class Window extends JFrame {
 		        }
 		    }
 		});
-		
-		return menuBar;
-	}
 
-	
-	
+		this.setJMenuBar(menuBar);
+		
+		// Actions souris
+		canvas.addMouseListener((MouseListener) new MouseAdapter() {
+			private Point P1 = null;
+			private Point P2 = null;
+			Shape form1 = null;
+			Shape form2 = null;
+
+		    public void mouseClicked(MouseEvent e) {
+
+				if (mode.equals("Select")) {
+					//System.out.println("mode = Select");
+					P1 = e.getPoint();
+					scene1.select(P1.x, P1.y);
+					canvas.repaint();
+					P1 = null;
+				}
+		
+				if (mode.equals("Rectangle")) {
+					//scene1.unselectall();
+					if (P1 == null) {
+						//scene1.unselectall();
+						P1 = e.getPoint();
+						canvas.repaint();
+					} else {
+						P2 = e.getPoint();
+						
+						leftStack.push(scene1.copy());
+						rightStack.clear();
+
+						if (P1.x >= P2.x && P1.y >= P2.y) {
+							scene1.add(new Rect(P2.x, P2.y, P1.x, P1.y));
+						}
+						else if (P1.x >= P2.x && P1.y <= P2.y) {
+							scene1.add(new Rect(P2.x, P1.y, P1.x, P2.y));
+						}
+						else if (P1.x <= P2.x && P1.y >= P2.y) {
+							scene1.add(new Rect(P1.x, P2.y, P2.x, P1.y));
+						}
+						else if (P1.x <= P2.x && P1.y <= P2.y) {
+							scene1.add(new Rect(P1.x, P1.y, P2.x, P2.y));
+						}
+
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+
+						mode = "Select";
+					}
+				}
+		
+				if (mode.equals("Union")) {
+					
+				}
+
+				if (mode.equals("Inter")) {
+					//scene1.unselectall();
+					if (P1 == null) {
+						//scene1.unselectall();
+						P1 = e.getPoint();
+						form1 = scene1.select(P1.x, P1.y);
+						canvas.repaint();
+					}
+					else{
+						P2 = e.getPoint();
+						form2 = scene1.select(P2.x, P2.y);
+
+						Inter intersection = null;
+						intersection = new Inter(form1, form2);
+						
+						System.out.println(intersection);
+
+						leftStack.push(scene1.copy());
+						rightStack.clear();
+
+						scene1.add(intersection);
+						scene1.remove(form1);
+						scene1.remove(form2);
+						
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						form1 = null;
+						form2 = null;
+						intersection = null;
+						mode = "Select";
+					}
+				}
+
+				if (mode.equals("Diff")) {
+					//scene1.unselectall();
+					if (P1 == null) {
+						//scene1.unselectall();
+						P1 = e.getPoint();
+						form1 = scene1.select(P1.x, P1.y);
+						canvas.repaint();
+					}
+					else{
+						P2 = e.getPoint();
+						form2 = scene1.select(P2.x, P2.y);
+						
+						Diffe difference = null;
+						difference = new Diffe(form1, form2);
+						
+						System.out.println(difference);
+
+						leftStack.push(scene1.copy());
+						rightStack.clear();
+								
+						scene1.add(difference);
+						scene1.remove(form1);
+						scene1.remove(form2);
+					
+						
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						form1 = null;
+						form2 = null;
+						mode = "Select";
+					}
+				}
+		    }
+		});
+		
+		getContentPane().add(canvas, BorderLayout.CENTER);
+		
+		
+		this.addWindowListener(new WindowAdapter() {
+			
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				closeWindow();
+				}
+		});
+
+	}
 }
