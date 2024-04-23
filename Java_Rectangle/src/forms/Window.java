@@ -29,8 +29,6 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import oldform.Union;
-
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
