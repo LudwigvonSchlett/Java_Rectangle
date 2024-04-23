@@ -17,7 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.awt.event.ActionEvent;
@@ -47,6 +49,7 @@ public class Window extends JFrame {
 	protected static int MAX_WINDOW_HEIGHT=1080;
 
 	private Scene scene1 = new Scene();
+	private Scene scene = new Scene();
 	
 	private String mode = "Select";
 	
@@ -75,7 +78,6 @@ public class Window extends JFrame {
 	    }
 	}
 
-	
 	public Window() { //constructeur
 		
 		super("Paint");
@@ -88,8 +90,8 @@ public class Window extends JFrame {
 
 		// Test de la classe Scene
 		
-		scene1.add(new Inter(new Rect(10,10,100,100),new Rect(50,50,150,150)));
-		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
+		//scene1.add(new Inter(new Rect(10,10,100,100),new Rect(50,50,150,150)));
+		//scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
 		System.out.println(scene1);
 		
 		JToolBar toolBar = new JToolBar();
@@ -149,7 +151,8 @@ public class Window extends JFrame {
 			Shape form1 = null;
 			Shape form2 = null;
 
-		    public void mouseClicked(MouseEvent e) {
+		    @SuppressWarnings("unused")
+			public void mouseClicked(MouseEvent e) {
 
 				if (mode.equals("Select")) {
 					System.out.println("mode = Select");
@@ -293,15 +296,22 @@ public class Window extends JFrame {
 		menuFile.add(menuOpen);
 		menuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		menuOpen.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        JFileChooser fileChooser = new JFileChooser();
-		        int returnValue = fileChooser.showOpenDialog(null);
-		        if (returnValue == JFileChooser.APPROVE_OPTION) {
-		            File selectedFile = fileChooser.getSelectedFile();
-		            // Ouvrez le fichier ici
-		            // Par exemple, si c'est un fichier texte, vous pouvez le lire et l'afficher dans un JTextArea
-		        }
-		    }
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Specify a file to open");   
+		
+				int userSelection = fileChooser.showOpenDialog(null);
+		
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToOpen = fileChooser.getSelectedFile();
+					// Create a new window
+					Window newWindow = new Window();
+					// Load the XML file in the new window
+					scene.loadXML(fileToOpen.getAbsolutePath());
+					System.out.println(newWindow.scene.toString());
+					newWindow.setVisible(true);
+				}
+			}
 		});
 		
 		menuFile.addSeparator();
@@ -313,6 +323,19 @@ public class Window extends JFrame {
 		JMenuItem menuSaveAs = new JMenuItem("Save As...");
 		menuFile.add(menuSaveAs);
 		menuSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		menuSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Specify a file to save");   
+		
+				int userSelection = fileChooser.showSaveDialog(null);
+		
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File fileToSave = fileChooser.getSelectedFile();
+					scene1.saveXML(fileToSave.getAbsolutePath());
+				}
+			}
+		});
 		
 		menuFile.addSeparator();
 		
@@ -362,5 +385,7 @@ public class Window extends JFrame {
 		
 		return menuBar;
 	}
+
+	
 	
 }
