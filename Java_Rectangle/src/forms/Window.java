@@ -52,6 +52,8 @@ public class Window extends JFrame {
 	private Stack<Scene> rightStack = new Stack<Scene>();
 	
 	private String mode = "Select";
+
+	private String filepath = null;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -173,21 +175,66 @@ public class Window extends JFrame {
 		        int returnValue = fileChooser.showOpenDialog(null);
 		        if (returnValue == JFileChooser.APPROVE_OPTION) {
 		            File selectedFile = fileChooser.getSelectedFile();
-		            // Ouvrez le fichier ici
-		            // Par exemple, si c'est un fichier texte, vous pouvez le lire et l'afficher dans un JTextArea
+		            try {
+						filepath = selectedFile.getPath();
+		                scene1 = Scene.loadXML(filepath);          
+						leftStack.clear();
+						rightStack.clear();
+		                canvas.repaint();
+		            } catch (Exception e1) {
+		                e1.printStackTrace();
+		            }
+					
 		        }
 		    }
 		});
 		
 		menuFile.addSeparator();
 		
-		JMenuItem menuSave = new JMenuItem("Save");
+		JMenuItem menuSave = new JMenuItem("Save XML");
 		menuFile.add(menuSave);
 		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		menuSave.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if(filepath == null) {
+					JFileChooser fileChooser = new JFileChooser();
+					int returnValue = fileChooser.showOpenDialog(null);
+					if (returnValue == JFileChooser.APPROVE_OPTION) {
+						File selectedFile = fileChooser.getSelectedFile();
+						try {
+							filepath = selectedFile.getPath();
+							scene1.saveXML(filepath);          
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						
+					}
+				}
+				else {
+					scene1.saveXML(filepath);
+				}
+		    }
+		});
 		
-		JMenuItem menuSaveAs = new JMenuItem("Save As...");
+		JMenuItem menuSaveAs = new JMenuItem("Save XML As...");
 		menuFile.add(menuSaveAs);
 		menuSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		menuSaveAs.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        JFileChooser fileChooser = new JFileChooser();
+		        int returnValue = fileChooser.showOpenDialog(null);
+		        if (returnValue == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            try {
+						filepath = selectedFile.getPath();
+		                scene1.saveXML(filepath);          
+		            } catch (Exception e1) {
+		                e1.printStackTrace();
+		            }
+					
+		        }
+		    }
+		});
 		
 		menuFile.addSeparator();
 		
