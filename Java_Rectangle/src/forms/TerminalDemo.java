@@ -50,13 +50,13 @@ public class TerminalDemo {
 		
 		//Scene scene1 = Scene.loadXML(file);
 		
-		Rect r1 = new Rect(5,5,10,10);
+		Rect r1 = new Rect(50,50,100,100);
 		
-		Rect r2 = new Rect(7,7,12,12);
+		Rect r2 = new Rect(70,70,120,120);
 		
-		Rect r3 = new Rect(2,5,7,15);
+		Rect r3 = new Rect(20,50,70,150);
 		
-		Rect r4 = new Rect(5,7,10,9);
+		Rect r4 = new Rect(50,70,100,90);
 		
 		Union u1 = new Union(r1,r2);
 		
@@ -64,7 +64,7 @@ public class TerminalDemo {
 		
 		Diffe d1 = new Diffe(i1,r4);
 		
-		scene1.add(d1);
+		scene1.add(r1);
 		
 		paint(scene1);
 		
@@ -78,7 +78,7 @@ public class TerminalDemo {
 		
 		//System.out.println(scene1);
 		
-		//scene1.saveXML(file);
+		scene1.saveXML(file);
 		
 	}
 		

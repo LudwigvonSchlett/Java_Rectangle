@@ -76,6 +76,10 @@ public class Scene{
 		Gcontent.add(subgroup);			
 	}
 
+	public void remove(Shape subgroup) {
+		Gcontent.remove(subgroup);			
+	}
+
  	@Override
 	public String toString() {
 	 	String result = "Scene \n";
@@ -92,7 +96,7 @@ public class Scene{
 	            	lines[i] = "|     " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
-	            result += "\n\n";	            
+	            result += "\n";	            
 	        }
 	    }
 	    return result;
@@ -138,7 +142,7 @@ public class Scene{
 	public Shape select(int x, int y){
 		Shape result = null;
 		for(Shape c:Gcontent) {
-			if(c.belong(x, y)==0){
+			if((c.belong(x, y)==0)&&(result==null)&&(c.getSelected()==0)){
 				c.select();
 				result = c;
 			} else {
