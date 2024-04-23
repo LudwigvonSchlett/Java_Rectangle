@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +56,11 @@ public class Window extends JFrame {
 	private String mode = "Select";
 
 	private String filepath = null;
+
+	private Shape ShapeSelected = null;
+
+	private int oldX = -1, oldY = -1;
+
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -139,6 +146,16 @@ public class Window extends JFrame {
 			}
 		});
 		
+		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
+		toolBar.add(moveButton);
+
+		moveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
+				mode= "Move";
+			}
+		});
+
 		// Canvas
 		Canvas canvas = new Canvas() {
 			public void paint(Graphics g) {
@@ -387,6 +404,7 @@ public class Window extends JFrame {
 						scene1.add(union);
 						scene1.remove(form1);
 						scene1.remove(form2);
+						scene1.unselectall();
 						
 						canvas.repaint();
 						P1 = null;
@@ -479,6 +497,45 @@ public class Window extends JFrame {
 				closeWindow();
 				}
 		});
+		
+		
+		
 
+		canvas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (mode.equals("Move")) {
+					Point point = e.getPoint();
+					ShapeSelected = scene1.select(point.x, point.y);
+					oldX = point.x;
+					oldY = point.y;
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (mode.equals("Move")) {
+					mode = "Select";
+				}
+			}
+		});
+		
+		canvas.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (mode.equals("Move") && ShapeSelected != null) {
+					Point point = e.getPoint();
+					int dx = point.x - oldX;
+					int dy = point.y - oldY;
+					ShapeSelected.move(dx, dy);
+					oldX = point.x;
+					oldY = point.y;
+					canvas.repaint();
+				}
+			}
+		});
+
+		
+		
 	}
 }
