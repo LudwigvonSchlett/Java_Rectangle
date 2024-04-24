@@ -97,7 +97,7 @@ public class Window extends JFrame {
 		
 		// Test de la classe Scene
 		
-		scene1.add(new Inter(new Rect(10,10,100,100),new Rect(50,50,150,150)));
+		scene1.add(new Inter(new Rect(0,0,100,100),new Rect(50,50,150,150)));
 		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
 		System.out.println(scene1);
 		
@@ -341,7 +341,7 @@ public class Window extends JFrame {
 				if (mode.equals("Select")) {
 					//System.out.println("mode = Select");
 					P1 = e.getPoint();
-					scene1.select(P1.x, P1.y);
+					ShapeSelected = scene1.select(P1.x, P1.y);
 					canvas.repaint();
 					P1 = null;
 				}
@@ -393,7 +393,7 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 
 						Union union = null;
-						union = new Union(form1, form2);
+						union = new Union(form1.copy(), form2.copy());
 						
 						System.out.println(union);
 
@@ -429,7 +429,7 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 
 						Inter intersection = null;
-						intersection = new Inter(form1, form2);
+						intersection = new Inter(form1.copy(), form2.copy());
 						
 						System.out.println(intersection);
 
@@ -464,7 +464,7 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 						
 						Diffe difference = null;
-						difference = new Diffe(form1, form2);
+						difference = new Diffe(form1.copy(), form2.copy());
 						
 						System.out.println(difference);
 
