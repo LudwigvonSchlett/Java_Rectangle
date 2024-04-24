@@ -61,6 +61,10 @@ public class Window extends JFrame {
 
 	private int oldX = -1, oldY = -1;
 
+	private Point P1 = null;
+			
+	private Point P2 = null;
+
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -94,6 +98,16 @@ public class Window extends JFrame {
 		this.setSize(714, 611);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
+
+		// Canvas
+		Canvas canvas = new Canvas() {
+			public void paint(Graphics g) {
+				super.paint(g);
+				g.setColor(Color.decode("#D6D9DF"));
+				g.fillRect(0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
+				scene1.draw(g);
+			}
+		};
 		
 		// Test de la classe Scene
 		
@@ -109,23 +123,32 @@ public class Window extends JFrame {
 		JButton selectButton = new JButton(new ImageIcon(this.getClass().getResource("icons/select.png")));
 		toolBar.add(selectButton);
 
+		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
+		toolBar.add(moveButton);
+
 		selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene1.unselectall();
 				mode= "Select";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
 			}
 		});
-
-		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
-		toolBar.add(moveButton);
 
 		moveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene1.unselectall();
 				mode= "Move";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
 			}
 		});
 
+		toolBar.addSeparator();
 		
 		JButton RectButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
 		toolBar.add(RectButton);
@@ -134,49 +157,57 @@ public class Window extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				scene1.unselectall();
 				mode= "Rectangle";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
 			}
 		});
+
+		toolBar.addSeparator();
 		
 		JButton unionButton = new JButton(new ImageIcon(this.getClass().getResource("icons/union.png")));
 		toolBar.add(unionButton);
+
+		JButton interButton = new JButton(new ImageIcon(this.getClass().getResource("icons/inter.png")));
+		toolBar.add(interButton);
+
 		
+		JButton diffButton = new JButton(new ImageIcon(this.getClass().getResource("icons/diff.png")));
+		toolBar.add(diffButton);
+
 		unionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene1.unselectall();
 				mode= "Union";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
 			}
 		});
-
-		JButton interButton = new JButton(new ImageIcon(this.getClass().getResource("icons/inter.png")));
-		toolBar.add(interButton);
 
 		interButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene1.unselectall();
 				mode= "Inter";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
 			}
 		});
 		
-		JButton diffButton = new JButton(new ImageIcon(this.getClass().getResource("icons/diff.png")));
-		toolBar.add(diffButton);
-
 		diffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene1.unselectall();
 				mode= "Diff";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
 			}
 		});
-		
-		
-		// Canvas
-		Canvas canvas = new Canvas() {
-			public void paint(Graphics g) {
-				super.paint(g);
-				g.setColor(Color.decode("#D6D9DF"));
-				g.fillRect(0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
-				scene1.draw(g);
-			}
-		};
 
 		// Barre de menu
 		JMenuBar menuBar = new JMenuBar();
@@ -236,7 +267,6 @@ public class Window extends JFrame {
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
-						
 					}
 				}
 				else {
@@ -296,8 +326,6 @@ public class Window extends JFrame {
 		menuUndo.setEnabled(false);
 		menuRedo.setEnabled(false);
 
-		
-
 		menuUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if((leftStack.empty() == false)&&(leftStack.peek().equals(scene1)==false)){
@@ -343,12 +371,14 @@ public class Window extends JFrame {
 		
 		// Actions souris
 		canvas.addMouseListener((MouseListener) new MouseAdapter() {
-			private Point P1 = null;
-			private Point P2 = null;
-			Shape form1 = null;
-			Shape form2 = null;
+			
+			private Shape form1 = null;
+			
+			private Shape form2 = null;
 
 		    public void mouseClicked(MouseEvent e) {
+
+				scene1.unselectall();
 
 				if (mode.equals("Select")) {
 					//System.out.println("mode = Select");
@@ -356,6 +386,7 @@ public class Window extends JFrame {
 					ShapeSelected = scene1.select(P1.x, P1.y);
 					canvas.repaint();
 					P1 = null;
+					P2 = null;
 				}
 		
 				if (mode.equals("Rectangle")) {
@@ -387,8 +418,6 @@ public class Window extends JFrame {
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
-
-						mode = "Select";
 					}
 				}
 		
@@ -424,7 +453,6 @@ public class Window extends JFrame {
 						form1 = null;
 						form2 = null;
 						union = null;
-						mode = "Select";
 					}
 				}
 
@@ -459,7 +487,6 @@ public class Window extends JFrame {
 						form1 = null;
 						form2 = null;
 						intersection = null;
-						mode = "Select";
 					}
 				}
 
@@ -494,7 +521,6 @@ public class Window extends JFrame {
 						P2 = null;
 						form1 = null;
 						form2 = null;
-						mode = "Select";
 					}
 				}
 		    }
@@ -509,9 +535,6 @@ public class Window extends JFrame {
 				closeWindow();
 				}
 		});
-		
-		
-		
 
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
@@ -527,7 +550,9 @@ public class Window extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (mode.equals("Move")) {
-					mode = "Select";
+					ShapeSelected = null;
+					scene1.unselectall();
+					canvas.repaint();
 				}
 			}
 		});
@@ -546,8 +571,5 @@ public class Window extends JFrame {
 				}
 			}
 		});
-
-		
-		
 	}
 }
