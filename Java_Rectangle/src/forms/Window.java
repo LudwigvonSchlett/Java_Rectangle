@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import java.awt.BasicStroke;
@@ -65,6 +66,13 @@ public class Window extends JFrame {
 			
 	private Point P2 = null;
 
+	int CanvasWidth;
+		
+	int CanvasHeight;
+
+	int WindowWidth = 714;
+		
+	int WindowHeight = 611;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -92,15 +100,17 @@ public class Window extends JFrame {
 	}
 
 	public Window() { //constructeur
-		
+
 		super("Paint");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setSize(714, 611);
+		this.setSize(WindowWidth, WindowHeight);
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		//this.setResizable(false);
+		
 
 		// Canvas
 		Canvas canvas = new Canvas() {
+
 			public void paint(Graphics g) {
 				super.paint(g);
 				g.setColor(Color.decode("#D6D9DF"));
@@ -108,6 +118,8 @@ public class Window extends JFrame {
 				scene1.draw(g);
 			}
 		};
+
+		getContentPane().add(canvas, BorderLayout.CENTER);
 		
 		// Test de la classe Scene
 		
@@ -139,12 +151,14 @@ public class Window extends JFrame {
 
 		moveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				scene1.unselectall();
 				mode= "Move";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
 				canvas.repaint();
+				
 			}
 		});
 
@@ -379,9 +393,11 @@ public class Window extends JFrame {
 		    public void mouseClicked(MouseEvent e) {
 
 				if (mode.equals("Select")) {
-					//System.out.println("mode = Select");
+					
 					P1 = e.getPoint();
 					ShapeSelected = scene1.select(P1.x, P1.y);
+					//System.out.println("x = " + P1.x + " y = " + P1.y);
+					//System.out.println(ShapeSelected);
 					canvas.repaint();
 					P1 = null;
 					P2 = null;
@@ -530,9 +546,7 @@ public class Window extends JFrame {
 		    }
 		});
 		
-		getContentPane().add(canvas, BorderLayout.CENTER);
-		
-		
+				
 		this.addWindowListener(new WindowAdapter() {
 			
 			public void windowClosing(java.awt.event.WindowEvent e) {
@@ -548,6 +562,11 @@ public class Window extends JFrame {
 					ShapeSelected = scene1.select(point.x, point.y);
 					oldX = point.x;
 					oldY = point.y;
+
+					if(CanvasHeight != canvas.getHeight() || CanvasWidth != canvas.getWidth()) {
+						CanvasHeight = canvas.getHeight();
+						CanvasWidth = canvas.getWidth();
+					}
 				}
 			}
 
@@ -568,10 +587,12 @@ public class Window extends JFrame {
 					Point point = e.getPoint();
 					int dx = point.x - oldX;
 					int dy = point.y - oldY;
-					ShapeSelected.move(dx, dy);
-					oldX = point.x;
-					oldY = point.y;
-					canvas.repaint();
+					if ((ShapeSelected.getX1()+dx>=0)&&(ShapeSelected.getY1()+dy>=0)&&(ShapeSelected.getX2()+dx<=CanvasWidth)&&(ShapeSelected.getY2()+dy<=CanvasHeight)){
+						ShapeSelected.move(dx, dy);
+						oldX = point.x;
+						oldY = point.y;
+						canvas.repaint();
+					}
 				}
 			}
 		});
