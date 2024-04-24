@@ -378,8 +378,6 @@ public class Window extends JFrame {
 
 		    public void mouseClicked(MouseEvent e) {
 
-				scene1.unselectall();
-
 				if (mode.equals("Select")) {
 					//System.out.println("mode = Select");
 					P1 = e.getPoint();
@@ -387,8 +385,10 @@ public class Window extends JFrame {
 					canvas.repaint();
 					P1 = null;
 					P2 = null;
+				} else {
+					scene1.unselectall();
 				}
-		
+
 				if (mode.equals("Rectangle")) {
 					//scene1.unselectall();
 					if (P1 == null) {
@@ -418,6 +418,7 @@ public class Window extends JFrame {
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
+						mode = "Select";
 					}
 				}
 		
@@ -453,6 +454,7 @@ public class Window extends JFrame {
 						form1 = null;
 						form2 = null;
 						union = null;
+						mode = "Select";
 					}
 				}
 
@@ -487,6 +489,7 @@ public class Window extends JFrame {
 						form1 = null;
 						form2 = null;
 						intersection = null;
+						mode = "Select";
 					}
 				}
 
@@ -521,6 +524,7 @@ public class Window extends JFrame {
 						P2 = null;
 						form1 = null;
 						form2 = null;
+						mode = "Select";
 					}
 				}
 		    }
