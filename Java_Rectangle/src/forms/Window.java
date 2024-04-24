@@ -105,6 +105,27 @@ public class Window extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
+
+		JButton selectButton = new JButton(new ImageIcon(this.getClass().getResource("icons/select.png")));
+		toolBar.add(selectButton);
+
+		selectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
+				mode= "Select";
+			}
+		});
+
+		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
+		toolBar.add(moveButton);
+
+		moveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
+				mode= "Move";
+			}
+		});
+
 		
 		JButton RectButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
 		toolBar.add(RectButton);
@@ -146,16 +167,7 @@ public class Window extends JFrame {
 			}
 		});
 		
-		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
-		toolBar.add(moveButton);
-
-		moveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				scene1.unselectall();
-				mode= "Move";
-			}
-		});
-
+		
 		// Canvas
 		Canvas canvas = new Canvas() {
 			public void paint(Graphics g) {
