@@ -66,13 +66,13 @@ public class Window extends JFrame {
 			
 	private Point P2 = null;
 
-	int CanvasWidth;
+	private int CanvasWidth;
 		
-	int CanvasHeight;
+	private int CanvasHeight;
 
-	int WindowWidth = 714;
+	private int WindowWidth = 714;
 		
-	int WindowHeight = 611;
+	private int WindowHeight = 611;
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
