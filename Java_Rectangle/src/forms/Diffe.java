@@ -91,9 +91,9 @@ public class Diffe extends Duplet {
 						drawLine = 0;
 						if (belong(x, y)==1) {
 							minx = x;
-						} else {
-							maxx = x;
-						}
+						}	
+					} else {
+						maxx = x;
 					}
 				}
 			}
