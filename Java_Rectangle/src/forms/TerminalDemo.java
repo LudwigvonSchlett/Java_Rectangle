@@ -3,7 +3,7 @@ package forms;
 
 public class TerminalDemo {
 	
-	protected static int maxheight = 50;
+	protected static int maxheight = 500;
 	
 	protected static int maxwidth = 180;
 	
@@ -50,11 +50,12 @@ public class TerminalDemo {
 		
 		//Scene scene1 = Scene.loadXML(file);
 		
-		Rect r1 = new Rect(50,50,100,100);
 		
-		Rect r2 = new Rect(70,70,120,120);
+		Rect r1 = new Rect(25,50,75,100);
 		
-		Rect r3 = new Rect(20,50,70,150);
+		Rect r2 = new Rect(100,50,150,100);
+		
+		Rect r3 = new Rect(50,50,125,100);
 		
 		Rect r4 = new Rect(50,70,100,90);
 		
@@ -62,9 +63,9 @@ public class TerminalDemo {
 		
 		Inter i1 = new Inter(u1,r3);
 		
-		Diffe d1 = new Diffe(i1,r4);
+		//Diffe d1 = new Diffe(i1,r4);
 		
-		scene1.add(r1);
+		scene1.add(i1);
 		
 		paint(scene1);
 		

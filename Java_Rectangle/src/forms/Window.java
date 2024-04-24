@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +56,11 @@ public class Window extends JFrame {
 	private String mode = "Select";
 
 	private String filepath = null;
+
+	private Shape ShapeSelected = null;
+
+	private int oldX = -1, oldY = -1;
+
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
@@ -90,7 +97,7 @@ public class Window extends JFrame {
 		
 		// Test de la classe Scene
 		
-		scene1.add(new Inter(new Rect(10,10,100,100),new Rect(50,50,150,150)));
+		scene1.add(new Inter(new Rect(0,0,100,100),new Rect(50,50,150,150)));
 		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
 		System.out.println(scene1);
 		
@@ -139,6 +146,16 @@ public class Window extends JFrame {
 			}
 		});
 		
+		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
+		toolBar.add(moveButton);
+
+		moveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene1.unselectall();
+				mode= "Move";
+			}
+		});
+
 		// Canvas
 		Canvas canvas = new Canvas() {
 			public void paint(Graphics g) {
@@ -260,6 +277,15 @@ public class Window extends JFrame {
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
 
+		JButton menuRedo = new JButton();
+		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
+		menuBar.add(menuRedo);
+		
+		menuUndo.setEnabled(false);
+		menuRedo.setEnabled(false);
+
+		
+
 		menuUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if((leftStack.empty() == false)&&(leftStack.peek().equals(scene1)==false)){
@@ -267,12 +293,10 @@ public class Window extends JFrame {
 					scene1 = leftStack.pop();
 					canvas.repaint();
 				}
+				menuUndo.setEnabled(!leftStack.empty());
+        		menuRedo.setEnabled(!rightStack.empty());
 			}
 		});		
-		
-		JButton menuRedo = new JButton();
-		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
-		menuBar.add(menuRedo);
 
 		menuRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -281,6 +305,8 @@ public class Window extends JFrame {
 					scene1 = rightStack.pop();
 					canvas.repaint();
 				}
+				menuUndo.setEnabled(!leftStack.empty());
+        		menuRedo.setEnabled(!rightStack.empty());
 			}
 		});	
 		
@@ -315,7 +341,7 @@ public class Window extends JFrame {
 				if (mode.equals("Select")) {
 					//System.out.println("mode = Select");
 					P1 = e.getPoint();
-					scene1.select(P1.x, P1.y);
+					ShapeSelected = scene1.select(P1.x, P1.y);
 					canvas.repaint();
 					P1 = null;
 				}
@@ -330,6 +356,7 @@ public class Window extends JFrame {
 						P2 = e.getPoint();
 						
 						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
 						rightStack.clear();
 
 						if (P1.x >= P2.x && P1.y >= P2.y) {
@@ -354,7 +381,39 @@ public class Window extends JFrame {
 				}
 		
 				if (mode.equals("Union")) {
-					
+					//scene1.unselectall();
+					if (P1 == null) {
+						//scene1.unselectall();
+						P1 = e.getPoint();
+						form1 = scene1.select(P1.x, P1.y);
+						canvas.repaint();
+					}
+					else{
+						P2 = e.getPoint();
+						form2 = scene1.select(P2.x, P2.y);
+
+						Union union = null;
+						union = new Union(form1.copy(), form2.copy());
+						
+						System.out.println(union);
+
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+
+						scene1.add(union);
+						scene1.remove(form1);
+						scene1.remove(form2);
+						scene1.unselectall();
+						
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						form1 = null;
+						form2 = null;
+						union = null;
+						mode = "Select";
+					}
 				}
 
 				if (mode.equals("Inter")) {
@@ -370,11 +429,12 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 
 						Inter intersection = null;
-						intersection = new Inter(form1, form2);
+						intersection = new Inter(form1.copy(), form2.copy());
 						
 						System.out.println(intersection);
 
 						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
 						rightStack.clear();
 
 						scene1.add(intersection);
@@ -404,11 +464,12 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 						
 						Diffe difference = null;
-						difference = new Diffe(form1, form2);
+						difference = new Diffe(form1.copy(), form2.copy());
 						
 						System.out.println(difference);
 
 						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
 						rightStack.clear();
 								
 						scene1.add(difference);
@@ -436,6 +497,45 @@ public class Window extends JFrame {
 				closeWindow();
 				}
 		});
+		
+		
+		
 
+		canvas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (mode.equals("Move")) {
+					Point point = e.getPoint();
+					ShapeSelected = scene1.select(point.x, point.y);
+					oldX = point.x;
+					oldY = point.y;
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (mode.equals("Move")) {
+					mode = "Select";
+				}
+			}
+		});
+		
+		canvas.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (mode.equals("Move") && ShapeSelected != null) {
+					Point point = e.getPoint();
+					int dx = point.x - oldX;
+					int dy = point.y - oldY;
+					ShapeSelected.move(dx, dy);
+					oldX = point.x;
+					oldY = point.y;
+					canvas.repaint();
+				}
+			}
+		});
+
+		
+		
 	}
 }

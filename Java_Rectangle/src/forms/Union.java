@@ -40,19 +40,19 @@ public class Union extends Duplet {
 			this.x1=s2.getX1();
 		}
 		if(s1.getY1()<=s2.getY1()) {
-			this.x1=s1.getY1();
+			this.y1=s1.getY1();
 		} else {
-			this.x1=s2.getY1();
+			this.y1=s2.getY1();
 		}
 		if(s1.getX2()>=s2.getX2()) {
-			this.x1=s1.getX2();
+			this.x2=s1.getX2();
 		} else {
-			this.x1=s2.getX2();
+			this.x2=s2.getX2();
 		}
 		if(s1.getY2()>=s2.getY2()) {
-			this.x1=s1.getY2();
+			this.y2=s1.getY2();
 		} else {
-			this.x1=s2.getY2();
+			this.y2=s2.getY2();
 		}		
 	}
 

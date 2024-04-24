@@ -75,9 +75,10 @@ public class Diffe extends Duplet {
 		int drawLine = 0;
 
 		for(int y = this.y1; y<this.y2+1; y++) {
-			
+			minx = 0;
+			maxx = 0;
+			drawLine = 0;
 			for(int x = this.x1; x<this.x2+1; x++) {
-
 				if (drawLine == 0) {
 					if (belong(x, y)==0){
 						minx = x;
@@ -88,13 +89,17 @@ public class Diffe extends Duplet {
 					if ((belong(x, y)==1)||(x==this.x2)){
 						g.drawLine(minx, y, maxx, y);
 						drawLine = 0;
-					} else {
-						maxx = x;
+						if (belong(x, y)==1) {
+							minx = x;
+						} else {
+							maxx = x;
+						}
 					}
 				}
 			}
 		}
 	}
+
 
 	public Shape copy(){
 		Diffe result = new Diffe(Lleaf.copy(),Rleaf.copy());
