@@ -587,12 +587,31 @@ public class Window extends JFrame {
 					Point point = e.getPoint();
 					int dx = point.x - oldX;
 					int dy = point.y - oldY;
-					if ((ShapeSelected.getX1()+dx>=0)&&(ShapeSelected.getY1()+dy>=0)&&(ShapeSelected.getX2()+dx<=CanvasWidth)&&(ShapeSelected.getY2()+dy<=CanvasHeight)){
-						ShapeSelected.move(dx, dy);
+					if ((ShapeSelected.getX1()+dx>=0)&&(ShapeSelected.getX2()+dx<=CanvasWidth)) {
+						ShapeSelected.move(dx, 0);
 						oldX = point.x;
-						oldY = point.y;
-						canvas.repaint();
+					} else if (ShapeSelected.getX1()+dx<0) {
+						dx = - ShapeSelected.getX1();
+						ShapeSelected.move(dx, 0);
+						oldX = point.x;
+					} else if (ShapeSelected.getX2()+dx>CanvasWidth) {
+						dx = CanvasWidth - ShapeSelected.getX2();
+						ShapeSelected.move(dx, 0);
+						oldX = point.x;
 					}
+					if ((ShapeSelected.getY1()+dy>=0)&&(ShapeSelected.getY2()+dy<=CanvasHeight)) {
+						ShapeSelected.move(0, dy);
+						oldY = point.y;
+					} else if (ShapeSelected.getY1()+dy<0) {
+						dy = - ShapeSelected.getY1();
+						ShapeSelected.move(0, dy);
+						oldY = point.y;
+					} else if (ShapeSelected.getY2()+dy>CanvasHeight) {
+						dy = CanvasHeight - ShapeSelected.getY2();
+						ShapeSelected.move(0, dy);
+						oldY = point.y;
+					}
+					canvas.repaint();
 				}
 			}
 		});
