@@ -240,6 +240,7 @@ public class Window extends JFrame {
 		
 		JMenu menuFile = new JMenu("File");
 		menuBar.add(menuFile);
+		menuFile.setMnemonic('F');
 		
 		
 		JMenuItem menuNew = new JMenuItem("New");
