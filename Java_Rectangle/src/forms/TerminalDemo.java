@@ -1,6 +1,5 @@
 package forms;
 
-
 public class TerminalDemo {
 	
 	protected static int maxheight = 500;

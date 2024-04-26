@@ -11,10 +11,19 @@ public class Inter extends Duplet {
 		this.Lleaf=s1;
 		this.Rleaf=s2;
 
-		this.x1 = Math.min(Math.max(s1.getX1(),s2.getX1()), Math.min(s1.getX2(),s2.getX2()));
-		this.y1 = Math.min(Math.max(s1.getY1(),s2.getY1()), Math.min(s1.getY2(),s2.getY2()));
-		this.x2 = Math.max(Math.max(s1.getX1(),s2.getX1()), Math.min(s1.getX2(),s2.getX2()));
-		this.y2 = Math.max(Math.max(s1.getY1(),s2.getY1()), Math.min(s1.getY2(),s2.getY2()));
+		this.x1 = Math.max(s1.getX1(),s2.getX1());
+		this.y1 = Math.max(s1.getY1(),s2.getY1());
+		this.x2 = Math.min(s1.getX2(),s2.getX2());
+		this.y2 = Math.min(s1.getY2(),s2.getY2());
+
+		if ((this.x1>this.x2)||(this.y1>this.y2)) {
+			this.selected = -2;
+			this.x1 = -1;
+			this.x2 = -1;
+			this.y1 = -1;
+			this.y2 = -1;
+		}
+		
 
 	}
 
@@ -29,6 +38,7 @@ public class Inter extends Duplet {
 
 	@Override
 	public String toString() {
+		//String result = "Inter : x1 = " + this.x1 +"  y1 = " + this.y1 + "  x2 = " + this.x2 + "  y2 = "+ this.y2+"\n";
 		String result = "Inter :\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
 	            result += "|-----";

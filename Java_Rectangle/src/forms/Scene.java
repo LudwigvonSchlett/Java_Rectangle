@@ -2,9 +2,12 @@ package forms;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import java.awt.Graphics;
+
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;

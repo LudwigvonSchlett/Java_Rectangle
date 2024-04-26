@@ -60,12 +60,10 @@ public class Rect extends Shape {
 
 	@Override
 	public void move(int dx, int dy) {
-		//if ((this.x1+dx>=0) && (this.y1+dy>=0)) {
-			this.x1=this.x1+dx;
-			this.y1=this.y1+dy;
-			this.x2=this.x2+dx;
-			this.y2=this.y2+dy;
-		//}			
+		this.x1=this.x1+dx;
+		this.y1=this.y1+dy;
+		this.x2=this.x2+dx;
+		this.y2=this.y2+dy;			
 	}
 
 	@Override

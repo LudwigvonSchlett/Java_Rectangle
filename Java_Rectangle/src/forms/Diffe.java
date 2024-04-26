@@ -15,7 +15,33 @@ public class Diffe extends Duplet {
 		this.x2=s1.getX2();
 		this.y1=s1.getY1();
 		this.y2=s1.getY2();
+
+		if (this.x1>=s2.getX1()&&(this.x2<=s2.getX2())) {
+			if ((this.y1>=s2.getY1())&&(this.y1<=s2.getY2())) {
+				this.y1=s2.getY2()+1;
+			}
+			if ((this.y2>=s2.getY1())&&(this.y2<=s2.getY2())) {
+				this.y2=s2.getY1()-1;
+			}
+		}
+
+		if (this.y1>=s2.getY1()&&(this.y2<=s2.getY2())) {
+			if ((this.x1>=s2.getX1())&&(this.x1<=s2.getX2())) {
+				this.x1=s2.getX2()+1;
+			}
+			if ((this.x2>=s2.getX1())&&(this.x2<=s2.getX2())) {
+				this.x2=s2.getX1()-1;
+			}
+		}
 		
+		if((this.x1==s2.getX2()+1)&&(this.x2==s2.getX1()-1)&&(this.y1==s2.getY2()+1)&&(this.y2==s2.getY1()-1)) {
+			this.selected = -2;
+			this.x1 = -1;
+			this.x2 = -1;
+			this.y1 = -1;
+			this.y2 = -1;
+		}
+
 	}
 
 	@Override
@@ -29,6 +55,7 @@ public class Diffe extends Duplet {
 
 	@Override
 	public String toString() {
+		//String result = "Diffe : x1 = " + this.x1 +"  y1 = " + this.y1 + "  x2 = " + this.x2 + "  y2 = "+ this.y2+"\n";
 		String result = "Diffe :\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
 	            result += "|-----";
