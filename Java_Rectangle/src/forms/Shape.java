@@ -1,6 +1,7 @@
 package forms;
 
 import java.io.Serializable;
+
 import java.awt.Graphics;
 
 public abstract class Shape implements Serializable{
@@ -45,7 +46,14 @@ public abstract class Shape implements Serializable{
 		this.y2 = y;
 	}
 
+	/*
+	 * 0 : unselected
+	 * 1 : selected
+	 * -2 : empty
+	 */
 	protected int selected = 0;
+
+
 
 	public int getSelected(){
 		return this.selected;

@@ -8,52 +8,13 @@ public class Union extends Duplet {
 	
 	public Union (Shape s1,Shape s2) {
 		this.Lleaf=s1;
-		this.Rleaf=s2;
+		this.Rleaf=s2;	
 
-		/*
-		if(((s1.getX1()<0)||(s2.getX1()<0))&&((s1.getY1()<0)||(s2.getY1()<0))){
-			this.x1=-1;
-			this.x2=-1;
-			this.y1=-1;
-			this.y2=-1;
-			return;
-		}
-		if((s2.getX1()<0)||(s2.getY1()<0)){
-			this.x1=s1.getX1();
-			this.x2=s1.getX2();
-			this.y1=s1.getY1();
-			this.y2=s1.getY2();
-			return;
-		}
-		if((s1.getX1()<0)||(s1.getY1()<0)){
-			this.x1=s2.getX1();
-			this.x2=s2.getX2();
-			this.y1=s2.getY1();
-			this.y2=s2.getY2();
-			return;
-		}
-		*/		
-
-		if(s1.getX1()<=s2.getX1()) {
-			this.x1=s1.getX1();
-		} else {
-			this.x1=s2.getX1();
-		}
-		if(s1.getY1()<=s2.getY1()) {
-			this.y1=s1.getY1();
-		} else {
-			this.y1=s2.getY1();
-		}
-		if(s1.getX2()>=s2.getX2()) {
-			this.x2=s1.getX2();
-		} else {
-			this.x2=s2.getX2();
-		}
-		if(s1.getY2()>=s2.getY2()) {
-			this.y2=s1.getY2();
-		} else {
-			this.y2=s2.getY2();
-		}		
+		this.x1 = Math.min(s1.getX1(), s2.getX1());
+		this.y1 = Math.min(s1.getY1(), s2.getY1());
+		this.x2 = Math.max(s1.getX2(), s2.getX2());
+		this.y2 = Math.max(s1.getY2(), s2.getY2());
+				
 	}
 
 	@Override

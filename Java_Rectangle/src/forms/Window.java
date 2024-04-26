@@ -1,6 +1,5 @@
 package forms;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -9,36 +8,36 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import java.awt.EventQueue;
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Desktop;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Color;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Stack;
-import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Desktop;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Color;
+import java.util.Stack;
 
 public class Window extends JFrame {
 
@@ -119,6 +118,8 @@ public class Window extends JFrame {
 
 		// Canvas
 		Canvas canvas = new Canvas() {
+
+			private static final long serialVersionUID = 1L;
 
 			public void paint(Graphics g) {
 				super.paint(g);
@@ -334,6 +335,7 @@ public class Window extends JFrame {
 		
 		JMenuItem menuExit = new JMenuItem("Exit");
 		menuFile.add(menuExit);
+		menuExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		menuExit.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        closeWindow();
@@ -343,13 +345,13 @@ public class Window extends JFrame {
 		JButton menuUndo = new JButton();
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
-		menuUndo.setMnemonic('z');
-
+		//menuUndo.setMnemonic('z');
+		
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
 		menuBar.add(menuRedo);
-		menuRedo.setMnemonic('y');
-		
+		//menuRedo.setMnemonic('y');		
+	
 		menuUndo.setEnabled(false);
 		menuRedo.setEnabled(false);
 
@@ -379,7 +381,7 @@ public class Window extends JFrame {
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
-		menuHelp.setMnemonic('H');
+		//menuHelp.setMnemonic('H');
 		
 		JMenuItem menuGithub = new JMenuItem("GoTo Github Project");
 		menuHelp.add(menuGithub);
@@ -501,19 +503,23 @@ public class Window extends JFrame {
 					else{
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
+						
 						Inter intersection = null;
-						if (form1.belong(form2.getX1(), form2.getY1())==0 || form2.belong(form1.getX1(), form1.getY1())==0) {
-							intersection = new Inter(form1.copy(), form2.copy());
-							System.out.println(intersection);
-							leftStack.push(scene1.copy());
-							menuUndo.setEnabled(true);
-							rightStack.clear();
-							scene1.add(intersection);
-							scene1.remove(form1);
-							scene1.remove(form2);
-							intersection = null;
-							currentFileSaved = false;
-						}
+						intersection = new Inter(form1.copy(), form2.copy());
+
+						System.out.println(intersection);
+
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+
+						scene1.add(intersection);
+
+						scene1.remove(form1);
+						scene1.remove(form2);
+						intersection = null;
+						currentFileSaved = false;
+						
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -534,19 +540,23 @@ public class Window extends JFrame {
 					else{
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
+
 						Diffe difference = null;
-						if (form1.belong(form2.getX1(), form2.getY1())==0 || form2.belong(form1.getX1(), form1.getY1())==0) {
-							difference = new Diffe(form1.copy(), form2.copy());
-							System.out.println(difference);
-							leftStack.push(scene1.copy());
-							menuUndo.setEnabled(true);
-							rightStack.clear();	
-							scene1.add(difference);
-							scene1.remove(form1);
-							scene1.remove(form2);
-							difference = null;
-							currentFileSaved = false;
-						}
+						difference = new Diffe(form1.copy(), form2.copy());
+
+						System.out.println(difference);
+
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+
+						scene1.add(difference);
+				
+						scene1.remove(form1);
+						scene1.remove(form2);
+						difference = null;
+						currentFileSaved = false;
+						
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
