@@ -505,21 +505,22 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 						
 						Inter intersection = null;
-						intersection = new Inter(form1.copy(), form2.copy());
+						if (form1.belong(form2.getX1(), form2.getY1())==0 || form2.belong(form1.getX1(), form1.getY1())==0) {
+							intersection = new Inter(form1.copy(), form2.copy());
 
-						System.out.println(intersection);
+							System.out.println(intersection);
 
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();
 
-						scene1.add(intersection);
+							scene1.add(intersection);
 
-						scene1.remove(form1);
-						scene1.remove(form2);
-						intersection = null;
-						currentFileSaved = false;
-						
+							scene1.remove(form1);
+							scene1.remove(form2);
+							intersection = null;
+							currentFileSaved = false;
+						}
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -542,21 +543,22 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 
 						Diffe difference = null;
-						difference = new Diffe(form1.copy(), form2.copy());
+						if (form1.belong(form2.getX1(), form2.getY1())==0 || form2.belong(form1.getX1(), form1.getY1())==0) {
+							difference = new Diffe(form1.copy(), form2.copy());
 
-						System.out.println(difference);
+							System.out.println(difference);
 
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();
 
-						scene1.add(difference);
-				
-						scene1.remove(form1);
-						scene1.remove(form2);
-						difference = null;
-						currentFileSaved = false;
-						
+							scene1.add(difference);
+					
+							scene1.remove(form1);
+							scene1.remove(form2);
+							difference = null;
+							currentFileSaved = false;
+						}
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
