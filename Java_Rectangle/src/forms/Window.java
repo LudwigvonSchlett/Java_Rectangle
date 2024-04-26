@@ -73,10 +73,6 @@ public class Window extends JFrame {
 	private int WindowWidth = 714;
 		
 	private int WindowHeight = 611;
-
-	private Point lastPoint1 = null;
-
-	private Point lastPoint2 = null;
 	
 	private boolean currentFileSaved = false;
 	
@@ -100,7 +96,8 @@ public class Window extends JFrame {
 	
 	private void closeWindow() { //fenetre de vérification avant de quitter
 		if (currentFileSaved == false) {
-			int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
+			//int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
+			int clicked = JOptionPane.showConfirmDialog(Window.this, "Quitter sans sauvegarder ?", "", JOptionPane.YES_NO_OPTION);
 			if (clicked == JOptionPane.YES_OPTION) {
 				dispose();
 			}
@@ -197,7 +194,6 @@ public class Window extends JFrame {
 
 		JButton interButton = new JButton(new ImageIcon(this.getClass().getResource("icons/inter.png")));
 		toolBar.add(interButton);
-
 		
 		JButton diffButton = new JButton(new ImageIcon(this.getClass().getResource("icons/diff.png")));
 		toolBar.add(diffButton);
@@ -577,6 +573,10 @@ public class Window extends JFrame {
 					ShapeSelected = scene1.select(point.x, point.y);
 					oldX = point.x;
 					oldY = point.y;
+					leftStack.push(scene1.copy());
+					menuUndo.setEnabled(true);
+					rightStack.clear();
+					canvas.repaint();
 
 					if(CanvasHeight != canvas.getHeight() || CanvasWidth != canvas.getWidth()) {
 						CanvasHeight = canvas.getHeight();
@@ -591,15 +591,6 @@ public class Window extends JFrame {
 					ShapeSelected = null;
 					scene1.unselectall();
 					canvas.repaint();
-					lastPoint2 = e.getPoint();
-        			System.out.println(lastPoint1);
-					System.out.println(lastPoint2);
-					if (lastPoint2.getX()==lastPoint1.getX() && lastPoint2.getY()==lastPoint1.getY()){
-						leftStack.push(scene1.copy());
-        				menuUndo.setEnabled(true);
-						rightStack.clear();	
-						System.out.println("Last point after releasing the mouse: " + lastPoint1);
-					}
 				}
 			}
 		});
@@ -613,37 +604,31 @@ public class Window extends JFrame {
 					int dy = point.y - oldY;
 					if ((ShapeSelected.getX1()+dx>=0)&&(ShapeSelected.getX2()+dx<=CanvasWidth)) {
 						ShapeSelected.move(dx, 0);
-						lastPoint1 = e.getPoint();
 						oldX = point.x;
 						currentFileSaved = false;
 					} else if (ShapeSelected.getX1()+dx<0) {
 						dx = - ShapeSelected.getX1();
 						ShapeSelected.move(dx, 0);
-						lastPoint1 = e.getPoint();
 						oldX = point.x;
 						currentFileSaved = false;
 					} else if (ShapeSelected.getX2()+dx>CanvasWidth) {
 						dx = CanvasWidth - ShapeSelected.getX2();
 						ShapeSelected.move(dx, 0);
-						lastPoint1 = e.getPoint();
 						oldX = point.x;
 						currentFileSaved = false;
 					}
 					if ((ShapeSelected.getY1()+dy>=0)&&(ShapeSelected.getY2()+dy<=CanvasHeight)) {
 						ShapeSelected.move(0, dy);
-						lastPoint1 = e.getPoint();
 						oldY = point.y;
 						currentFileSaved = false;
 					} else if (ShapeSelected.getY1()+dy<0) {
 						dy = - ShapeSelected.getY1();
 						ShapeSelected.move(0, dy);
-						lastPoint1 = e.getPoint();
 						oldY = point.y;
 						currentFileSaved = false;
 					} else if (ShapeSelected.getY2()+dy>CanvasHeight) {
 						dy = CanvasHeight - ShapeSelected.getY2();
 						ShapeSelected.move(0, dy);
-						lastPoint1 = e.getPoint();
 						oldY = point.y;
 						currentFileSaved = false;
 					}
