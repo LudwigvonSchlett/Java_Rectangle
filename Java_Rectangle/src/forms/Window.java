@@ -74,6 +74,8 @@ public class Window extends JFrame {
 		
 	private int WindowHeight = 611;
 	
+	private boolean currentFileSaved = false;
+	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -93,10 +95,17 @@ public class Window extends JFrame {
 	}
 	
 	private void closeWindow() { //fenetre de vérification avant de quitter
-	    int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
-	    if (clicked == JOptionPane.YES_OPTION) {
-	        dispose();
-	    }
+		if (currentFileSaved == false) {
+			//int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
+			int clicked = JOptionPane.showConfirmDialog(Window.this, "Quitter sans sauvegarder ?", "", JOptionPane.YES_NO_OPTION);
+			if (clicked == JOptionPane.YES_OPTION) {
+				dispose();
+			}
+		}
+		else {
+			dispose();
+		}
+	    
 	}
 
 	public Window() { //constructeur
@@ -185,7 +194,6 @@ public class Window extends JFrame {
 
 		JButton interButton = new JButton(new ImageIcon(this.getClass().getResource("icons/inter.png")));
 		toolBar.add(interButton);
-
 		
 		JButton diffButton = new JButton(new ImageIcon(this.getClass().getResource("icons/diff.png")));
 		toolBar.add(diffButton);
@@ -255,6 +263,7 @@ public class Window extends JFrame {
 						leftStack.clear();
 						rightStack.clear();
 		                canvas.repaint();
+						currentFileSaved = true;
 		            } catch (Exception e1) {
 		                e1.printStackTrace();
 		            }
@@ -285,6 +294,7 @@ public class Window extends JFrame {
 				}
 				else {
 					scene1.saveXML(filepath);
+					currentFileSaved = true;
 				}
 		    }
 		});
@@ -300,7 +310,8 @@ public class Window extends JFrame {
 		            File selectedFile = fileChooser.getSelectedFile();
 		            try {
 						filepath = selectedFile.getPath();
-		                scene1.saveXML(filepath);          
+		                scene1.saveXML(filepath);     
+						currentFileSaved = true; 
 		            } catch (Exception e1) {
 		                e1.printStackTrace();
 		            }
@@ -332,10 +343,12 @@ public class Window extends JFrame {
 		JButton menuUndo = new JButton();
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
+		menuUndo.setMnemonic('z');
 
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
 		menuBar.add(menuRedo);
+		menuRedo.setMnemonic('y');
 		
 		menuUndo.setEnabled(false);
 		menuRedo.setEnabled(false);
@@ -406,6 +419,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Rectangle")) {
+					currentFileSaved = false;
 					//scene1.unselectall();
 					if (P1 == null) {
 						//scene1.unselectall();
@@ -434,6 +448,7 @@ public class Window extends JFrame {
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
+						currentFileSaved = false;
 						mode = "Select";
 					}
 				}
@@ -470,6 +485,7 @@ public class Window extends JFrame {
 						form1 = null;
 						form2 = null;
 						union = null;
+						currentFileSaved = false;
 						mode = "Select";
 					}
 				}
@@ -485,26 +501,24 @@ public class Window extends JFrame {
 					else{
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
-
 						Inter intersection = null;
-						intersection = new Inter(form1.copy(), form2.copy());
-						
-						System.out.println(intersection);
-
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
-
-						scene1.add(intersection);
-						scene1.remove(form1);
-						scene1.remove(form2);
-						
+						if (form1.belong(form2.getX1(), form2.getY1())==0 || form2.belong(form1.getX1(), form1.getY1())==0) {
+							intersection = new Inter(form1.copy(), form2.copy());
+							System.out.println(intersection);
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();
+							scene1.add(intersection);
+							scene1.remove(form1);
+							scene1.remove(form2);
+							intersection = null;
+							currentFileSaved = false;
+						}
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
 						form1 = null;
 						form2 = null;
-						intersection = null;
 						mode = "Select";
 					}
 				}
@@ -520,21 +534,19 @@ public class Window extends JFrame {
 					else{
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
-						
 						Diffe difference = null;
-						difference = new Diffe(form1.copy(), form2.copy());
-						
-						System.out.println(difference);
-
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
-								
-						scene1.add(difference);
-						scene1.remove(form1);
-						scene1.remove(form2);
-					
-						
+						if (form1.belong(form2.getX1(), form2.getY1())==0 || form2.belong(form1.getX1(), form1.getY1())==0) {
+							difference = new Diffe(form1.copy(), form2.copy());
+							System.out.println(difference);
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();	
+							scene1.add(difference);
+							scene1.remove(form1);
+							scene1.remove(form2);
+							difference = null;
+							currentFileSaved = false;
+						}
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -553,7 +565,6 @@ public class Window extends JFrame {
 				closeWindow();
 				}
 		});
-
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -562,6 +573,10 @@ public class Window extends JFrame {
 					ShapeSelected = scene1.select(point.x, point.y);
 					oldX = point.x;
 					oldY = point.y;
+					leftStack.push(scene1.copy());
+					menuUndo.setEnabled(true);
+					rightStack.clear();
+					canvas.repaint();
 
 					if(CanvasHeight != canvas.getHeight() || CanvasWidth != canvas.getWidth()) {
 						CanvasHeight = canvas.getHeight();
@@ -590,26 +605,32 @@ public class Window extends JFrame {
 					if ((ShapeSelected.getX1()+dx>=0)&&(ShapeSelected.getX2()+dx<=CanvasWidth)) {
 						ShapeSelected.move(dx, 0);
 						oldX = point.x;
+						currentFileSaved = false;
 					} else if (ShapeSelected.getX1()+dx<0) {
 						dx = - ShapeSelected.getX1();
 						ShapeSelected.move(dx, 0);
 						oldX = point.x;
+						currentFileSaved = false;
 					} else if (ShapeSelected.getX2()+dx>CanvasWidth) {
 						dx = CanvasWidth - ShapeSelected.getX2();
 						ShapeSelected.move(dx, 0);
 						oldX = point.x;
+						currentFileSaved = false;
 					}
 					if ((ShapeSelected.getY1()+dy>=0)&&(ShapeSelected.getY2()+dy<=CanvasHeight)) {
 						ShapeSelected.move(0, dy);
 						oldY = point.y;
+						currentFileSaved = false;
 					} else if (ShapeSelected.getY1()+dy<0) {
 						dy = - ShapeSelected.getY1();
 						ShapeSelected.move(0, dy);
 						oldY = point.y;
+						currentFileSaved = false;
 					} else if (ShapeSelected.getY2()+dy>CanvasHeight) {
 						dy = CanvasHeight - ShapeSelected.getY2();
 						ShapeSelected.move(0, dy);
 						oldY = point.y;
+						currentFileSaved = false;
 					}
 					canvas.repaint();
 				}
