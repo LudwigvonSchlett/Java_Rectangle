@@ -495,25 +495,27 @@ public class Window extends JFrame {
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
-					}
-					else{
+					} else {
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
 
 						Union union = null;
-						union = new Union(form1.copy(), form2.copy());
-						
-						System.out.println(union);
 
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
+						if (form1 != null && form2 != null && form1 != form2) {
+							union = new Union(form1.copy(), form2.copy());
+							System.out.println(union);
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();
 
-						scene1.add(union);
-						scene1.remove(form1);
-						scene1.remove(form2);
-						scene1.unselectall();
-						
+							scene1.add(union);
+							scene1.remove(form1);
+							scene1.remove(form2);
+							scene1.unselectall();
+						} else {
+							JOptionPane.showMessageDialog(null, "Veuillez sélectionner deux formes", "Erreur", JOptionPane.ERROR_MESSAGE);
+						}
+
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -532,33 +534,34 @@ public class Window extends JFrame {
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
-					}
-					else{
+					} else {
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
-						
-						Inter intersection = null;
-						intersection = new Inter(form1.copy(), form2.copy());
-
-						System.out.println(intersection);
-
-						if (intersection.getSelected() == -2) {
-							JOptionPane.showMessageDialog(null, "Intersection est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
-							intersection = null;
+					
+						if (form1 != null && form2 != null && form1 != form2) {
+							Inter intersection = null;
+							intersection = new Inter(form1.copy(), form2.copy());
+							
+							if (intersection.getSelected() == -2) {
+								JOptionPane.showMessageDialog(null, "Intersection est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
+								intersection = null;
+							} else {
+								System.out.println(intersection);
+								leftStack.push(scene1.copy());
+								menuUndo.setEnabled(true);
+								rightStack.clear();
+	
+								scene1.add(intersection);
+	
+								scene1.remove(form1);
+								scene1.remove(form2);
+	
+	
+								intersection = null;
+								currentFileSaved = false;
+							}
 						} else {
-
-							leftStack.push(scene1.copy());
-							menuUndo.setEnabled(true);
-							rightStack.clear();
-
-							scene1.add(intersection);
-
-							scene1.remove(form1);
-							scene1.remove(form2);
-
-
-							intersection = null;
-							currentFileSaved = false;
+							JOptionPane.showMessageDialog(null, "Veuillez sélectionner deux formes", "Erreur", JOptionPane.ERROR_MESSAGE);
 						}
 
 						canvas.repaint();
@@ -577,33 +580,35 @@ public class Window extends JFrame {
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
-					}
-					else{
+					} else {
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
 
-						Diffe difference = null;
-						difference = new Diffe(form1.copy(), form2.copy());
+						if (form1 != null && form2 != null && form1 != form2) {
+							Diffe difference = null;
+							difference = new Diffe(form1.copy(), form2.copy());
 
-						System.out.println(difference);
-
-						if (difference.getSelected() == -2) {
-							JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
-							difference = null;
-						} else {
-							leftStack.push(scene1.copy());
-							menuUndo.setEnabled(true);
-							rightStack.clear();
-
-							scene1.add(difference);
-
-							scene1.remove(form1);
-							scene1.remove(form2);
-
-							difference = null;
-							currentFileSaved = false;
-          				}
+							if (difference.getSelected() == -2) {
+								JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
+								difference = null;
+							} else {
+								System.out.println(difference);
+								leftStack.push(scene1.copy());
+								menuUndo.setEnabled(true);
+								rightStack.clear();
 	
+								scene1.add(difference);
+	
+								scene1.remove(form1);
+								scene1.remove(form2);
+	
+								difference = null;
+								currentFileSaved = false;
+							  }
+						} else {
+							JOptionPane.showMessageDialog(null, "Veuillez sélectionner deux formes", "Erreur", JOptionPane.ERROR_MESSAGE);
+						}
+
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -648,6 +653,7 @@ public class Window extends JFrame {
 					ShapeSelected = null;
 					scene1.unselectall();
 					canvas.repaint();
+					mode = "Select";
 				}
 			}
 		});
