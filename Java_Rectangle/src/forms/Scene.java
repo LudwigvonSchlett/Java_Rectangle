@@ -13,10 +13,11 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 
-public class Scene{
+public class Scene implements Serializable{
 	
 	protected  List<Shape> Gcontent = new ArrayList<Shape>();
 	
