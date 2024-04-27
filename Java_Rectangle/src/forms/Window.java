@@ -540,7 +540,6 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 						
 						Inter intersection = null;
-						intersection = new Inter(form1.copy(), form2.copy());
 
 						System.out.println(intersection);
 
@@ -548,6 +547,7 @@ public class Window extends JFrame {
 							JOptionPane.showMessageDialog(null, "Intersection est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
 							intersection = null;
 						} else {
+
 							leftStack.push(scene1.copy());
 							menuUndo.setEnabled(true);
 							rightStack.clear();
@@ -557,10 +557,11 @@ public class Window extends JFrame {
 							scene1.remove(form1);
 							scene1.remove(form2);
 
+
 							intersection = null;
 							currentFileSaved = false;
 						}
-						
+
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -583,9 +584,9 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 
 						Diffe difference = null;
-						difference = new Diffe(form1.copy(), form2.copy());
+						
 
-						System.out.println(difference);
+							System.out.println(difference);
 
 						if (difference.getSelected() == -2) {
 							JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -602,8 +603,8 @@ public class Window extends JFrame {
 
 							difference = null;
 							currentFileSaved = false;
-						}
-						
+            }
+	
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
@@ -611,7 +612,6 @@ public class Window extends JFrame {
 						form2 = null;
 						mode = "Select";
 					}
-				}
 		    }
 		});
 		
