@@ -148,22 +148,37 @@ public class Window extends JFrame {
 		JButton moveButton = new JButton(new ImageIcon(this.getClass().getResource("icons/move.png")));
 		toolBar.add(moveButton);
 
+		JButton eraseButton = new JButton(new ImageIcon(this.getClass().getResource("icons/erase.png")));
+		toolBar.add(eraseButton);
+
 		selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene1.unselectall();
+				
 				mode= "Select";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
 				canvas.repaint();
+
 			}
 		});
 
 		moveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				scene1.unselectall();
 				mode= "Move";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
+				
+			}
+		});
+
+		eraseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				mode= "Erase";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
@@ -179,12 +194,13 @@ public class Window extends JFrame {
 
 		RectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene1.unselectall();
+				
 				mode= "Rectangle";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
 				canvas.repaint();
+
 			}
 		});
 
@@ -201,34 +217,37 @@ public class Window extends JFrame {
 
 		unionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene1.unselectall();
+				
 				mode= "Union";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
 				canvas.repaint();
+
 			}
 		});
 
 		interButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene1.unselectall();
+				
 				mode= "Inter";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
 				canvas.repaint();
+
 			}
 		});
 		
 		diffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene1.unselectall();
+				
 				mode= "Diff";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
 				canvas.repaint();
+
 			}
 		});
 
@@ -420,6 +439,22 @@ public class Window extends JFrame {
 					scene1.unselectall();
 				}
 
+				if (mode.equals("Erase")) {
+					P1 = e.getPoint();
+					ShapeSelected = scene1.select(P1.x, P1.y);
+					if (ShapeSelected != null) {
+
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+
+						scene1.remove(ShapeSelected);
+						canvas.repaint();
+						currentFileSaved = false;
+					}
+					P1 = null;
+				}
+		
 				if (mode.equals("Rectangle")) {
 					currentFileSaved = false;
 					//scene1.unselectall();
@@ -509,16 +544,22 @@ public class Window extends JFrame {
 
 						System.out.println(intersection);
 
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
+						if (intersection.getSelected() == -2) {
+							JOptionPane.showMessageDialog(null, "Intersection est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
+							intersection = null;
+						} else {
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();
 
-						scene1.add(intersection);
+							scene1.add(intersection);
 
-						scene1.remove(form1);
-						scene1.remove(form2);
-						intersection = null;
-						currentFileSaved = false;
+							scene1.remove(form1);
+							scene1.remove(form2);
+
+							intersection = null;
+							currentFileSaved = false;
+						}
 						
 						canvas.repaint();
 						P1 = null;
@@ -546,16 +587,22 @@ public class Window extends JFrame {
 
 						System.out.println(difference);
 
-						leftStack.push(scene1.copy());
-						menuUndo.setEnabled(true);
-						rightStack.clear();
+						if (difference.getSelected() == -2) {
+							JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
+							difference = null;
+						} else {
+							leftStack.push(scene1.copy());
+							menuUndo.setEnabled(true);
+							rightStack.clear();
 
-						scene1.add(difference);
-				
-						scene1.remove(form1);
-						scene1.remove(form2);
-						difference = null;
-						currentFileSaved = false;
+							scene1.add(difference);
+
+							scene1.remove(form1);
+							scene1.remove(form2);
+
+							difference = null;
+							currentFileSaved = false;
+						}
 						
 						canvas.repaint();
 						P1 = null;
