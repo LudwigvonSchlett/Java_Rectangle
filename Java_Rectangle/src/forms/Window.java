@@ -100,11 +100,9 @@ public class Window extends JFrame {
 			if (clicked == JOptionPane.YES_OPTION) {
 				dispose();
 			}
-		}
-		else {
+		} else {
 			dispose();
 		}
-	    
 	}
 
 	public Window() { //constructeur
@@ -540,6 +538,7 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 						
 						Inter intersection = null;
+						intersection = new Inter(form1.copy(), form2.copy());
 
 						System.out.println(intersection);
 
@@ -584,9 +583,9 @@ public class Window extends JFrame {
 						form2 = scene1.select(P2.x, P2.y);
 
 						Diffe difference = null;
-						
+						difference = new Diffe(form1.copy(), form2.copy());
 
-							System.out.println(difference);
+						System.out.println(difference);
 
 						if (difference.getSelected() == -2) {
 							JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -603,7 +602,7 @@ public class Window extends JFrame {
 
 							difference = null;
 							currentFileSaved = false;
-            }
+          				}
 	
 						canvas.repaint();
 						P1 = null;
@@ -612,6 +611,7 @@ public class Window extends JFrame {
 						form2 = null;
 						mode = "Select";
 					}
+				}
 		    }
 		});
 		
