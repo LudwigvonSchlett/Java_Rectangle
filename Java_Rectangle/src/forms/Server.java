@@ -33,7 +33,7 @@ public class Server {
             System.out.println("Serveur opérationnel");
 
         } catch (Exception e) {
-            System.out.println(e);
+			e.printStackTrace();
         }
     }
 

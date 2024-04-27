@@ -79,6 +79,9 @@ public class Window extends JFrame {
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
+
+		Server.main(args);
+
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -115,8 +118,6 @@ public class Window extends JFrame {
 		this.setLocationRelativeTo(null);
 		//this.setResizable(false);
 
-		
-
 		// Canvas
 		Canvas canvas = new Canvas() {
 
@@ -138,8 +139,7 @@ public class Window extends JFrame {
 			}
 			
 		} catch (Exception e) {
-			System.out.println(e);
-			JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
 
 		getContentPane().add(canvas, BorderLayout.CENTER);
@@ -360,7 +360,8 @@ public class Window extends JFrame {
 					scene1 = remotescene.load();
 					canvas.repaint();
 				} catch (Exception error) {
-					System.out.println(error);
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});	
@@ -376,7 +377,8 @@ public class Window extends JFrame {
 					remotescene.save(scene1);
 					remotescene.backup();
 				} catch (Exception error) {
-					System.out.println(error);
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});	
@@ -461,11 +463,12 @@ public class Window extends JFrame {
 					
 					P1 = e.getPoint();
 					ShapeSelected = scene1.select(P1.x, P1.y);
-					//System.out.println("x = " + P1.x + " y = " + P1.y);
-					//System.out.println(ShapeSelected);
 					canvas.repaint();
 					P1 = null;
 					P2 = null;
+					if (ShapeSelected != null){
+						JOptionPane.showMessageDialog(null, ShapeSelected, "Forme sélectionnée", JOptionPane.PLAIN_MESSAGE);
+					}
 				} else {
 					scene1.unselectall();
 				}
