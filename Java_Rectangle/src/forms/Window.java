@@ -36,7 +36,7 @@ import java.io.IOException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.rmi.Naming;
 import java.util.Stack;
 
 public class Window extends JFrame {
@@ -54,6 +54,8 @@ public class Window extends JFrame {
 	private Stack<Scene> rightStack = new Stack<Scene>();
 	
 	private String mode = "Select";
+
+	private String ip = "127.0.0.1";
 
 	private String filepath = null;
 
@@ -112,6 +114,7 @@ public class Window extends JFrame {
 		this.setSize(WindowWidth, WindowHeight);
 		this.setLocationRelativeTo(null);
 		//this.setResizable(false);
+
 		
 
 		// Canvas
@@ -127,14 +130,20 @@ public class Window extends JFrame {
 			}
 		};
 
+		try {
+			Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
+			if (!remotescene.load().equals(scene1)){
+				scene1 = remotescene.load();
+				canvas.repaint();
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+		}
+
 		getContentPane().add(canvas, BorderLayout.CENTER);
-		
-		// Test de la classe Scene
-		
-		scene1.add(new Inter(new Rect(0,0,100,100),new Rect(50,50,150,150)));
-		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
-		System.out.println(scene1);
-		
+
 		// Barre d'outils
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -343,10 +352,34 @@ public class Window extends JFrame {
 		JMenuItem menuImport = new JMenuItem("Import from Server");
 		menuFile.add(menuImport);
 		menuImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
+
+		menuImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
+					scene1 = remotescene.load();
+					canvas.repaint();
+				} catch (Exception error) {
+					System.out.println(error);
+				}
+			}
+		});	
 		
 		JMenuItem menuExport = new JMenuItem("Export to Server");
 		menuFile.add(menuExport);
 		menuExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+
+		menuExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
+					remotescene.save(scene1);
+					remotescene.backup();
+				} catch (Exception error) {
+					System.out.println(error);
+				}
+			}
+		});	
 		
 		menuFile.addSeparator();
 		
@@ -625,8 +658,10 @@ public class Window extends JFrame {
 			
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				closeWindow();
-				}
+			}
+
 		});
+
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
