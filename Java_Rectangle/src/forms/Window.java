@@ -501,8 +501,9 @@ public class Window extends JFrame {
 
 						Union union = null;
 
-						if (form1 != null && form2 != null) {
+						if (form1 != null && form2 != null && form1 != form2) {
 							union = new Union(form1.copy(), form2.copy());
+							System.out.println(union);
 							leftStack.push(scene1.copy());
 							menuUndo.setEnabled(true);
 							rightStack.clear();
@@ -537,7 +538,7 @@ public class Window extends JFrame {
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
 					
-						if (form1 != null && form2 != null) {
+						if (form1 != null && form2 != null && form1 != form2) {
 							Inter intersection = null;
 							intersection = new Inter(form1.copy(), form2.copy());
 							
@@ -583,7 +584,7 @@ public class Window extends JFrame {
 						P2 = e.getPoint();
 						form2 = scene1.select(P2.x, P2.y);
 
-						if (form1 != null && form2 != null) {
+						if (form1 != null && form2 != null && form1 != form2) {
 							Diffe difference = null;
 							difference = new Diffe(form1.copy(), form2.copy());
 
