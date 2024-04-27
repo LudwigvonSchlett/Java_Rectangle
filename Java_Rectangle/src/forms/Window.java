@@ -589,7 +589,7 @@ public class Window extends JFrame {
 							difference = new Diffe(form1.copy(), form2.copy());
 
 							if (difference.getSelected() == -2) {
-								JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Difference est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
 								difference = null;
 							} else {
 								System.out.println(difference);
@@ -653,7 +653,6 @@ public class Window extends JFrame {
 					ShapeSelected = null;
 					scene1.unselectall();
 					canvas.repaint();
-					mode = "Select";
 				}
 			}
 		});

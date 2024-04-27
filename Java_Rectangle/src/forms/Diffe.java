@@ -34,7 +34,7 @@ public class Diffe extends Duplet {
 			}
 		}
 		
-		if((this.x1==s2.getX2()+1)&&(this.x2==s2.getX1()-1)&&(this.y1==s2.getY2()+1)&&(this.y2==s2.getY1()-1)) {
+		if((this.x1==s2.getX2()+1)&&(this.x2==s2.getX1()-1)&&(this.y1==s2.getY2()+1)&&(this.y2==s2.getY1()-1)&&!(s2 instanceof Duplet)) {
 			this.selected = -2;
 			this.x1 = -1;
 			this.x2 = -1;
