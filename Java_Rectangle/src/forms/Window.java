@@ -1,10 +1,13 @@
 package forms;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Desktop;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Color;
 
@@ -43,9 +47,11 @@ public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected static int MAX_WINDOW_WIDTH=1920;
+	protected static int MAX_WINDOW_WIDTH=3840;
 	
-	protected static int MAX_WINDOW_HEIGHT=1080;
+	protected static int MAX_WINDOW_HEIGHT=2160;
+
+	private Canvas canvas;
 
 	private Scene scene1 = new Scene();
 
@@ -55,7 +61,11 @@ public class Window extends JFrame {
 	
 	private String mode = "Select";
 
-	private String ip = "127.0.0.1";
+	private String ip = null;
+
+	private int port = 0;
+
+	private Boolean server = false;
 
 	private String filepath = null;
 
@@ -79,9 +89,6 @@ public class Window extends JFrame {
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
-
-		Server.main(args);
-
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -89,7 +96,6 @@ public class Window extends JFrame {
 					
 					Window window = new Window();
 					window.setVisible(true);
-					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,13 +106,34 @@ public class Window extends JFrame {
 	
 	private void closeWindow() { //fenetre de vérification avant de quitter
 		if (currentFileSaved == false) {
-			//int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
 			int clicked = JOptionPane.showConfirmDialog(Window.this, "Quitter sans sauvegarder ?", "", JOptionPane.YES_NO_OPTION);
 			if (clicked == JOptionPane.YES_OPTION) {
 				dispose();
 			}
 		} else {
 			dispose();
+		}
+	}
+
+	public void configureserver(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+		this.server = true;
+	}
+
+	public void fetchserver() {
+		try {
+			Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port + "/server");
+			if (!server.load().equals(scene1)){
+				scene1 = server.load();
+				currentFileSaved = true;
+				if (canvas != null) {
+					canvas.repaint();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -119,7 +146,7 @@ public class Window extends JFrame {
 		//this.setResizable(false);
 
 		// Canvas
-		Canvas canvas = new Canvas() {
+		canvas = new Canvas() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -130,17 +157,6 @@ public class Window extends JFrame {
 				scene1.draw(g);
 			}
 		};
-
-		try {
-			Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
-			if (!remotescene.load().equals(scene1)){
-				scene1 = remotescene.load();
-				canvas.repaint();
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		getContentPane().add(canvas, BorderLayout.CENTER);
 
@@ -271,7 +287,12 @@ public class Window extends JFrame {
 		menuNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		menuNew.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        new Window().setVisible(true);
+				Window newWindow = new Window();
+				if (server){
+					newWindow.configureserver(ip, port);
+					newWindow.fetchserver();
+				}
+		        newWindow.setVisible(true);
 		    }
 		});
 		
@@ -313,7 +334,8 @@ public class Window extends JFrame {
 						File selectedFile = fileChooser.getSelectedFile();
 						try {
 							filepath = selectedFile.getPath();
-							scene1.saveXML(filepath);          
+							scene1.saveXML(filepath);
+							currentFileSaved = true;          
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -352,36 +374,119 @@ public class Window extends JFrame {
 		JMenuItem menuImport = new JMenuItem("Import from Server");
 		menuFile.add(menuImport);
 		menuImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
-
-		menuImport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
-					scene1 = remotescene.load();
-					canvas.repaint();
-				} catch (Exception error) {
-					error.printStackTrace();
-					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});	
 		
 		JMenuItem menuExport = new JMenuItem("Export to Server");
 		menuFile.add(menuExport);
 		menuExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
 
-		menuExport.addActionListener(new ActionListener() {
+		JMenuItem menuBackup = new JMenuItem("Backup to Server");
+		menuFile.add(menuBackup);
+		menuBackup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+
+		JMenuItem menuSetup = new JMenuItem("Setup a Server");
+		menuFile.add(menuSetup);
+		menuSetup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+
+		menuImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
-					remotescene.save(scene1);
-					remotescene.backup();
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1 = server.load();
+					canvas.repaint();
+					currentFileSaved = true;
 				} catch (Exception error) {
 					error.printStackTrace();
-					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
 				}
 			}
 		});	
+
+		menuExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					server.save(scene1);
+					currentFileSaved = true;
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					if ((port == 0)||(ip == null)||ip.isEmpty()) {
+						server = false;
+						ip = null;
+						port = 0;
+					}
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
+
+		menuBackup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					server.savebackup(scene1);
+					currentFileSaved = true;
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					if ((port == 0)||(ip == null)||ip.isEmpty()) {
+						server = false;
+						ip = null;
+						port = 0;
+					}
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
+
+		menuSetup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JPanel panel = new JPanel(new GridLayout(2, 2));
+					JTextField ipfield = new JTextField();
+					JTextField portfield = new JTextField();
+					panel.add(new JLabel("Ip :"));
+					panel.add(ipfield);
+					panel.add(new JLabel("Port :"));
+					panel.add(portfield);
+					int result = JOptionPane.showConfirmDialog(null, panel, "Configuration serveur", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (result == JOptionPane.OK_OPTION) {
+						String ipstring = ipfield.getText();
+						String portstring = portfield.getText();
+						if (ipstring != null  && !ipstring.isEmpty() && portstring != null && !portstring.isEmpty()) {
+							configureserver(ipstring, Integer.parseInt(portstring));
+							menuImport.setEnabled(server);
+							menuExport.setEnabled(server);
+							menuBackup.setEnabled(server);
+						} else {
+							JOptionPane.showMessageDialog(null, "Veuillez renseigner les champs", "Erreur", JOptionPane.ERROR_MESSAGE);
+							server = false;
+							ip = null;
+							port = 0;
+							menuImport.setEnabled(server);
+							menuExport.setEnabled(server);
+							menuBackup.setEnabled(server);
+						}
+					}
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erreur lors de la configuration", "Erreur", JOptionPane.ERROR_MESSAGE);
+					server = false;
+					ip = null;
+					port = 0;
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
 		
 		menuFile.addSeparator();
 		
@@ -397,12 +502,10 @@ public class Window extends JFrame {
 		JButton menuUndo = new JButton();
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
-		//menuUndo.setMnemonic('z');
 		
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
-		menuBar.add(menuRedo);
-		//menuRedo.setMnemonic('y');		
+		menuBar.add(menuRedo);		
 	
 		menuUndo.setEnabled(false);
 		menuRedo.setEnabled(false);
@@ -433,7 +536,6 @@ public class Window extends JFrame {
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
-		//menuHelp.setMnemonic('H');
 		
 		JMenuItem menuGithub = new JMenuItem("GoTo Github Project");
 		menuHelp.add(menuGithub);
@@ -491,9 +593,7 @@ public class Window extends JFrame {
 		
 				if (mode.equals("Rectangle")) {
 					currentFileSaved = false;
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						canvas.repaint();
 					} else {
@@ -525,9 +625,7 @@ public class Window extends JFrame {
 				}
 		
 				if (mode.equals("Union")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -564,9 +662,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Inter")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -610,9 +706,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Diff")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();

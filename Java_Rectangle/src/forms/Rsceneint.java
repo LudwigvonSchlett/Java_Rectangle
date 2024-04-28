@@ -8,6 +8,6 @@ public interface Rsceneint extends Remote{
 
     public void save(Scene s1) throws RemoteException;
     
-    public void backup() throws RemoteException;
+    public void savebackup(Scene s1) throws RemoteException;
 
 }
