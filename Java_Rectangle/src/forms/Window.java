@@ -36,7 +36,7 @@ import java.io.IOException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.rmi.Naming;
 import java.util.Stack;
 
 public class Window extends JFrame {
@@ -54,6 +54,8 @@ public class Window extends JFrame {
 	private Stack<Scene> rightStack = new Stack<Scene>();
 	
 	private String mode = "Select";
+
+	private String ip = "127.0.0.1";
 
 	private String filepath = null;
 
@@ -77,6 +79,9 @@ public class Window extends JFrame {
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
+
+		Server.main(args);
+
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -112,7 +117,6 @@ public class Window extends JFrame {
 		this.setSize(WindowWidth, WindowHeight);
 		this.setLocationRelativeTo(null);
 		//this.setResizable(false);
-		
 
 		// Canvas
 		Canvas canvas = new Canvas() {
@@ -127,14 +131,19 @@ public class Window extends JFrame {
 			}
 		};
 
+		try {
+			Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
+			if (!remotescene.load().equals(scene1)){
+				scene1 = remotescene.load();
+				canvas.repaint();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		getContentPane().add(canvas, BorderLayout.CENTER);
-		
-		// Test de la classe Scene
-		
-		scene1.add(new Inter(new Rect(0,0,100,100),new Rect(50,50,150,150)));
-		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
-		System.out.println(scene1);
-		
+
 		// Barre d'outils
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -343,10 +352,36 @@ public class Window extends JFrame {
 		JMenuItem menuImport = new JMenuItem("Import from Server");
 		menuFile.add(menuImport);
 		menuImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
+
+		menuImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
+					scene1 = remotescene.load();
+					canvas.repaint();
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});	
 		
 		JMenuItem menuExport = new JMenuItem("Export to Server");
 		menuFile.add(menuExport);
 		menuExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+
+		menuExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
+					remotescene.save(scene1);
+					remotescene.backup();
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});	
 		
 		menuFile.addSeparator();
 		
@@ -428,11 +463,12 @@ public class Window extends JFrame {
 					
 					P1 = e.getPoint();
 					ShapeSelected = scene1.select(P1.x, P1.y);
-					//System.out.println("x = " + P1.x + " y = " + P1.y);
-					//System.out.println(ShapeSelected);
 					canvas.repaint();
 					P1 = null;
 					P2 = null;
+					if (ShapeSelected != null){
+						JOptionPane.showMessageDialog(null, ShapeSelected, "Forme sélectionnée", JOptionPane.PLAIN_MESSAGE);
+					}
 				} else {
 					scene1.unselectall();
 				}
@@ -589,7 +625,7 @@ public class Window extends JFrame {
 							difference = new Diffe(form1.copy(), form2.copy());
 
 							if (difference.getSelected() == -2) {
-								JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Difference est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
 								difference = null;
 							} else {
 								System.out.println(difference);
@@ -625,8 +661,10 @@ public class Window extends JFrame {
 			
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				closeWindow();
-				}
+			}
+
 		});
+
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -653,7 +691,6 @@ public class Window extends JFrame {
 					ShapeSelected = null;
 					scene1.unselectall();
 					canvas.repaint();
-					mode = "Select";
 				}
 			}
 		});

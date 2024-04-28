@@ -16,9 +16,12 @@
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Inter.java"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Rect.java"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Scene.java"/>
+        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Server.java"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Shape.java"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Union.java"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Window.java"/>
+        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Rsceneint.java"/>
+        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Rsceneobj.java"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms.icons"/>
     </selectedElements>
 </jardesc>
