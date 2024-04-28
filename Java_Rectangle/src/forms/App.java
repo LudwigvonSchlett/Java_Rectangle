@@ -17,8 +17,6 @@ public class App {
 
 		Server.main(args);
 
-		Thread.sleep(50);/*
-
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -31,7 +29,7 @@ public class App {
 					e.printStackTrace();
 				}
 			}
-		}); */
+		});
 
     }
 }
