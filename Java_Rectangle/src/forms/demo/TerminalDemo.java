@@ -1,4 +1,6 @@
-package forms;
+package forms.demo;
+
+import forms.*;
 
 public class TerminalDemo {
 	

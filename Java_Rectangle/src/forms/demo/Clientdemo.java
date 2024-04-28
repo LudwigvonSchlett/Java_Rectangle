@@ -1,4 +1,6 @@
-package forms;
+package forms.demo;
+
+import forms.*;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;

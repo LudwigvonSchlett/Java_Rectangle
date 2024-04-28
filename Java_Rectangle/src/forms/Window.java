@@ -43,9 +43,9 @@ public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected static int MAX_WINDOW_WIDTH=1920;
+	protected static int MAX_WINDOW_WIDTH=3840;
 	
-	protected static int MAX_WINDOW_HEIGHT=1080;
+	protected static int MAX_WINDOW_HEIGHT=2160;
 
 	private Scene scene1 = new Scene();
 
@@ -56,6 +56,8 @@ public class Window extends JFrame {
 	private String mode = "Select";
 
 	private String ip = "127.0.0.1";
+
+	private int port = 1099;
 
 	private String filepath = null;
 
@@ -79,9 +81,6 @@ public class Window extends JFrame {
 	
 	/*MAIN*/
 	public static void main(String[] args) throws Exception {
-
-		Server.main(args);
-
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -89,7 +88,6 @@ public class Window extends JFrame {
 					
 					Window window = new Window();
 					window.setVisible(true);
-					
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,7 +98,6 @@ public class Window extends JFrame {
 	
 	private void closeWindow() { //fenetre de vérification avant de quitter
 		if (currentFileSaved == false) {
-			//int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
 			int clicked = JOptionPane.showConfirmDialog(Window.this, "Quitter sans sauvegarder ?", "", JOptionPane.YES_NO_OPTION);
 			if (clicked == JOptionPane.YES_OPTION) {
 				dispose();
@@ -132,9 +129,9 @@ public class Window extends JFrame {
 		};
 
 		try {
-			Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
-			if (!remotescene.load().equals(scene1)){
-				scene1 = remotescene.load();
+			Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/server");
+			if (!server.load().equals(scene1)){
+				scene1 = server.load();
 				canvas.repaint();
 			}
 			
@@ -313,7 +310,8 @@ public class Window extends JFrame {
 						File selectedFile = fileChooser.getSelectedFile();
 						try {
 							filepath = selectedFile.getPath();
-							scene1.saveXML(filepath);          
+							scene1.saveXML(filepath);
+							currentFileSaved = true;          
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -356,9 +354,10 @@ public class Window extends JFrame {
 		menuImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
-					scene1 = remotescene.load();
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1 = server.load();
 					canvas.repaint();
+					currentFileSaved = true;
 				} catch (Exception error) {
 					error.printStackTrace();
 					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -373,9 +372,26 @@ public class Window extends JFrame {
 		menuExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Rsceneint remotescene = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/Saveserver");
-					remotescene.save(scene1);
-					remotescene.backup();
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					server.save(scene1);
+					currentFileSaved = true;
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		JMenuItem menuBackup = new JMenuItem("Backup to Server");
+		menuFile.add(menuBackup);
+		menuBackup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+
+		menuBackup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					server.savebackup(scene1);
+					currentFileSaved = true;
 				} catch (Exception error) {
 					error.printStackTrace();
 					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -397,12 +413,10 @@ public class Window extends JFrame {
 		JButton menuUndo = new JButton();
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
-		//menuUndo.setMnemonic('z');
 		
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
-		menuBar.add(menuRedo);
-		//menuRedo.setMnemonic('y');		
+		menuBar.add(menuRedo);		
 	
 		menuUndo.setEnabled(false);
 		menuRedo.setEnabled(false);
@@ -433,7 +447,6 @@ public class Window extends JFrame {
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
-		//menuHelp.setMnemonic('H');
 		
 		JMenuItem menuGithub = new JMenuItem("GoTo Github Project");
 		menuHelp.add(menuGithub);
@@ -491,9 +504,7 @@ public class Window extends JFrame {
 		
 				if (mode.equals("Rectangle")) {
 					currentFileSaved = false;
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						canvas.repaint();
 					} else {
@@ -525,9 +536,7 @@ public class Window extends JFrame {
 				}
 		
 				if (mode.equals("Union")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -564,9 +573,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Inter")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -610,9 +617,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Diff")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
