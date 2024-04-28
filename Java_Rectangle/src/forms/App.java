@@ -7,15 +7,39 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 public class App {
 
+
+	/*
+	 * args[0] = path vers le fichier de backup
+	 * args[1] = ip du serveur
+	 * args[2] = port du serveur
+	 */
     public static void main(String[] args) throws Exception {
 
-		if (args.length == 0){
-			args = new String[2];
-			args[0] = "backup.xml";
-			args[1] = "1099";
+		String[] serverargs = new String[2];
+		String[] windowargs = new String[2];
+
+		if (args.length == 3){
+			
+			windowargs[0] = args[1];
+			windowargs[1] = args[2];
+		
+			serverargs[0] = args[0];
+			serverargs[1] = args[2];
+
+		} else {
+			String defaultpath = "backup.xml";
+			String defaultip = "127.0.0.1"; // "localhost"
+			String defaultport = "1099";
+
+			serverargs[0] = defaultpath;
+			serverargs[1] = defaultport;
+
+			windowargs[0] = defaultip;
+			windowargs[1] = defaultport;
+
 		}
 
-		Server.main(args);
+		Server.main(serverargs);		
 
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {
@@ -23,6 +47,8 @@ public class App {
 				try {
 					
 					Window window = new Window();
+					window.configureserver(windowargs[0], Integer.parseInt(windowargs[1]));
+					window.fetchserver();
 					window.setVisible(true);
 					
 				} catch (Exception e) {

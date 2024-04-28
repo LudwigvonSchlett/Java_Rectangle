@@ -1,10 +1,13 @@
 package forms;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Desktop;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Color;
 
@@ -47,6 +51,8 @@ public class Window extends JFrame {
 	
 	protected static int MAX_WINDOW_HEIGHT=2160;
 
+	private Canvas canvas;
+
 	private Scene scene1 = new Scene();
 
 	private Stack<Scene> leftStack = new Stack<Scene>();
@@ -55,9 +61,11 @@ public class Window extends JFrame {
 	
 	private String mode = "Select";
 
-	private String ip = "127.0.0.1";
+	private String ip = null;
 
-	private int port = 1099;
+	private int port = 0;
+
+	private Boolean server = false;
 
 	private String filepath = null;
 
@@ -107,6 +115,28 @@ public class Window extends JFrame {
 		}
 	}
 
+	public void configureserver(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+		this.server = true;
+	}
+
+	public void fetchserver() {
+		try {
+			Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port + "/server");
+			if (!server.load().equals(scene1)){
+				scene1 = server.load();
+				currentFileSaved = true;
+				if (canvas != null) {
+					canvas.repaint();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public Window() { //constructeur
 
 		super("Paint");
@@ -116,7 +146,7 @@ public class Window extends JFrame {
 		//this.setResizable(false);
 
 		// Canvas
-		Canvas canvas = new Canvas() {
+		canvas = new Canvas() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -127,17 +157,6 @@ public class Window extends JFrame {
 				scene1.draw(g);
 			}
 		};
-
-		try {
-			Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":1099/server");
-			if (!server.load().equals(scene1)){
-				scene1 = server.load();
-				canvas.repaint();
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		getContentPane().add(canvas, BorderLayout.CENTER);
 
@@ -268,7 +287,12 @@ public class Window extends JFrame {
 		menuNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		menuNew.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        new Window().setVisible(true);
+				Window newWindow = new Window();
+				if (server){
+					newWindow.configureserver(ip, port);
+					newWindow.fetchserver();
+				}
+		        newWindow.setVisible(true);
 		    }
 		});
 		
@@ -350,6 +374,18 @@ public class Window extends JFrame {
 		JMenuItem menuImport = new JMenuItem("Import from Server");
 		menuFile.add(menuImport);
 		menuImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
+		
+		JMenuItem menuExport = new JMenuItem("Export to Server");
+		menuFile.add(menuExport);
+		menuExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+
+		JMenuItem menuBackup = new JMenuItem("Backup to Server");
+		menuFile.add(menuBackup);
+		menuBackup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+
+		JMenuItem menuSetup = new JMenuItem("Setup a Server");
+		menuFile.add(menuSetup);
+		menuSetup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 
 		menuImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -361,13 +397,12 @@ public class Window extends JFrame {
 				} catch (Exception error) {
 					error.printStackTrace();
 					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
 				}
 			}
 		});	
-		
-		JMenuItem menuExport = new JMenuItem("Export to Server");
-		menuFile.add(menuExport);
-		menuExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
 
 		menuExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -378,13 +413,17 @@ public class Window extends JFrame {
 				} catch (Exception error) {
 					error.printStackTrace();
 					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					if ((port == 0)||(ip == null)||ip.isEmpty()) {
+						server = false;
+						ip = null;
+						port = 0;
+					}
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
 				}
 			}
 		});
-
-		JMenuItem menuBackup = new JMenuItem("Backup to Server");
-		menuFile.add(menuBackup);
-		menuBackup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
 
 		menuBackup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -395,9 +434,59 @@ public class Window extends JFrame {
 				} catch (Exception error) {
 					error.printStackTrace();
 					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					if ((port == 0)||(ip == null)||ip.isEmpty()) {
+						server = false;
+						ip = null;
+						port = 0;
+					}
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
 				}
 			}
-		});	
+		});
+
+		menuSetup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JPanel panel = new JPanel(new GridLayout(2, 2));
+					JTextField ipfield = new JTextField();
+					JTextField portfield = new JTextField();
+					panel.add(new JLabel("Ip :"));
+					panel.add(ipfield);
+					panel.add(new JLabel("Port :"));
+					panel.add(portfield);
+					int result = JOptionPane.showConfirmDialog(null, panel, "Configuration serveur", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (result == JOptionPane.OK_OPTION) {
+						String ipstring = ipfield.getText();
+						String portstring = portfield.getText();
+						if (ipstring != null  && !ipstring.isEmpty() && portstring != null && !portstring.isEmpty()) {
+							configureserver(ipstring, Integer.parseInt(portstring));
+							menuImport.setEnabled(server);
+							menuExport.setEnabled(server);
+							menuBackup.setEnabled(server);
+						} else {
+							JOptionPane.showMessageDialog(null, "Veuillez renseigner les champs", "Erreur", JOptionPane.ERROR_MESSAGE);
+							server = false;
+							ip = null;
+							port = 0;
+							menuImport.setEnabled(server);
+							menuExport.setEnabled(server);
+							menuBackup.setEnabled(server);
+						}
+					}
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erreur lors de la configuration", "Erreur", JOptionPane.ERROR_MESSAGE);
+					server = false;
+					ip = null;
+					port = 0;
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
 		
 		menuFile.addSeparator();
 		
