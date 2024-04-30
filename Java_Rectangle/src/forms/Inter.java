@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 public class Inter extends Duplet {
 
+	private static final long serialVersionUID = -1428080441753075301L;
+
 	public Inter () {}
 	
 	public Inter (Shape s1,Shape s2) {

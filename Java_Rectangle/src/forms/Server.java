@@ -9,6 +9,8 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class Server extends UnicastRemoteObject implements Rsceneint {
 
+	private static final long serialVersionUID = 2997965801342334091L;
+
 	public Server() throws RemoteException {}
 
 	public Server(String path) throws RemoteException {

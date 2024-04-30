@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 public class Union extends Duplet {
 	
+	private static final long serialVersionUID = -6318947977334593887L;
+
 	public Union () {}
 	
 	public Union (Shape s1,Shape s2) {

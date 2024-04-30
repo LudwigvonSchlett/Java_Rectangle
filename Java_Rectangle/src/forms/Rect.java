@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 public class Rect extends Shape {
 
+	private static final long serialVersionUID = -6729981047980508973L;
+
 	public Rect() {}
 	
 	public Rect(int x1, int y1, int x2, int y2) {

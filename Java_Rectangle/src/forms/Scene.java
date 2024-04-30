@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class Scene implements Serializable{
 	
+	private static final long serialVersionUID = -1801683343412015715L;
+	
 	protected  List<Shape> Gcontent = new ArrayList<Shape>();
 	
 	public List<Shape> getGcontent() {

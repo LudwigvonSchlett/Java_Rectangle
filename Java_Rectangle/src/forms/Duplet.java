@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 public abstract class Duplet extends Shape {
 	
+	private static final long serialVersionUID = -5636290394842629264L;
+	
 	protected Shape Lleaf = null;
 	
 	public void setLleaf(Shape s1) {

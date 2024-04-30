@@ -8,6 +8,8 @@ import forms.Scene;
 
 public class Rsceneobjdemo extends UnicastRemoteObject implements Rsceneint {
 
+	private static final long serialVersionUID = -2046268558665469287L;
+
 	public Rsceneobjdemo() throws RemoteException {}
 
 	public Rsceneobjdemo(String path) throws RemoteException {

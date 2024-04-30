@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 public class Diffe extends Duplet {
 
+	private static final long serialVersionUID = -7080932081487679019L;
+
 	public Diffe () {}
 	
 	public Diffe (Shape s1,Shape s2) {
