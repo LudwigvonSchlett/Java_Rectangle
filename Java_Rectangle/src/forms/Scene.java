@@ -90,14 +90,14 @@ public class Scene implements Serializable{
 	    for (Shape c : Gcontent) {
 	        if (!(c instanceof Duplet)) {
 	            
-	            result += "|-----";
-	            result += " " + c.toString() + "\n";
+	            result += " + " + c.toString() + "\n";
+
 	        } else {
-	        	result += "|----- ";
+	        	result += " + ";
 	            String[] lines = c.toString().split("\\r?\\n");
 	            
 	            for (int i = 1; i < lines.length; i++) {
-	            	lines[i] = "|     " + lines[i];
+	            	lines[i] = "   " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
 	            result += "\n";	            

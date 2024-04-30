@@ -38,8 +38,18 @@ public class App {
 			windowargs[1] = defaultport;
 
 		}
-
-		Server.main(serverargs);		
+		
+		new Thread() {
+			public void run() {
+				try {
+					Server.main(serverargs);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+		
+				
 
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		EventQueue.invokeLater(new Runnable() {

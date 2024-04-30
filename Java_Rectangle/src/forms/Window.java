@@ -334,6 +334,8 @@ public class Window extends JFrame {
 						File selectedFile = fileChooser.getSelectedFile();
 						try {
 							filepath = selectedFile.getPath();
+							scene1.unselectall();
+							canvas.repaint();
 							scene1.saveXML(filepath);
 							currentFileSaved = true;          
 						} catch (Exception e1) {
@@ -342,6 +344,8 @@ public class Window extends JFrame {
 					}
 				}
 				else {
+					scene1.unselectall();
+					canvas.repaint();
 					scene1.saveXML(filepath);
 					currentFileSaved = true;
 				}
@@ -359,6 +363,8 @@ public class Window extends JFrame {
 		            File selectedFile = fileChooser.getSelectedFile();
 		            try {
 						filepath = selectedFile.getPath();
+						scene1.unselectall();
+						canvas.repaint();
 		                scene1.saveXML(filepath);     
 						currentFileSaved = true; 
 		            } catch (Exception e1) {
@@ -408,6 +414,8 @@ public class Window extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1.unselectall();
+					canvas.repaint();
 					server.save(scene1);
 					currentFileSaved = true;
 				} catch (Exception error) {
@@ -429,6 +437,8 @@ public class Window extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1.unselectall();
+					canvas.repaint();
 					server.savebackup(scene1);
 					currentFileSaved = true;
 				} catch (Exception error) {
@@ -723,6 +733,7 @@ public class Window extends JFrame {
 								difference = null;
 							} else {
 								System.out.println(difference);
+
 								leftStack.push(scene1.copy());
 								menuUndo.setEnabled(true);
 								rightStack.clear();
@@ -767,10 +778,13 @@ public class Window extends JFrame {
 					ShapeSelected = scene1.select(point.x, point.y);
 					oldX = point.x;
 					oldY = point.y;
-					leftStack.push(scene1.copy());
-					menuUndo.setEnabled(true);
-					rightStack.clear();
-					canvas.repaint();
+
+					if ((ShapeSelected != null)&&(leftStack.isEmpty()||(scene1.equals(leftStack.peek()) == false))){
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+						canvas.repaint();
+					}
 
 					if(CanvasHeight != canvas.getHeight() || CanvasWidth != canvas.getWidth()) {
 						CanvasHeight = canvas.getHeight();
