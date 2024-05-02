@@ -644,7 +644,6 @@ public class Window extends JFrame {
 						P1 = null;
 						P2 = null;
 						currentFileSaved = false;
-						mode = "Select";
 					}
 				}
 
@@ -666,7 +665,6 @@ public class Window extends JFrame {
 						P1 = null;
 						P2 = null;
 						currentFileSaved = false;
-						mode = "Select";
 					}
 				}
 		
@@ -703,7 +701,6 @@ public class Window extends JFrame {
 						form2 = null;
 						union = null;
 						currentFileSaved = false;
-						mode = "Select";
 					}
 				}
 
@@ -734,7 +731,6 @@ public class Window extends JFrame {
 								scene1.remove(form1);
 								scene1.remove(form2);
 	
-	
 								intersection = null;
 								currentFileSaved = false;
 							}
@@ -747,7 +743,6 @@ public class Window extends JFrame {
 						P2 = null;
 						form1 = null;
 						form2 = null;
-						mode = "Select";
 					}
 				}
 
@@ -791,7 +786,6 @@ public class Window extends JFrame {
 						P2 = null;
 						form1 = null;
 						form2 = null;
-						mode = "Select";
 					}
 				}
 		    }
