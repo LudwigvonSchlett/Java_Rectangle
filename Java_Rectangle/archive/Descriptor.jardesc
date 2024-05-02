@@ -4,21 +4,14 @@
     <options buildIfNeeded="true" compress="true" descriptionLocation="/Java_Rectangle/archive/Descriptor.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" mainClassHandleIdentifier="=Java_Rectangle/src&lt;forms{Window.java[Window" manifestLocation="/Java_Rectangle/archive/MANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=Java_Rectangle/src&lt;forms{App.java[App" manifestLocation="/Java_Rectangle/archive/MANIFEST.MF" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Diffe.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Duplet.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Inter.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Rect.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Scene.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Shape.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Union.java"/>
-        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms{Window.java"/>
+        <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms.icons"/>
     </selectedElements>
 </jardesc>

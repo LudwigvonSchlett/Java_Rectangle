@@ -1,10 +1,13 @@
 package forms;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Desktop;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Color;
 
@@ -36,16 +40,18 @@ import java.io.IOException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.rmi.Naming;
 import java.util.Stack;
 
 public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected static int MAX_WINDOW_WIDTH=1920;
+	protected static int MAX_WINDOW_WIDTH=3840;
 	
-	protected static int MAX_WINDOW_HEIGHT=1080;
+	protected static int MAX_WINDOW_HEIGHT=2160;
+
+	private Canvas canvas;
 
 	private Scene scene1 = new Scene();
 
@@ -54,6 +60,12 @@ public class Window extends JFrame {
 	private Stack<Scene> rightStack = new Stack<Scene>();
 	
 	private String mode = "Select";
+
+	private String ip = null;
+
+	private int port = 0;
+
+	private Boolean server = false;
 
 	private String filepath = null;
 
@@ -85,7 +97,6 @@ public class Window extends JFrame {
 					Window window = new Window();
 					window.setVisible(true);
 					
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,13 +106,34 @@ public class Window extends JFrame {
 	
 	private void closeWindow() { //fenetre de vérification avant de quitter
 		if (currentFileSaved == false) {
-			//int clicked = JOptionPane.showConfirmDialog(Window.this, "Avez-vous enregistrer ?", "Quitter", JOptionPane.YES_NO_OPTION);
 			int clicked = JOptionPane.showConfirmDialog(Window.this, "Quitter sans sauvegarder ?", "", JOptionPane.YES_NO_OPTION);
 			if (clicked == JOptionPane.YES_OPTION) {
 				dispose();
 			}
 		} else {
 			dispose();
+		}
+	}
+
+	public void configureserver(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+		this.server = true;
+	}
+
+	public void fetchserver() {
+		try {
+			Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port + "/server");
+			if (!server.load().equals(scene1)){
+				scene1 = server.load();
+				currentFileSaved = true;
+				if (canvas != null) {
+					canvas.repaint();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -112,10 +144,9 @@ public class Window extends JFrame {
 		this.setSize(WindowWidth, WindowHeight);
 		this.setLocationRelativeTo(null);
 		//this.setResizable(false);
-		
 
 		// Canvas
-		Canvas canvas = new Canvas() {
+		canvas = new Canvas() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -128,13 +159,7 @@ public class Window extends JFrame {
 		};
 
 		getContentPane().add(canvas, BorderLayout.CENTER);
-		
-		// Test de la classe Scene
-		
-		scene1.add(new Inter(new Rect(0,0,100,100),new Rect(50,50,150,150)));
-		scene1.add(new Diffe(new Rect(400,100,600,300),new Rect(450,150,550,250)));
-		System.out.println(scene1);
-		
+
 		// Barre d'outils
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -194,6 +219,21 @@ public class Window extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				mode= "Rectangle";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
+
+			}
+		});
+
+		JButton CircleButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
+		toolBar.add(CircleButton);
+
+		CircleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				mode= "Circle";
 				P1 = null;
 				P2 = null;
 				scene1.unselectall();
@@ -262,7 +302,12 @@ public class Window extends JFrame {
 		menuNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		menuNew.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        new Window().setVisible(true);
+				Window newWindow = new Window();
+				if (server){
+					newWindow.configureserver(ip, port);
+					newWindow.fetchserver();
+				}
+		        newWindow.setVisible(true);
 		    }
 		});
 		
@@ -304,13 +349,18 @@ public class Window extends JFrame {
 						File selectedFile = fileChooser.getSelectedFile();
 						try {
 							filepath = selectedFile.getPath();
-							scene1.saveXML(filepath);          
+							scene1.unselectall();
+							canvas.repaint();
+							scene1.saveXML(filepath);
+							currentFileSaved = true;          
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
 					}
 				}
 				else {
+					scene1.unselectall();
+					canvas.repaint();
 					scene1.saveXML(filepath);
 					currentFileSaved = true;
 				}
@@ -328,6 +378,8 @@ public class Window extends JFrame {
 		            File selectedFile = fileChooser.getSelectedFile();
 		            try {
 						filepath = selectedFile.getPath();
+						scene1.unselectall();
+						canvas.repaint();
 		                scene1.saveXML(filepath);     
 						currentFileSaved = true; 
 		            } catch (Exception e1) {
@@ -347,6 +399,119 @@ public class Window extends JFrame {
 		JMenuItem menuExport = new JMenuItem("Export to Server");
 		menuFile.add(menuExport);
 		menuExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+
+		JMenuItem menuBackup = new JMenuItem("Backup to Server");
+		menuFile.add(menuBackup);
+		menuBackup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
+
+		JMenuItem menuSetup = new JMenuItem("Setup a Server");
+		menuFile.add(menuSetup);
+		menuSetup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+
+		menuImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1 = server.load();
+					canvas.repaint();
+					currentFileSaved = true;
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'importation depuis le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});	
+
+		menuExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1.unselectall();
+					canvas.repaint();
+					server.save(scene1);
+					currentFileSaved = true;
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					if ((port == 0)||(ip == null)||ip.isEmpty()) {
+						server = false;
+						ip = null;
+						port = 0;
+					}
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
+
+		menuBackup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Rsceneint server = (Rsceneint) Naming.lookup("rmi://" + ip + ":" + port +"/server");
+					scene1.unselectall();
+					canvas.repaint();
+					server.savebackup(scene1);
+					currentFileSaved = true;
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "L'exportation vers le serveur a échoué", "Erreur", JOptionPane.ERROR_MESSAGE);
+					if ((port == 0)||(ip == null)||ip.isEmpty()) {
+						server = false;
+						ip = null;
+						port = 0;
+					}
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
+
+		menuSetup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JPanel panel = new JPanel(new GridLayout(2, 2));
+					JTextField ipfield = new JTextField();
+					JTextField portfield = new JTextField();
+					panel.add(new JLabel("Ip :"));
+					panel.add(ipfield);
+					panel.add(new JLabel("Port :"));
+					panel.add(portfield);
+					int result = JOptionPane.showConfirmDialog(null, panel, "Configuration serveur", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (result == JOptionPane.OK_OPTION) {
+						String ipstring = ipfield.getText();
+						String portstring = portfield.getText();
+						if (ipstring != null  && !ipstring.isEmpty() && portstring != null && !portstring.isEmpty()) {
+							configureserver(ipstring, Integer.parseInt(portstring));
+							menuImport.setEnabled(server);
+							menuExport.setEnabled(server);
+							menuBackup.setEnabled(server);
+						} else {
+							JOptionPane.showMessageDialog(null, "Veuillez renseigner les champs", "Erreur", JOptionPane.ERROR_MESSAGE);
+							server = false;
+							ip = null;
+							port = 0;
+							menuImport.setEnabled(server);
+							menuExport.setEnabled(server);
+							menuBackup.setEnabled(server);
+						}
+					}
+				} catch (Exception error) {
+					error.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erreur lors de la configuration", "Erreur", JOptionPane.ERROR_MESSAGE);
+					server = false;
+					ip = null;
+					port = 0;
+					menuImport.setEnabled(server);
+					menuExport.setEnabled(server);
+					menuBackup.setEnabled(server);
+				}
+			}
+		});
 		
 		menuFile.addSeparator();
 		
@@ -362,12 +527,10 @@ public class Window extends JFrame {
 		JButton menuUndo = new JButton();
 		menuUndo.setIcon(new ImageIcon(this.getClass().getResource("icons/undo.png")));
 		menuBar.add(menuUndo);
-		//menuUndo.setMnemonic('z');
 		
 		JButton menuRedo = new JButton();
 		menuRedo.setIcon(new ImageIcon(this.getClass().getResource("icons/redo.png")));
-		menuBar.add(menuRedo);
-		//menuRedo.setMnemonic('y');		
+		menuBar.add(menuRedo);		
 	
 		menuUndo.setEnabled(false);
 		menuRedo.setEnabled(false);
@@ -398,7 +561,6 @@ public class Window extends JFrame {
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
-		//menuHelp.setMnemonic('H');
 		
 		JMenuItem menuGithub = new JMenuItem("GoTo Github Project");
 		menuHelp.add(menuGithub);
@@ -428,11 +590,12 @@ public class Window extends JFrame {
 					
 					P1 = e.getPoint();
 					ShapeSelected = scene1.select(P1.x, P1.y);
-					//System.out.println("x = " + P1.x + " y = " + P1.y);
-					//System.out.println(ShapeSelected);
 					canvas.repaint();
 					P1 = null;
 					P2 = null;
+					if (ShapeSelected != null){
+						JOptionPane.showMessageDialog(null, ShapeSelected, "Forme sélectionnée", JOptionPane.PLAIN_MESSAGE);
+					}
 				} else {
 					scene1.unselectall();
 				}
@@ -454,10 +617,7 @@ public class Window extends JFrame {
 				}
 		
 				if (mode.equals("Rectangle")) {
-					currentFileSaved = false;
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						canvas.repaint();
 					} else {
@@ -487,11 +647,31 @@ public class Window extends JFrame {
 						mode = "Select";
 					}
 				}
+
+				if (mode.equals("Circle")) {
+					if (P1 == null) {
+						P1 = e.getPoint();
+						canvas.repaint();
+					} else {
+						P2 = e.getPoint();
+						
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+
+						double r =  Math.sqrt(Math.pow(P2.x - P1.x, 2) + Math.pow(P2.y - P1.y, 2));
+						scene1.add(new Circle(r, P1.x, P1.y));
+						
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						currentFileSaved = false;
+						mode = "Select";
+					}
+				}
 		
 				if (mode.equals("Union")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -528,9 +708,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Inter")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -574,9 +752,7 @@ public class Window extends JFrame {
 				}
 
 				if (mode.equals("Diff")) {
-					//scene1.unselectall();
 					if (P1 == null) {
-						//scene1.unselectall();
 						P1 = e.getPoint();
 						form1 = scene1.select(P1.x, P1.y);
 						canvas.repaint();
@@ -589,10 +765,11 @@ public class Window extends JFrame {
 							difference = new Diffe(form1.copy(), form2.copy());
 
 							if (difference.getSelected() == -2) {
-								JOptionPane.showMessageDialog(null, "Difference est un ensemble nul", "Erreur", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Difference est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
 								difference = null;
 							} else {
 								System.out.println(difference);
+
 								leftStack.push(scene1.copy());
 								menuUndo.setEnabled(true);
 								rightStack.clear();
@@ -625,8 +802,10 @@ public class Window extends JFrame {
 			
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				closeWindow();
-				}
+			}
+
 		});
+
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -635,10 +814,13 @@ public class Window extends JFrame {
 					ShapeSelected = scene1.select(point.x, point.y);
 					oldX = point.x;
 					oldY = point.y;
-					leftStack.push(scene1.copy());
-					menuUndo.setEnabled(true);
-					rightStack.clear();
-					canvas.repaint();
+
+					if ((ShapeSelected != null)&&(leftStack.isEmpty()||(scene1.equals(leftStack.peek()) == false))){
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+						canvas.repaint();
+					}
 
 					if(CanvasHeight != canvas.getHeight() || CanvasWidth != canvas.getWidth()) {
 						CanvasHeight = canvas.getHeight();
@@ -653,7 +835,6 @@ public class Window extends JFrame {
 					ShapeSelected = null;
 					scene1.unselectall();
 					canvas.repaint();
-					mode = "Select";
 				}
 			}
 		});

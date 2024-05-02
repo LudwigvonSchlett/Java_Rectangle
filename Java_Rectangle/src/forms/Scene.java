@@ -13,10 +13,13 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 
-public class Scene{
+public class Scene implements Serializable{
+	
+	private static final long serialVersionUID = -1801683343412015715L;
 	
 	protected  List<Shape> Gcontent = new ArrayList<Shape>();
 	
@@ -89,14 +92,14 @@ public class Scene{
 	    for (Shape c : Gcontent) {
 	        if (!(c instanceof Duplet)) {
 	            
-	            result += "|-----";
-	            result += " " + c.toString() + "\n";
+	            result += " + " + c.toString() + "\n";
+
 	        } else {
-	        	result += "|----- ";
+	        	result += " + ";
 	            String[] lines = c.toString().split("\\r?\\n");
 	            
 	            for (int i = 1; i < lines.length; i++) {
-	            	lines[i] = "|     " + lines[i];
+	            	lines[i] = "   " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
 	            result += "\n";	            

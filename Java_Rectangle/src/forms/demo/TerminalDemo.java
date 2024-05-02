@@ -1,4 +1,6 @@
-package forms;
+package forms.demo;
+
+import forms.*;
 
 public class TerminalDemo {
 	
@@ -55,14 +57,10 @@ public class TerminalDemo {
 		Rect r2 = new Rect(100,50,150,100);
 		
 		Rect r3 = new Rect(50,50,125,100);
-		
-		Rect r4 = new Rect(50,70,100,90);
-		
+				
 		Union u1 = new Union(r1,r2);
 		
 		Inter i1 = new Inter(u1,r3);
-		
-		//Diffe d1 = new Diffe(i1,r4);
 		
 		scene1.add(i1);
 		

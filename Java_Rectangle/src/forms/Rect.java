@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 public class Rect extends Shape {
 
+	private static final long serialVersionUID = -6729981047980508973L;
+
 	public Rect() {}
 	
 	public Rect(int x1, int y1, int x2, int y2) {
@@ -40,7 +42,9 @@ public class Rect extends Shape {
 		else {
 			g.setColor(Color.BLACK);
 		}
+		
 		g.fillRect(this.x1, this.y1, this.x2-this.x1+1, this.y2-this.y1+1);
+
 	}
 
 	@Override
