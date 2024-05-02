@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 public abstract class Shape implements Serializable{
 	
+	private static final long serialVersionUID = 3112194870883717506L;
+	
 	protected int x1=-1;
 	
 	public int getX1() {

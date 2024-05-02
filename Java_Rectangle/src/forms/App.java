@@ -27,6 +27,7 @@ public class App {
 			serverargs[1] = args[2];
 
 		} else {
+
 			String defaultpath = "backup.xml";
 			String defaultip = "127.0.0.1"; // "localhost"
 			String defaultport = "1099";
@@ -38,10 +39,21 @@ public class App {
 			windowargs[1] = defaultport;
 
 		}
-
-		Server.main(serverargs);		
+		
+		new Thread() {
+			public void run() {
+				try {
+					Server.main(serverargs);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+		
+				
 
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -56,6 +68,5 @@ public class App {
 				}
 			}
 		});
-
-    }
+	}
 }

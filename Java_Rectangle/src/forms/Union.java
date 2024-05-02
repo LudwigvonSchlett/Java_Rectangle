@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 public class Union extends Duplet {
 	
+	private static final long serialVersionUID = -6318947977334593887L;
+
 	public Union () {}
 	
 	public Union (Shape s1,Shape s2) {
@@ -30,33 +32,29 @@ public class Union extends Duplet {
 	public String toString() {
 		String result = "Union :\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
-	            result += "|-----";
-	            result += " " + this.Lleaf.toString() + "\n";
+	            result += " + " + this.Lleaf.toString() + "\n";
 	    } else {
-	        	result += "|----- ";
+	        	result += " + ";
 
 	            String[] lines = this.Lleaf.toString().split("\\r?\\n");
 	            
 	            for (int i = 1; i < lines.length; i++) {
-	            	lines[i] = "|      " + lines[i];
+	            	lines[i] = "   " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
-	            //result += "\n|\n";
 				result += "\n";	           
 	    }
 	    if (!(this.Rleaf instanceof Duplet)) {
-            	result += "|-----";
-            	result += " " + this.Rleaf.toString() + "\n";
+            	result += " + " + this.Rleaf.toString() + "\n";
 	    } else {
-        		result += "|----- ";
+        		result += " + ";
 
         		String[] lines = this.Rleaf.toString().split("\\r?\\n");
             
         		for (int i = 1; i < lines.length; i++) {
-        			lines[i] = "|      " + lines[i];
+        			lines[i] = "   " + lines[i];
         		}
         		result += String.join(System.lineSeparator(), lines);
-        		//result += "\n|\n";
 				result += "\n";	            
 	    }
 	    return result;

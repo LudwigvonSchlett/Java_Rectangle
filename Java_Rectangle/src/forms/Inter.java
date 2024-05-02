@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 public class Inter extends Duplet {
 
+	private static final long serialVersionUID = -1428080441753075301L;
+
 	public Inter () {}
 	
 	public Inter (Shape s1,Shape s2) {
@@ -24,7 +26,6 @@ public class Inter extends Duplet {
 			this.y2 = -1;
 		}
 		
-
 	}
 
 	@Override
@@ -41,31 +42,27 @@ public class Inter extends Duplet {
 		//String result = "Inter : x1 = " + this.x1 +"  y1 = " + this.y1 + "  x2 = " + this.x2 + "  y2 = "+ this.y2+"\n";
 		String result = "Inter :\n";
 	    if (!(this.Lleaf instanceof Duplet)) {
-	            result += "|-----";
-	            result += " " + this.Lleaf.toString() + "\n";
+	            result += " + " + this.Lleaf.toString() + "\n";
 	    } else {
-	        	result += "|----- ";
+	        	result += " +  ";
 	            String[] lines = this.Lleaf.toString().split("\\r?\\n");
 	            
 	            for (int i = 1; i < lines.length; i++) {
-	            	lines[i] = "|      " + lines[i];
+	            	lines[i] = "   " + lines[i];
 	            }
 	            result += String.join(System.lineSeparator(), lines);
-	            //result += "\n|\n";
 				result += "\n";			             
 	    }
 	    if (!(this.Rleaf instanceof Duplet)) {
-            	result += "|-----";
-            	result += " " + this.Rleaf.toString() + "\n";
+            	result += " + " + this.Rleaf.toString() + "\n";
 	    } else {
-        		result += "|----- ";
+        		result += " + ";
         		String[] lines = this.Rleaf.toString().split("\\r?\\n");
             
         		for (int i = 1; i < lines.length; i++) {
-        			lines[i] = "|      " + lines[i];
+        			lines[i] = "   " + lines[i];
         		}
         		result += String.join(System.lineSeparator(), lines);
-        		//result += "\n|\n";
 				result += "\n";		 	            
 	    }
 	    return result;
@@ -84,11 +81,11 @@ public class Inter extends Duplet {
 		int maxx;
 		int drawLine;
 
-		for(int y = this.y1; y<this.y2+1; y++) {
+		for(int y = this.y1; y<this.y2+2; y++) {
 			minx = 0;
 			maxx = 0;
 			drawLine = 0;
-			for(int x = this.x1; x<this.x2+1; x++) {
+			for(int x = this.x1; x<this.x2+2; x++) {
 				if (drawLine == 0) {
 					if (belong(x, y)==0){
 						minx = x;
@@ -96,7 +93,7 @@ public class Inter extends Duplet {
 						drawLine = 1;
 					}
 				} else {
-					if ((belong(x, y)==1)||(x==this.x2)){
+					if (belong(x, y)==1){
 						g.drawLine(minx, y, maxx, y);
 						drawLine = 0;
 						if (belong(x, y)==1) {
