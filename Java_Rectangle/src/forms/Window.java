@@ -227,7 +227,7 @@ public class Window extends JFrame {
 			}
 		});
 
-		JButton CircleButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
+		JButton CircleButton = new JButton(new ImageIcon(this.getClass().getResource("icons/circle.png")));
 		toolBar.add(CircleButton);
 
 		CircleButton.addActionListener(new ActionListener() {
