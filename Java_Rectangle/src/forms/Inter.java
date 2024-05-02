@@ -81,11 +81,11 @@ public class Inter extends Duplet {
 		int maxx;
 		int drawLine;
 
-		for(int y = this.y1; y<this.y2+1; y++) {
+		for(int y = this.y1; y<this.y2+2; y++) {
 			minx = 0;
 			maxx = 0;
 			drawLine = 0;
-			for(int x = this.x1; x<this.x2+1; x++) {
+			for(int x = this.x1; x<this.x2+2; x++) {
 				if (drawLine == 0) {
 					if (belong(x, y)==0){
 						minx = x;
@@ -93,7 +93,7 @@ public class Inter extends Duplet {
 						drawLine = 1;
 					}
 				} else {
-					if ((belong(x, y)==1)||(x==this.x2)){
+					if (belong(x, y)==1){
 						g.drawLine(minx, y, maxx, y);
 						drawLine = 0;
 						if (belong(x, y)==1) {

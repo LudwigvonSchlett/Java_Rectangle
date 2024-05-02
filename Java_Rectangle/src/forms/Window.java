@@ -227,6 +227,21 @@ public class Window extends JFrame {
 			}
 		});
 
+		JButton CircleButton = new JButton(new ImageIcon(this.getClass().getResource("icons/rectangle.png")));
+		toolBar.add(CircleButton);
+
+		CircleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				mode= "Circle";
+				P1 = null;
+				P2 = null;
+				scene1.unselectall();
+				canvas.repaint();
+
+			}
+		});
+
 		toolBar.addSeparator();
 		
 		JButton unionButton = new JButton(new ImageIcon(this.getClass().getResource("icons/union.png")));
@@ -602,7 +617,6 @@ public class Window extends JFrame {
 				}
 		
 				if (mode.equals("Rectangle")) {
-					currentFileSaved = false;
 					if (P1 == null) {
 						P1 = e.getPoint();
 						canvas.repaint();
@@ -626,6 +640,28 @@ public class Window extends JFrame {
 							scene1.add(new Rect(P1.x, P1.y, P2.x, P2.y));
 						}
 
+						canvas.repaint();
+						P1 = null;
+						P2 = null;
+						currentFileSaved = false;
+						mode = "Select";
+					}
+				}
+
+				if (mode.equals("Circle")) {
+					if (P1 == null) {
+						P1 = e.getPoint();
+						canvas.repaint();
+					} else {
+						P2 = e.getPoint();
+						
+						leftStack.push(scene1.copy());
+						menuUndo.setEnabled(true);
+						rightStack.clear();
+
+						double r =  Math.sqrt(Math.pow(P2.x - P1.x, 2) + Math.pow(P2.y - P1.y, 2));
+						scene1.add(new Circle(r, P1.x, P1.y));
+						
 						canvas.repaint();
 						P1 = null;
 						P2 = null;
