@@ -568,7 +568,7 @@ public class Window extends JFrame {
 		menuGithub.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        try {
-		            Desktop.getDesktop().browse(new URI("https://github.com/LudwigvonSchlett/Java_Rect"));
+		            Desktop.getDesktop().browse(new URI("https://github.com/LudwigvonSchlett/Java_Rectangle"));
 		        } catch (IOException | URISyntaxException e1) {
 		            e1.printStackTrace();
 		        }
