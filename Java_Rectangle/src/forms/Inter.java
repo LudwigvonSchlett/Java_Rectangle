@@ -18,8 +18,17 @@ public class Inter extends Duplet {
 		this.x2 = Math.min(s1.getX2(),s2.getX2());
 		this.y2 = Math.min(s1.getY2(),s2.getY2());
 
-		if ((this.x1>this.x2)||(this.y1>this.y2)) {
-			this.selected = -2;
+		selected = -2;
+
+		for(int y = this.y1; y<this.y2+1; y++) {
+			for(int x = this.x1; x<this.x2+1; x++) {
+				if (belong(x, y)==0) {
+					selected = 0;
+				}
+			}
+		}
+		
+		if (selected == -2) {
 			this.x1 = -1;
 			this.x2 = -1;
 			this.y1 = -1;
