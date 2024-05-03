@@ -38,20 +38,34 @@ public class Diffe extends Duplet {
 
 		selected = -2;
 
-		for(int y = this.y1; y<this.y2+1; y++) {
-			for(int x = this.x1; x<this.x2+1; x++) {
-				if (belong(x, y)==0) {
-					selected = 0;
+			for(int y = this.y1; y<this.y2+1; y++) {
+				for(int x = this.x1; x<this.x2+1; x++) {
+					if (belong(x, y)==0) {
+						selected = 0;
+					}
 				}
 			}
-		}
-		
-		if (selected == -2) {
+
+		if (selected != -2) {
+
+			selected = -3;
+
+			for(int y = this.y1; y<this.y2+1; y++) {
+				for(int x = this.x1; x<this.x2+1; x++) {
+					if ((s1.belong(x, y)==0)&&(s2.belong(x, y)==0)) {
+						selected = 0;
+					}
+				}
+			}
+		}		
+
+		if ((selected == -2)||(selected == -3)) {
 			this.x1 = -1;
 			this.x2 = -1;
 			this.y1 = -1;
 			this.y2 = -1;
 		}
+		
 
 	}
 

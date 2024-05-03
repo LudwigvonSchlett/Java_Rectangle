@@ -11,6 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <file path="/Java_Rectangle/archive/Readme.txt"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms"/>
         <javaElement handleIdentifier="=Java_Rectangle/src&lt;forms.icons"/>
     </selectedElements>

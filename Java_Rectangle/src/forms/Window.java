@@ -762,7 +762,10 @@ public class Window extends JFrame {
 							if (difference.getSelected() == -2) {
 								JOptionPane.showMessageDialog(null, "Difference est un ensemble vide", "Erreur", JOptionPane.ERROR_MESSAGE);
 								difference = null;
-							} else {
+							} else if (difference.getSelected() == -3) {
+								JOptionPane.showMessageDialog(null, "La différence est identique à la forme originale", "Erreur", JOptionPane.ERROR_MESSAGE);
+								difference = null;						
+							} else{
 								System.out.println(difference);
 
 								leftStack.push(scene1.copy());
