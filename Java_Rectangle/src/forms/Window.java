@@ -853,7 +853,7 @@ public class Window extends JFrame {
 						oldX = point.x;
 						currentFileSaved = false;
 					} else if (ShapeSelected.getX2()+dx>=CanvasWidth) {
-						dx = CanvasWidth - ShapeSelected.getX2();
+						dx = CanvasWidth - ShapeSelected.getX2() -1;
 						ShapeSelected.move(dx, 0);
 						oldX = point.x;
 						currentFileSaved = false;
@@ -868,7 +868,7 @@ public class Window extends JFrame {
 						oldY = point.y;
 						currentFileSaved = false;
 					} else if (ShapeSelected.getY2()+dy>=CanvasHeight) {
-						dy = CanvasHeight - ShapeSelected.getY2();
+						dy = CanvasHeight - ShapeSelected.getY2() -1;
 						ShapeSelected.move(0, dy);
 						oldY = point.y;
 						currentFileSaved = false;

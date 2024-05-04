@@ -92,7 +92,8 @@ public class Circle extends Shape{
 		else {
 			g.setColor(Color.BLACK);
 		}
-		g.fillOval(this.x1, this.y1, this.x2-this.x1, this.y2-this.y1);  
+		g.fillOval(this.x1, this.y1, this.x2-this.x1, this.y2-this.y1);
+
 	}
 
 	@Override
@@ -106,14 +107,6 @@ public class Circle extends Shape{
         int result = 1;
         
         double r = Math.sqrt(Math.pow(this.cx - x, 2) + Math.pow(this.cy - y, 2));
-
-        /*
-        if ((int) Math.sqrt(Math.pow(this.cx - x, 2) + Math.pow(this.cy - y, 2))<(int) (Math.sqrt(Math.pow(this.cx - x, 2) + Math.pow(this.cy - y, 2))+0.5)){
-            r = (int) Math.sqrt(Math.pow(this.cx - x, 2) + Math.pow(this.cy - y, 2)) + 1;
-        } else {
-            r = (int) Math.sqrt(Math.pow(this.cx - x, 2) + Math.pow(this.cy - y, 2));
-        }
-        */
 
         if (r<=this.r){
             result = 0;
