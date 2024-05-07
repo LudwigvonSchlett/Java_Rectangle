@@ -139,7 +139,7 @@ public class Window extends JFrame {
 
 	public Window() { //constructeur
 
-		super("Paint");
+		super("Ctrl-Art-Suppr");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setSize(WindowWidth, WindowHeight);
 		this.setLocationRelativeTo(null);
