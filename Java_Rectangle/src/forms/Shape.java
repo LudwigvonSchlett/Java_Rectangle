@@ -49,9 +49,10 @@ public abstract class Shape implements Serializable{
 	}
 
 	/*
-	 * 0 : unselected
-	 * 1 : selected
+	 *  0 : unselected
+	 *  1 : selected
 	 * -2 : empty
+	 * -3 : no change
 	 */
 	protected int selected = 0;
 
