@@ -139,7 +139,7 @@ public class Window extends JFrame {
 
 	public Window() { //constructeur
 
-		super("Paint");
+		super("Ctrl-Art-Suppr");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setSize(WindowWidth, WindowHeight);
 		this.setLocationRelativeTo(null);
@@ -568,7 +568,7 @@ public class Window extends JFrame {
 		menuGithub.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        try {
-		            Desktop.getDesktop().browse(new URI("https://github.com/LudwigvonSchlett/Java_Rect"));
+		            Desktop.getDesktop().browse(new URI("https://github.com/LudwigvonSchlett/Java_Rectangle"));
 		        } catch (IOException | URISyntaxException e1) {
 		            e1.printStackTrace();
 		        }
